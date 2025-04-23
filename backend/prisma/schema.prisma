@@ -1,14 +1,17 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "./node_modules/@prisma/client"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URI")
 }
+// postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA
 
 model user {
   id            String      @id @default(uuid())
   email         String      @unique
+  name          String
   password      String
 }
