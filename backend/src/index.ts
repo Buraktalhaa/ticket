@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 import mongoSanitize from 'express-mongo-sanitize';
 import hpp from 'hpp';
 import compression from 'compression';
+import profileRouter from './profile/routers/profile.routes';
 
 // import { AppError } from './common/utils/appError'
 // import globalErrorHandler from './common/error-handling/errorController'
@@ -109,6 +110,7 @@ app.use((req, res, next) => {
 });
 
 // route ayarlari
+app.use('/profile', profileRouter);
 app.use('/auth', authRouter);
 
 
