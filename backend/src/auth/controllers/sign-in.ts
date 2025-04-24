@@ -3,8 +3,20 @@ import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt'
 import { checkSignIn } from "./checkSignIn";
 import jwt from 'jsonwebtoken';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 const prisma = new PrismaClient();
+
+function createToken(id:string, secretKey:string) { //expiresIn: string
+    return jwt.sign(
+        { userId: id }, 
+        secretKey!, 
+        { algorithm: 'HS256', expiresIn:"1h" }
+    );
+};
+
 
 export async function signInController(req: Request, res: Response) {
     if (checkSignIn(req) === false) {
@@ -15,11 +27,9 @@ export async function signInController(req: Request, res: Response) {
         return;
     }
 
-
-
     const email = req.body.email;
 
-    const user = await prisma.user.findUnique(
+    const user = await prisma.auth.findUnique(
         {
             where: {
                 email: email
@@ -47,21 +57,40 @@ export async function signInController(req: Request, res: Response) {
     if (!process.env.JWT_SECRET) {
         throw new Error("JWT_SECRET is not defined in environment variables");
     }
-    // TOKEN
-    const token = jwt.sign(
-        { userId: user.id }, process.env.JWT_SECRET!, {
-        algorithm: 'HS256',
-        expiresIn: '1h'
+
+    const accessToken = createToken(user.id, process.env.ACCESS_SECRET!)
+    const refreshToken = createToken(user.id, process.env.REFRESH_SECRET!)
+
+    const existingToken = await prisma.token.findFirst({
+        where: { authId: user.id }
     });
 
-
+    if (existingToken) {
+        await prisma.token.updateMany({
+            where: { authId: user.id },
+            data: {
+                accessToken,
+                refreshToken,
+                createdAt: new Date()
+            }
+        });
+    } else {
+        await prisma.token.create({
+            data: {
+                accessToken,
+                refreshToken,
+                authId: user.id
+            }
+        });
+    }
 
 
     console.log("Sing in successfull")
     res.status(200).json({
         status: "success",
         message: "Sign in succesfull",
-        token,
+        accessToken,
+        refreshToken,
         data: {
             email
         }
