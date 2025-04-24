@@ -3,7 +3,9 @@ import { checkSignUp } from './checkSignUp';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken';
+import * as dotenv from 'dotenv';
 
+dotenv.config();
 const prisma = new PrismaClient();
 
 export async function signUpController(req: Request, res: Response) {
@@ -20,7 +22,7 @@ export async function signUpController(req: Request, res: Response) {
     const { email, name } = req.body;
 
 
-    const existingUSer = await prisma.user.findUnique(
+    const existingUSer = await prisma.auth.findUnique(
         {
             where: {
                 email
@@ -35,36 +37,71 @@ export async function signUpController(req: Request, res: Response) {
         return;
     }
 
-    const newUser = await prisma.user.create({
+
+    // ACCESS TOKEN
+    function createToken(id:string, secretKey:string, ) { //expiresIn: string
+        return jwt.sign(
+            { userId: id }, 
+            secretKey!, 
+            { algorithm: 'HS256', expiresIn:"1h" }
+        );
+    };
+
+
+    // Create Auth
+    const newAuth = await prisma.auth.create({
         data: {
-            email,
-            name,
+            email: email,
+            name: name,
             password: hashedPassword
         }
     });
-    console.log("New User created:", newUser);
+
+    // Create User
+    const newUSer = await prisma.user.create({
+        data:{
+            name:"",
+            surname:'',
+            email:email,
+            birthday:'',
+            active:true,
+            authId:newAuth.id
+
+        }
+    }) 
 
 
-    if (!process.env.JWT_SECRET) {
-        throw new Error("JWT_SECRET is not defined");
-    }
+    const accessToken = createToken(newAuth.id, process.env.ACCESS_SECRET!)
+    const refreshToken = createToken(newAuth.id, process.env.REFRESH_SECRET!)
 
+    await prisma.token.create({
+        data: {
+            accessToken,
+            refreshToken,
+            authId: newAuth.id
 
-    // TOKEN
-    const token = jwt.sign(
-        { userId: newUser.id }, process.env.JWT_SECRET!, {
-        algorithm: 'HS256',
-        expiresIn: '1h'
-    });
+        }
+    })
 
 
     res.status(200).json({
         status: 'success',
         message: 'Sign up successful',
-        token,
+        accessToken,
+        refreshToken,
         data: {
-            email:newUser.email,
-            name:newUser.name,
+            email: newAuth.email,
+            name: newAuth.name,
         }
     });
 }
+
+
+// Süresi dolan token için Express server 403(forbidden) kodu ile işlemin yapılamayacağı bilgisini döndürmektedir.
+
+// Bir access token genellikle üç farklı parçadan oluşur:
+// Header: Token’ın tipi ve oluşturmak için kullanılan algoritma hakkındaki veriler burada bulunur.
+// Payload: Kullanıcı hakkında bilgi, izinler ve süre sonları burada bulunur.
+// Signature: Token’ın kimliğinin doğruluğunu sağlamak için veri bulunur. Bu imza genellikle hashlenir, böylece hackleyici tarafından kolayca taklit edilmesi zor olur.
+
+
