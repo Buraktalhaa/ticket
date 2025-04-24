@@ -19,7 +19,7 @@ import * as dotenv from 'dotenv';
 
 const port = '3000'
 const app = express();
-dotenv.config({ path: __dirname+'/.env' });
+dotenv.config();
 
 
 // ip secure gibi bilgileri dogru sekilde almak icin

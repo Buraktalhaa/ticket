@@ -12,6 +12,7 @@ export async function signInController(req: Request, res: Response) {
             status: 'fail',
             message: 'Email and password are required'
         })
+        return;
     }
 
 
@@ -43,14 +44,15 @@ export async function signInController(req: Request, res: Response) {
         return
     }
 
-    const secret = process.env.JWT_EXPIRES_IN!;
-
+    if (!process.env.JWT_SECRET) {
+        throw new Error("JWT_SECRET is not defined in environment variables");
+    }
     // TOKEN
     const token = jwt.sign(
-        { userId: user.id },process.env.JWT_SECRET!, {
-            algorithm: 'RS256',
-            expiresIn: '1h'
-        });
+        { userId: user.id }, process.env.JWT_SECRET!, {
+        algorithm: 'HS256',
+        expiresIn: '1h'
+    });
 
 
 
