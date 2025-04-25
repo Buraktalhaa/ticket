@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
 import { checkSignUp } from './checkSignUp';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../../common/utils/prisma';
 import bcrypt from 'bcrypt'
-import jwt from 'jsonwebtoken';
-import * as dotenv from 'dotenv';
+import { createToken } from '../utils/createToken';
 
-dotenv.config();
-const prisma = new PrismaClient();
+
 
 export async function signUpController(req: Request, res: Response) {
 
@@ -38,51 +36,37 @@ export async function signUpController(req: Request, res: Response) {
     }
 
 
-    // ACCESS TOKEN
-    function createToken(id:string, secretKey:string, ) { //expiresIn: string
-        return jwt.sign(
-            { userId: id }, 
-            secretKey!, 
-            { algorithm: 'HS256', expiresIn:"1h" }
-        );
-    };
-
-
     // Create Auth
     const newAuth = await prisma.auth.create({
         data: {
-            email: email,
-            name: name,
+            email,
+            name,
             password: hashedPassword
         }
     });
 
     // Create User
-    const newUSer = await prisma.user.create({
+    const user = await prisma.user.create({
         data:{
             name:"",
             surname:'',
-            email:email,
             birthday:'',
             active:true,
-            authId:newAuth.id
-
-        }
-    }) 
-
-
-    const accessToken = createToken(newAuth.id, process.env.ACCESS_SECRET!)
-    const refreshToken = createToken(newAuth.id, process.env.REFRESH_SECRET!)
-
-    await prisma.token.create({
-        data: {
-            accessToken,
-            refreshToken,
-            authId: newAuth.id
-
+            email
         }
     })
+    
+    const accessToken = createToken(user.id, email, process.env.ACCESS_SECRET!, 10 * 60)
+    const refreshToken = createToken(user.id, email, process.env.REFRESH_SECRET!, 24 * 60 * 60)
 
+    // Create Token
+    await prisma.token.create({
+        data: {
+            email,
+            accessToken,
+            refreshToken
+        }
+    })
 
     res.status(200).json({
         status: 'success',
