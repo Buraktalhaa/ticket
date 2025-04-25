@@ -1,18 +1,20 @@
-import { PrismaClient } from '@prisma/client';
 import { Request, Response } from 'express';
-
-const prisma = new PrismaClient();
+import prisma from '../../common/utils/prisma';
 
 export async function getProfile(req:Request, res: Response) {
     try {
-        const authId = (req as any).user.userId;
+        const { email } = (req as any).user;
+
+        console.log("email",email)
 
         const user = await prisma.user.findUnique({
             where: {
-                authId: authId
+                email
+            },
+            include:{
+
             }
         })
-        console.log(user)
     
         if (!user) {
             res.status(404).json({
@@ -23,7 +25,7 @@ export async function getProfile(req:Request, res: Response) {
     
         res.status(200).json({
             message: "your profile",
-            authId: user.id,
+            email: email,
             data: {
                 user
             }
@@ -35,7 +37,4 @@ export async function getProfile(req:Request, res: Response) {
         });
         return;
     }
-    
-
-
 }

@@ -1,4 +1,4 @@
-import { Request, Response, Router } from "express";
+import { Router } from "express";
 import { authenticateToken } from '../controller/tokenController'
 import { getProfile } from "../controller/getProfile";
 import { updateProfile } from "../controller/updateProfile";

@@ -110,8 +110,9 @@ app.use((req, res, next) => {
 });
 
 // route ayarlari
-app.use('/profile', profileRouter);
 app.use('/auth', authRouter);
+
+app.use('/profile', profileRouter);
 
 
 // app.all('*', ...) → Uygulamadaki tüm HTTP metodları (GET, POST, PUT, vs.) ve tüm yollar (*) için çalışır.
