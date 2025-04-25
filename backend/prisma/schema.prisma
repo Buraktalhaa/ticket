@@ -21,10 +21,10 @@ model Auth {
 
 model Token {
   id            String   @id @default(uuid())
+  email          String   @unique
+  auth         Auth     @relation(fields: [email], references: [email])
   accessToken   String
   refreshToken  String
-  authId        String   @unique
-  auth          Auth     @relation(fields: [authId], references: [id])
 
   createdAt     DateTime @default(now())
 }
@@ -34,13 +34,12 @@ model User {
   id       String  @id @default(uuid())
   name     String
   surname  String
-  email    String  @unique
   birthday String
   active   Boolean @default(true)
 
-  authId String @unique
-  auth   Auth   @relation(fields: [authId], references: [id])
-  Card   Card[]
+  email     String   @unique
+  auth    Auth     @relation(fields: [email], references: [email])
+  Card     Card[]
 }
 
 model Card {
