@@ -1,26 +1,40 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import jwt from 'jsonwebtoken';
+import * as dotenv from 'dotenv';
 
-export function authenticateToken(req: Request, res: Response, next: NextFunction): void {
+dotenv.config();
 
+export async function authenticateToken(req: Request, res: Response, next: NextFunction): Promise<void> {
 
     const header = req.headers['authorization'];
     const token = header && header.split(' ')[1];
 
-    if(!token){
+    if (!token) {
         res.status(401).json({ message: 'Access token is missing' });
-        return 
+        return
     }
-    
+    console.log("Access Token =>", token)
+
+
     try {
-        const payload = jwt.verify(token, process.env.ACCESS_SECRET!) as {userId:string};
-        (req as any).user = { userId: payload.userId };
+        jwt.verify(token, process.env.ACCESS_SECRET!, (err, decoded) => {
+            if (err) {
+                console.log('Token is invalid');
+            } else {
+                (req as any).user = decoded;
+                console.log('Decoded Token:', decoded);
+            }
+        });
+
         next();
 
-
-    } catch (error) {
-        res.status(403).json({ message: 'Invalid or expired access token' });
-        return 
+    } catch (err: any) {
+        if (err.name === 'TokenExpiredError') {
+            res.status(401).json({ message: 'Token expired' });
+            return;
+        }
+        res.status(403).json({ message: 'Invalid token' });
+        return;
     }
- }
+};
 
