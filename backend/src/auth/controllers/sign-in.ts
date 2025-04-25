@@ -1,22 +1,8 @@
 import { Request, Response } from "express";
-import { PrismaClient } from '@prisma/client';
+import prisma from '../../common/utils/prisma';
 import bcrypt from 'bcrypt'
 import { checkSignIn } from "./checkSignIn";
-import jwt from 'jsonwebtoken';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
-
-const prisma = new PrismaClient();
-
-function createToken(id:string, secretKey:string) { //expiresIn: string
-    return jwt.sign(
-        { userId: id }, 
-        secretKey!, 
-        { algorithm: 'HS256', expiresIn:"1h" }
-    );
-};
-
+import { createToken } from "../utils/createToken";
 
 export async function signInController(req: Request, res: Response) {
     if (checkSignIn(req) === false) {
@@ -28,8 +14,9 @@ export async function signInController(req: Request, res: Response) {
     }
 
     const email = req.body.email;
+    console.log(email)
 
-    const user = await prisma.auth.findUnique(
+    const auth = await prisma.auth.findUnique(
         {
             where: {
                 email: email
@@ -37,15 +24,30 @@ export async function signInController(req: Request, res: Response) {
         }
     )
 
-    if (!user) {
+    if (!auth) {
         res.status(400).json({
             status: 'fail',
-            message: 'User not found'
+            message: 'Auth not found'
         });
         return
     }
 
-    const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
+    const user = await prisma.user.findUnique(
+        {
+            where: {
+                email
+            }
+        }
+    )
+    if(!user){
+        res.status(400).json({
+            status: 'fail',
+            message: 'User not found'
+        });
+        return;
+    }
+
+    const isPasswordValid = await bcrypt.compare(req.body.password, auth.password);
     if (!isPasswordValid) {
         res.status(400).json({
             status: 'fail',
@@ -54,20 +56,23 @@ export async function signInController(req: Request, res: Response) {
         return
     }
 
-    if (!process.env.JWT_SECRET) {
+    if (!process.env.ACCESS_SECRET && !process.env.REFRESH_SECRET) {
         throw new Error("JWT_SECRET is not defined in environment variables");
     }
 
-    const accessToken = createToken(user.id, process.env.ACCESS_SECRET!)
-    const refreshToken = createToken(user.id, process.env.REFRESH_SECRET!)
+    const accessToken = createToken(user.id, email, process.env.ACCESS_SECRET!, 10 * 60)
+    const refreshToken = createToken(user.id, email, process.env.REFRESH_SECRET!, 24 * 60 * 60)
+
+    console.log("Access Token in sign-in =>", accessToken)
 
     const existingToken = await prisma.token.findFirst({
-        where: { authId: user.id }
+        where: 
+            { email: auth.email }
     });
 
     if (existingToken) {
         await prisma.token.updateMany({
-            where: { authId: user.id },
+            where: { email: auth.email },
             data: {
                 accessToken,
                 refreshToken,
@@ -77,9 +82,9 @@ export async function signInController(req: Request, res: Response) {
     } else {
         await prisma.token.create({
             data: {
+                email,
                 accessToken,
                 refreshToken,
-                authId: user.id
             }
         });
     }
