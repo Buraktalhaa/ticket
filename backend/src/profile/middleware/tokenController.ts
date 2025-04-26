@@ -1,8 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import jwt from 'jsonwebtoken';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
 
 export async function authenticateToken(req: Request, res: Response, next: NextFunction): Promise<void> {
 
@@ -17,15 +14,9 @@ export async function authenticateToken(req: Request, res: Response, next: NextF
 
 
     try {
-        jwt.verify(token, process.env.ACCESS_SECRET!, (err, decoded) => {
-            if (err) {
-                console.log('Token is invalid');
-            } else {
-                (req as any).user = decoded;
-                console.log('Decoded Token:', decoded);
-            }
-        });
-
+        const decoded = jwt.verify(token, process.env.ACCESS_SECRET!) as any;
+        (req as any).user = decoded;
+        console.log('Decoded Token:', decoded);
         next();
 
     } catch (err: any) {
