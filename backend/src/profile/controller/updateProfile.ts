@@ -1,24 +1,23 @@
 import { Request, Response } from "express";
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import prisma from '../../common/utils/prisma';
 
 export async function updateProfile(req: Request, res: Response) {
     try {
-
-        const authId = (req as any).user.userId;
-
-        const { name, surname, birthday, active } = req.body;
+        // Token icindeki email i al
+        const decoded = (req as any).user
+        const email = decoded.email
+        const { name, surname, birthday, active } = (req as any).body
+        console.log(name, surname, birthday, active)
+        
         const updatedUser = await prisma.user.update({
             where: {
-                authId: authId
+                email
             },
             data: {
                 name: name,
                 surname: surname,
                 birthday: birthday,
-                active: active
-
+                active: active,
             }
         })
 
@@ -33,7 +32,4 @@ export async function updateProfile(req: Request, res: Response) {
         });
         return
     }
-
-
-
 }

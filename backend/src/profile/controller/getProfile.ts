@@ -3,7 +3,8 @@ import prisma from '../../common/utils/prisma';
 
 export async function getProfile(req:Request, res: Response) {
     try {
-        const { email } = (req as any).user;
+        const decoded = (req as any).user;
+        const email = decoded.email
 
         console.log("email",email)
 
