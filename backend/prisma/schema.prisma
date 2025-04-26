@@ -63,8 +63,8 @@ enum RoleType {
 }
 
 model Role {
-  roleId      String       @id @default(uuid())
-  roleType    RoleType
+  Id          String       @id @default(uuid())
+  name        RoleType
   permissions Permission[]
 }
 
