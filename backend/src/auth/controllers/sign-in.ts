@@ -19,7 +19,7 @@ export async function signInController(req: Request, res: Response) {
     const auth = await prisma.auth.findUnique(
         {
             where: {
-                email: email
+                email
             }
         }
     )
@@ -39,7 +39,7 @@ export async function signInController(req: Request, res: Response) {
             }
         }
     )
-    if(!user){
+    if (!user) {
         res.status(400).json({
             status: 'fail',
             message: 'User not found'
@@ -60,34 +60,25 @@ export async function signInController(req: Request, res: Response) {
         throw new Error("JWT_SECRET is not defined in environment variables");
     }
 
-    const accessToken = createToken(user.id, email, process.env.ACCESS_SECRET!, 10 * 60)
+    const accessToken = createToken(user.id, email, process.env.ACCESS_SECRET!, 10)
     const refreshToken = createToken(user.id, email, process.env.REFRESH_SECRET!, 24 * 60 * 60)
 
     console.log("Access Token in sign-in =>", accessToken)
 
     const existingToken = await prisma.token.findFirst({
-        where: 
+        where:
             { email: auth.email }
     });
 
-    if (existingToken) {
-        await prisma.token.updateMany({
-            where: { email: auth.email },
-            data: {
-                accessToken,
-                refreshToken,
-                createdAt: new Date()
-            }
-        });
-    } else {
-        await prisma.token.create({
-            data: {
-                email,
-                accessToken,
-                refreshToken,
-            }
-        });
-    }
+    await prisma.token.update({
+        where: { email: auth.email },
+        data: {
+            accessToken,
+            refreshToken,
+            createdAt: new Date()
+        }
+    });
+
 
 
     console.log("Sing in successfull")

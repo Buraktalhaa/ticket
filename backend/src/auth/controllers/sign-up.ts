@@ -56,7 +56,7 @@ export async function signUpController(req: Request, res: Response) {
         }
     })
     
-    const accessToken = createToken(user.id, email, process.env.ACCESS_SECRET!, 10 * 60)
+    const accessToken = createToken(user.id, email, process.env.ACCESS_SECRET!, 10)
     const refreshToken = createToken(user.id, email, process.env.REFRESH_SECRET!, 24 * 60 * 60)
 
     // Create Token

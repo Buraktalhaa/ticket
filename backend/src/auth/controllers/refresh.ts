@@ -15,15 +15,15 @@ export async function refreshController(req: Request, res: Response) {
 
     try {
         const payload:any = jwt.verify(refreshToken, process.env.REFRESH_SECRET!);
-        console.log(payload)
-        const accessToken = createToken(payload.userId, payload.email, process.env.ACCESS_SECRET!, 10 * 60)
+        const email = payload.email
+        const accessToken = createToken(payload.userId, payload.email, process.env.ACCESS_SECRET!, 10)
         console.log("access token =>",accessToken)
         await prisma.token.update({
             where: {
-                email:payload.email
+                email
             },
             data: {
-                accessToken: accessToken
+                accessToken
             }
         })
         res.status(200).json({
@@ -31,7 +31,7 @@ export async function refreshController(req: Request, res: Response) {
             message: 'Access token sent successful',
             accessToken,
             data: {
-                email:payload.email,
+                email
             }
         });
 
