@@ -3,22 +3,20 @@ import { checkSignUp } from './checkSignUp';
 import prisma from '../../common/utils/prisma';
 import bcrypt from 'bcrypt'
 import { createToken } from '../utils/createToken';
+import { ResponseStatus } from '../../common/enums/status.enum';
+import { handleError } from '../../common/error-handling/handleError';
 
 
 
 export async function signUpController(req: Request, res: Response) {
 
     if (checkSignUp(req) === false) {
-        res.status(400).json({
-            status: 'fail',
-            message: 'Email, name and password are required'
-        })
+        handleError(res,'Email, name and password are required', 400)
         return
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
     const { email, name } = req.body;
-
 
     const existingUSer = await prisma.auth.findUnique(
         {
@@ -28,13 +26,9 @@ export async function signUpController(req: Request, res: Response) {
         });
 
     if (existingUSer) {
-        res.status(400).json({
-            status: 'fail',
-            message: 'There is a user with this email address'
-        })
+        handleError(res,'There is a user with this email address', 400)
         return;
     }
-
 
     // Create Auth
     const newAuth = await prisma.auth.create({
@@ -55,21 +49,23 @@ export async function signUpController(req: Request, res: Response) {
             email
         }
     })
+    const userId = user.id
+    console.log(userId)
     
     const accessToken = createToken(user.id, email, process.env.ACCESS_SECRET!, 10)
     const refreshToken = createToken(user.id, email, process.env.REFRESH_SECRET!, 24 * 60 * 60)
 
     // Create Token
-    await prisma.token.create({
+    const token = await prisma.token.create({
         data: {
-            email,
             accessToken,
-            refreshToken
+            refreshToken,
+            userId
         }
     })
 
     res.status(200).json({
-        status: 'success',
+        status: ResponseStatus.SUCCESS,
         message: 'Sign up successful',
         accessToken,
         refreshToken,

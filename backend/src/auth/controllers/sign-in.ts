@@ -3,18 +3,17 @@ import prisma from '../../common/utils/prisma';
 import bcrypt from 'bcrypt'
 import { checkSignIn } from "./checkSignIn";
 import { createToken } from "../utils/createToken";
+import { ResponseStatus } from "../../common/enums/status.enum";
+import { handleError } from "../../common/error-handling/handleError";
 
 export async function signInController(req: Request, res: Response) {
     if (checkSignIn(req) === false) {
-        res.status(400).json({
-            status: 'fail',
-            message: 'Email and password are required'
-        })
+        handleError(res,'Email and password are required', 400)
         return;
     }
 
     const email = req.body.email;
-    console.log(email)
+    const password = req.body.password;
 
     const auth = await prisma.auth.findUnique(
         {
@@ -25,10 +24,7 @@ export async function signInController(req: Request, res: Response) {
     )
 
     if (!auth) {
-        res.status(400).json({
-            status: 'fail',
-            message: 'Auth not found'
-        });
+        handleError(res,'Auth not found', 400)
         return
     }
 
@@ -40,38 +36,25 @@ export async function signInController(req: Request, res: Response) {
         }
     )
     if (!user) {
-        res.status(400).json({
-            status: 'fail',
-            message: 'User not found'
-        });
+        handleError(res,'User not found', 400)
         return;
     }
 
-    const isPasswordValid = await bcrypt.compare(req.body.password, auth.password);
+    const isPasswordValid = await bcrypt.compare(password, auth.password);
     if (!isPasswordValid) {
-        res.status(400).json({
-            status: 'fail',
-            message: 'Incorrect password'
-        });
+        handleError(res,'Incorrect password', 400)
         return
     }
 
     if (!process.env.ACCESS_SECRET && !process.env.REFRESH_SECRET) {
-        throw new Error("JWT_SECRET is not defined in environment variables");
+        handleError(res,"JWT_SECRET is not defined in environment variables", 400)
     }
 
     const accessToken = createToken(user.id, email, process.env.ACCESS_SECRET!, 10)
     const refreshToken = createToken(user.id, email, process.env.REFRESH_SECRET!, 24 * 60 * 60)
 
-    console.log("Access Token in sign-in =>", accessToken)
-
-    const existingToken = await prisma.token.findFirst({
-        where:
-            { email: auth.email }
-    });
-
     await prisma.token.update({
-        where: { email: auth.email },
+        where: { userId:user.id  },
         data: {
             accessToken,
             refreshToken,
@@ -79,11 +62,9 @@ export async function signInController(req: Request, res: Response) {
         }
     });
 
-
-
     console.log("Sing in successfull")
     res.status(200).json({
-        status: "success",
+        status:ResponseStatus.SUCCESS,
         message: "Sign in succesfull",
         accessToken,
         refreshToken,

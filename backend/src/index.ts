@@ -115,6 +115,7 @@ app.use('/auth', authRouter);
 app.use('/profile', profileRouter);
 
 
+
 // app.all('*', ...) → Uygulamadaki tüm HTTP metodları (GET, POST, PUT, vs.) ve tüm yollar (*) için çalışır.
 // Yani bu route tanımlanmamış bir URL’ye gelen tüm istekleri yakalar.
 // app.all('*', (req, res, next) => {

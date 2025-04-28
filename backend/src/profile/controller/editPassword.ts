@@ -1,13 +1,20 @@
 import { Request, Response } from "express";
 import bcrypt from 'bcrypt'
 import prisma from "../../common/utils/prisma";
-
+import { ResponseStatus } from "../../common/enums/status.enum";
+import { handleError } from "../../common/error-handling/handleError";
 
 // email ve yeni password u frontdan al
 
-export async function updatePassword(req: Request, res: Response) {
+export async function editPassword(req: Request, res: Response) {
     try {
-        const decoded = (req as any).user;
+        const decoded = req?.user;
+
+        if (!decoded || !decoded.email) {
+            handleError(res, 'User email not found in token', 400)
+            return 
+        }
+        
         const email = decoded.email;
         const oldPassword = req.body.password
 
@@ -19,10 +26,7 @@ export async function updatePassword(req: Request, res: Response) {
         });
 
         if (!user) {
-            res.status(404).json({
-                status: 'error',
-                message: 'User not found'
-            });
+            handleError(res, 'User not found', 400)
             return;
         }
 
@@ -30,10 +34,7 @@ export async function updatePassword(req: Request, res: Response) {
         const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
 
         if(!isPasswordValid){
-            res.status(404).json({
-                status: 'error',
-                message: 'Password wrong.'
-            });
+            handleError(res, 'Password wrong.', 401)
             return
         }
 
@@ -57,11 +58,6 @@ export async function updatePassword(req: Request, res: Response) {
         });
     } catch (error) {
         console.error('Error changing password:', error)
-
-        res.status(500).json({
-            status: 'error',
-            message: 'An error occurred while changing the password. Please try again later.'
-        });
+        handleError(res, 'An error occurred while changing the password. Please try again later.', 500)
     }
-
 }

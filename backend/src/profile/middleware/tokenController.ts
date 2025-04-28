@@ -1,5 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import { ResponseStatus } from "../../common/enums/status.enum";
 
 export async function authenticateToken(req: Request, res: Response, next: NextFunction): Promise<void> {
 
@@ -7,24 +8,27 @@ export async function authenticateToken(req: Request, res: Response, next: NextF
     const token = header && header.split(' ')[1];
 
     if (!token) {
-        res.status(401).json({ message: 'Access token is missing' });
+        res.status(401).json({ 
+            status: ResponseStatus.FAIL,
+            message: 'Access token is missing' });
         return
     }
-    console.log("Access Token =>", token)
-
 
     try {
-        const decoded = jwt.verify(token, process.env.ACCESS_SECRET!) as any;
-        (req as any).user = decoded;
-        console.log('Decoded Token:', decoded);
+        const {exp,iat,...rest} = jwt.verify(token, process.env.ACCESS_SECRET!) as any;
+        req.user = rest
         next();
 
     } catch (err: any) {
         if (err.name === 'TokenExpiredError') {
-            res.status(401).json({ message: 'Token expired' });
+            res.status(401).json({ 
+                status: ResponseStatus.FAIL,
+                message: 'Token expired' });
             return;
         }
-        res.status(403).json({ message: 'Invalid token' });
+        res.status(401).json({ 
+            status: ResponseStatus.FAIL,
+            message: 'Invalid token: ${err.message}'});
         return;
     }
 };
