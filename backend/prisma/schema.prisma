@@ -14,32 +14,29 @@ model Auth {
   email        String @unique
   name         String
   password     String
-  token        Token? 
-
   User User?
 }
 
 model Token {
   id            String   @id @default(uuid())
-  email          String   @unique
-  auth         Auth     @relation(fields: [email], references: [email])
+  userId        String   @unique
+  user          User     @relation(fields: [userId], references: [id])
   accessToken   String
   refreshToken  String
-
   createdAt     DateTime @default(now())
 }
 
 
 model User {
-  id       String  @id @default(uuid())
+  id       String    @id @default(uuid())
   name     String
   surname  String
   birthday String
-  active   Boolean @default(true)
-
-  email     String   @unique
-  auth    Auth     @relation(fields: [email], references: [email])
+  active   Boolean   @default(true)
+  email    String    @unique
+  auth     Auth      @relation(fields: [email], references: [email])
   Card     Card[]
+  Token    Token?  
 }
 
 model Card {
@@ -53,7 +50,7 @@ model Permission {
   id         String  @id @default(uuid())
   userId     String
   roleId     String
-  role   Role    @relation(fields: [roleId], references: [Id])
+  role   Role    @relation(fields: [roleId], references: [id])
 }
 
 enum RoleType {
@@ -63,23 +60,7 @@ enum RoleType {
 }
 
 model Role {
-  Id          String       @id @default(uuid())
+  id          String       @id @default(uuid())
   name        RoleType
   permissions Permission[]
 }
-
-// Auth Table
-// id, email, hashedPassword, refreshToken
-
-// User Table
-// userId, name, surname, email, birthday, picture, active
-
-// Card Table
-// id, userId, cardInformation, user
-
-// Permission Table
-// id, userID, roleId, user, role
-
-// enum RoleType
-// Role Table
-// roleId, roleType RoleType, permissions Permission[]
