@@ -1,13 +1,15 @@
 import { Request, Response } from 'express';
 import prisma from '../../common/utils/prisma';
+import { ResponseStatus } from '../../common/enums/status.enum';
+import { handleError } from '../../common/error-handling/handleError';
+
 
 export async function getProfile(req:Request, res: Response) {
     try {
-        const decoded = (req as any).user;
-        const email = decoded.email
+        const decoded = req.user;
+        const email = decoded?.email
 
-        console.log("email",email)
-
+        // Find user in db
         const user = await prisma.user.findUnique({
             where: {
                 email
@@ -18,13 +20,12 @@ export async function getProfile(req:Request, res: Response) {
         })
     
         if (!user) {
-            res.status(404).json({
-                message: 'User not found',
-            });
+            handleError(res, 'User not found', 404)
             return;
         }
     
         res.status(200).json({
+            status: ResponseStatus.SUCCESS,
             message: "your profile",
             email: email,
             data: {
@@ -33,9 +34,7 @@ export async function getProfile(req:Request, res: Response) {
         })
         return;
     } catch (error) {
-        res.status(500).json({
-            message: 'Server error'
-        });
+        handleError(res, 'Server error', 500)
         return;
     }
 }
