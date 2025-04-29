@@ -4,26 +4,25 @@ import jwt from 'jsonwebtoken';
 import prisma from "../../common/utils/prisma";
 import bcrypt from 'bcrypt'
 
-export async function resetPasswordController(req:Request, res:Response){
+export async function resetPasswordController(req: Request, res: Response) {
     const token = req.params.token;
-    const {password, confirmPassword} = req.body
+    const { password, confirmPassword } = req.body
 
     // password check
-    if(password !== confirmPassword){
+    if (password !== confirmPassword) {
         handleError(res, "Password not equal to confirmPassword", 400);
         return
     }
-    let payload:any;
+    let payload: any;
 
     try {
         payload = jwt.verify(token, process.env.ACCESS_SECRET!)
     } catch (error) {
-        handleError(res, "Invalid token.",400)
+        handleError(res, "Invalid token.", 400)
         return;
     }
 
-    const email = payload.email;
-    const userId = payload.userId;
+    const { email, userId } = payload
 
     // find token in db
     const findResetToken = await prisma.passwordResetToken.findUnique({
@@ -32,20 +31,10 @@ export async function resetPasswordController(req:Request, res:Response){
         }
     })
 
-    if(findResetToken?.used === true){
-        handleError(res, "Url already used.",400);
+    if (!findResetToken || findResetToken?.used === true || findResetToken.expiresAt < new Date()) {
+        handleError(res, "Url already used.", 400);
         return;
     }
-
-    // update reset Token in db
-    const resetTokenUpdate = await prisma.passwordResetToken.update({
-        where:{
-            userId
-        },
-        data:{
-            used:true 
-        }
-    })
 
     const auth = await prisma.auth.findUnique({
         where: {
@@ -61,11 +50,21 @@ export async function resetPasswordController(req:Request, res:Response){
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
     await prisma.auth.update({
-        where:{
+        where: {
             email
         },
-        data:{
-            password:hashedPassword,
+        data: {
+            password: hashedPassword,
+        }
+    })
+
+    // update reset Token in db
+    await prisma.passwordResetToken.update({
+        where: {
+            userId
+        },
+        data: {
+            used: true
         }
     })
 

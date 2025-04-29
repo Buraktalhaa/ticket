@@ -26,16 +26,15 @@ export async function forgotPasswordController(req: Request, res: Response) {
         })
 
         // if token exists 
-        if(oldToken){
-            if(oldToken.expiresAt < new Date()){
+            if(oldToken && oldToken.expiresAt < new Date()){
                 await prisma.passwordResetToken.update({
                     where:{
                         userId:user.id
                     },
                     data:{
                         token,
-                        userId:user.id,
-                        expiresAt: new Date(Date.now() + 10 * 60 * 1000)
+                        expiresAt: new Date(Date.now() + 10 * 60 * 1000),
+                        used:false
                     }
                 })
             }
@@ -43,7 +42,6 @@ export async function forgotPasswordController(req: Request, res: Response) {
                 handleError(res,'Clicked in 10 minutes', 400)
                 return;
             }
-        }
 
         // Save token in db
         await prisma.passwordResetToken.create({
@@ -59,7 +57,7 @@ export async function forgotPasswordController(req: Request, res: Response) {
 
         res.status(200).json({
             message: "Welcome email sent successfully",
-            resetToken: token
+            resetToken: token // TODO:deleted after this process done
         });
         return;
     }
