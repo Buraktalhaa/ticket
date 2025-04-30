@@ -10,20 +10,22 @@ datasource db {
 // postgresql://USER:PASSWORD@HOST:PORT/DATABASE?schema=SCHEMA
 
 model Auth {
-  id           String @id @default(uuid())
-  email        String @unique
-  name         String
-  password     String
-  User User?
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  user      User?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
 
 model Token {
-  id            String   @id @default(uuid())
-  userId        String   @unique
-  user          User     @relation(fields: [userId], references: [id])
-  accessToken   String
-  refreshToken  String
-  createdAt     DateTime @default(now())
+  id           String   @id @default(uuid())
+  userId       String   @unique
+  user         User     @relation(fields: [userId], references: [id])
+  accessToken  String
+  refreshToken String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
 }
 
 model PasswordResetToken {
@@ -34,44 +36,69 @@ model PasswordResetToken {
   expiresAt DateTime
   used      Boolean  @default(false)
   createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
 }
-
 
 model User {
-  id       String    @id @default(uuid())
-  name     String
-  surname  String
-  birthday String
-  active   Boolean   @default(true)
-  email    String    @unique
-  auth     Auth      @relation(fields: [email], references: [email])
-  Card     Card[]
-  Token    Token?  
-  PasswordResetToken PasswordResetToken?
+  id                 String              @id @default(uuid())
+  firstName          String
+  lastName           String
+  birthday           String
+  active             Boolean             @default(true)
+  photoName          String?             @unique
+  email              String              @unique
+  auth               Auth                @relation(fields: [email], references: [email])
+  card               Card[]
+  token              Token?
+  passwordResetToken PasswordResetToken?
+  userRole           UserRole[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @default(now())
 }
 
-model Card {
-  id              String @id @default(uuid())
-  userId          String
-  cardInformation String @db.Text
-  user            User   @relation(fields: [userId], references: [id])
+model UserRole {
+  id     String @id @default(uuid())
+  userId String @unique
+  user   User   @relation(fields: [userId], references: [id])
+  roleId Int
+  role   Role   @relation(fields: [roleId], references: [id])
 }
 
 model Permission {
-  id         String  @id @default(uuid())
-  userId     String
-  roleId     String
-  role   Role    @relation(fields: [roleId], references: [id])
+  id        String   @id @default(uuid())
+  url       String   @unique
+  permit    Permit[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model Permit {
+  id           String     @id @default(uuid())
+  roleId       Int
+  role         Role       @relation(fields: [roleId], references: [id])
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id])
+  createdAt    DateTime   @default(now())
 }
 
 enum RoleType {
-  USER
-  SELLER
-  ADMIN
+  user
+  seller
+  admin
 }
 
 model Role {
-  id          String       @id @default(uuid())
-  name        RoleType
-  permissions Permission[]
+  id       Int        @id @default(autoincrement())
+  name     RoleType   @unique
+  UserRole UserRole[]
+  Permit   Permit[]
+}
+
+model Card {
+  id              String   @id @default(uuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  cardInformation String   @db.Text
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now())
 }
