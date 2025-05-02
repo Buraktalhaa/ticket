@@ -50,7 +50,7 @@ export async function signInController(req: Request, res: Response) {
         handleError(res,"JWT_SECRET is not defined in environment variables", 400)
     }
 
-    const accessToken = createToken(user.id, email, process.env.ACCESS_SECRET!, 10)
+    const accessToken = createToken(user.id, email, process.env.ACCESS_SECRET!, 10 * 60)
     const refreshToken = createToken(user.id, email, process.env.REFRESH_SECRET!, 24 * 60 * 60)
 
     await prisma.token.update({
