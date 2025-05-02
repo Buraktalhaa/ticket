@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../common/utils/prisma";
 import { handleError } from "../../common/error-handling/handleError";
-
+import { DecodedUser } from '../../common/type/request.type';
 
 export async function permissionControl(req: Request, res: Response, next: NextFunction) {
-    const decoded = req.user;
-    const userId: string = decoded?.userId
+    const {userId , email} = req.user as DecodedUser;
 
     const userRole = await prisma.userRole.findUnique({
         where: {
@@ -40,7 +39,4 @@ export async function permissionControl(req: Request, res: Response, next: NextF
         console.log("error")
         return
     }
-
-
-
 }
