@@ -10,8 +10,16 @@ import { handleError } from '../../common/error-handling/handleError';
 
 export async function signUpController(req: Request, res: Response) {
 
-    const userRoleId = 1
-    const adminRoleId = 2 //TODO: default role = user 
+    const findUserRole = await prisma.role.findUnique({
+        where:{
+            name:"seller"
+        }
+    })
+
+    if(!findUserRole){
+        handleError(res, 'Profile type user not created', 400)
+        return
+    }
 
     if (checkSignUp(req) === false) {
         handleError(res, 'Email, name and password are required', 400)
@@ -53,8 +61,8 @@ export async function signUpController(req: Request, res: Response) {
     })
     const userId = user.id
 
-    const accessToken = createToken(userId, email, process.env.ACCESS_SECRET!, 10)
-    const refreshToken = createToken(userId, email, process.env.REFRESH_SECRET!, 24 * 60 * 60)
+    const accessToken = createToken(userId, email, process.env.ACCESS_SECRET!, 10 * 60 * 24)
+    const refreshToken = createToken(userId, email, process.env.REFRESH_SECRET!, 48 * 60 * 60)
 
     // Create Token
     await prisma.token.create({
@@ -68,7 +76,7 @@ export async function signUpController(req: Request, res: Response) {
     const userRole = await prisma.userRole.create({
         data: {
             userId: user.id,
-            roleId: userRoleId
+            roleId: findUserRole?.id
         }
     })
 
