@@ -1,25 +1,38 @@
 import { Request, Response } from "express";
 import prisma from '../../common/utils/prisma';
 import { ResponseStatus } from "../../common/enums/status.enum";
-import { handleError } from "../../common/error-handling/handleError";
+import fs from "fs"
 
 export async function updateProfile(req: Request, res: Response) {
-    try {
-        // Token icindeki email i al
-        const decoded = req.user
-        
-        const email = decoded?.email
-        const { name, surname, birthday, active } = req.body
-        
+        const userId = req.user?.userId        
+
+        const findOldPhoto = await prisma.user.findUnique({
+            where: {
+                id:userId
+            }
+        })  
+
+        const oldPhoto = findOldPhoto?.photoName
+
+        const filePath = `/Users/burak/Desktop/projeler/ticket/backend/src/uploadPhotos/${oldPhoto}` //FIXME:
+
+        if (fs.existsSync(filePath)) {
+            fs.unlink(filePath, (err: NodeJS.ErrnoException | null) => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    console.log('Old photo deleted succesfully');
+                }
+            });
+        }
+
         const updatedUser = await prisma.user.update({
             where: {
-                email
+                id:userId
             },
             data: {
-                name,
-                surname,
-                birthday,
-                active,
+                ...req.body,
+                photoName: req.file?.filename
             }
         })
 
@@ -29,8 +42,4 @@ export async function updateProfile(req: Request, res: Response) {
             data: updatedUser,
         });
         return;
-    } catch (error) {
-        handleError(res,'Error updating profile', 500)
-        return
-    }
 }
