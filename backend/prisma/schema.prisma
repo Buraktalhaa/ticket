@@ -52,6 +52,7 @@ model User {
   token              Token?
   passwordResetToken PasswordResetToken?
   userRole           UserRole[]
+  ticket             Ticket[]
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @default(now())
 }
@@ -60,7 +61,7 @@ model UserRole {
   id     String @id @default(uuid())
   userId String @unique
   user   User   @relation(fields: [userId], references: [id])
-  roleId Int
+  roleId String
   role   Role   @relation(fields: [roleId], references: [id])
 }
 
@@ -74,7 +75,7 @@ model Permission {
 
 model Permit {
   id           String     @id @default(uuid())
-  roleId       Int
+  roleId       String
   role         Role       @relation(fields: [roleId], references: [id])
   permissionId String
   permission   Permission @relation(fields: [permissionId], references: [id])
@@ -88,7 +89,7 @@ enum RoleType {
 }
 
 model Role {
-  id       Int        @id @default(autoincrement())
+  id       String     @id @default(uuid())
   name     RoleType   @unique
   UserRole UserRole[]
   Permit   Permit[]
@@ -101,4 +102,35 @@ model Card {
   cardInformation String   @db.Text
   createdAt       DateTime @default(now())
   updatedAt       DateTime @default(now())
+}
+
+model Ticket {
+  id          String       @id @default(uuid())
+  userId      String
+  user        User         @relation(fields: [userId], references: [id])
+  categoryId  String
+  category    Category     @relation(fields: [categoryId], references: [id])
+  description String
+  hour        Int
+  day         DateTime
+  stock       Int
+  sold        Boolean
+  images      String[]
+  discount    Int          @default(0)
+  status      TicketStatus @default(processing)
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @default(now())
+}
+
+model Category {
+  id     String   @id @default(uuid())
+  name   String   @unique
+  ticket Ticket[]
+}
+
+enum TicketStatus {
+  processing
+  approve
+  deleted
+  cancelling
 }
