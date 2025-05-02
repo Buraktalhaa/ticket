@@ -14,6 +14,11 @@ import profileRouter from './profile/routers/profile.routes';
 // import globalErrorHandler from './common/error-handling/errorController'
 
 import authRouter from './auth/routers/auth.routes';
+import ticketRouter from './ticket/routers/ticket.routes';
+import categoryRouter from './category/routers/category.routes';
+import orderRouter from './order/routers/order.routes';
+
+
 import * as dotenv from 'dotenv';
 
 
@@ -113,6 +118,12 @@ app.use((req, res, next) => {
 app.use('/auth', authRouter);
 
 app.use('/profile', profileRouter);
+
+app.use('/ticket', ticketRouter)
+
+app.use('/category', categoryRouter)
+
+app.use('/order', orderRouter)
 
 
 
