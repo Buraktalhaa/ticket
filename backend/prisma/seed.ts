@@ -9,7 +9,7 @@ async function main() {
 
   // Default seller
   const password = '1234'
-  const email = 'talha45879@gmail.com'
+  const email = 'seller@gmail.com'
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const authSeller = await prisma.auth.create({
@@ -137,6 +137,14 @@ async function main() {
     }
   });
 
+  const userPermission3 = await prisma.permission.create({
+    data: {
+      url: '/get-points'
+    }
+  });
+
+  
+
 
   // Seller Permission 
   const sellerPermission1 = await prisma.permission.create({
@@ -192,6 +200,13 @@ async function main() {
     data: {
       roleId: userRole.id,
       permissionId: userPermission2.id
+    }
+  })
+
+  await prisma.permit.create({
+    data: {
+      roleId: userRole.id,
+      permissionId: userPermission3.id
     }
   })
 
@@ -256,6 +271,7 @@ async function main() {
     data: {
       userId: seller.id,
       categoryId: category1.id,
+      price: 1000,
       description: 'Seed created this ticket',
       hour:10,      
       day: new Date('2025-05-10'),       

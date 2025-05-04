@@ -44,6 +44,7 @@ model User {
   firstName          String
   lastName           String
   birthday           String
+  money              Int                 @default(0)
   active             Boolean             @default(true)
   photoName          String?             @unique
   email              String              @unique
@@ -53,6 +54,8 @@ model User {
   passwordResetToken PasswordResetToken?
   userRole           UserRole[]
   ticket             Ticket[]
+  order              Order[]
+  point              Point[]
   createdAt          DateTime            @default(now())
   updatedAt          DateTime            @default(now())
 }
@@ -112,6 +115,7 @@ model Ticket {
   category    Category     @relation(fields: [categoryId], references: [id])
   description String
   hour        Int
+  price       Int
   day         DateTime
   stock       Int
   sold        Boolean
@@ -120,12 +124,7 @@ model Ticket {
   status      TicketStatus @default(processing)
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @default(now())
-}
-
-model Category {
-  id     String   @id @default(uuid())
-  name   String   @unique
-  ticket Ticket[]
+  order       Order[]
 }
 
 enum TicketStatus {
@@ -133,4 +132,46 @@ enum TicketStatus {
   approve
   deleted
   cancelling
+}
+
+model Category {
+  id     String   @id @default(uuid())
+  name   String   @unique
+  ticket Ticket[]
+  point  Point[]
+}
+
+model Order {
+  id        String      @id @default(uuid())
+  userId    String
+  user      User        @relation(fields: [userId], references: [id])
+  ticketId  String
+  ticket    Ticket      @relation(fields: [ticketId], references: [id])
+  quantity  Int
+  orderDay  DateTime    @default(now())
+  orderHour Int
+  status    OrderStatus @default(pending)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @default(now())
+  point     Point[]
+}
+
+enum OrderStatus {
+  pending // sipariş alındı, ödeme bekleniyor
+  completed // sipariş başarıyla alındı
+  cancelled // kullanıcı iptal etti
+  failed // ödeme başarısız vs.
+}
+
+model Point {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  orderId    String
+  order      Order    @relation(fields: [orderId], references: [id])
+  point      Int
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
 }
