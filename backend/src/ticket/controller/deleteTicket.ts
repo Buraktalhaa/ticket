@@ -7,7 +7,7 @@ import { ResponseStatus } from "../../common/enums/status.enum";
 
 export async function deleteTicket(req:Request, res:Response){
     const {userId, email} = req.user as DecodedUser;
-    const {categoryName, hour, day} = req.body.description
+    const {id, categoryName, hour, day, price} = req.body.description
 
     const category = await prisma.category.findUnique({
         where:{
@@ -15,12 +15,9 @@ export async function deleteTicket(req:Request, res:Response){
         }
     })
 
-    const ticket = await prisma.ticket.findFirst({
+    const ticket = await prisma.ticket.findUnique({
         where:{
-            userId,
-            categoryId:category?.id,
-            hour,
-            day
+            id
         }
     })
 
