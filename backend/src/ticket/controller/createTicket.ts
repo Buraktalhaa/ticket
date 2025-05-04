@@ -6,8 +6,8 @@ import { DecodedUser } from '../../common/type/request.type';
 
 
 export async function createTicket(req:Request, res:Response){
-    const {userId, email} = req.user as DecodedUser;
-    const {categoryName, description, hour, day, stock} = req.body
+    const {userId} = req.user as DecodedUser;
+    const {categoryName, description, hour, day, stock, price} = req.body
 
     const category = await prisma.category.findUnique({
         where:{
@@ -26,6 +26,7 @@ export async function createTicket(req:Request, res:Response){
            categoryId:category.id,
            hour,
            day:new Date(day), 
+           price
         }
     })
 
@@ -56,6 +57,7 @@ export async function createTicket(req:Request, res:Response){
             userId,
             categoryId:category.id,
             description,
+            price,
             hour,
             day:new Date(day), 
             stock,
