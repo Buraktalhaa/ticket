@@ -9,14 +9,20 @@ import { handleError } from '../../common/error-handling/handleError';
 
 
 export async function signUpController(req: Request, res: Response) {
+    const {role} = req.body
+
+    if(role === 'seller'){
+        handleError(res, "You can't create seller", 400)
+        return;
+    }
 
     const findUserRole = await prisma.role.findUnique({
-        where:{
-            name:"seller"
+        where: {
+            name: role
         }
     })
 
-    if(!findUserRole){
+    if (!findUserRole) {
         handleError(res, 'Profile type user not created', 400)
         return
     }
