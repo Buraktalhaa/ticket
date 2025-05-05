@@ -46,7 +46,7 @@ export class Email {
     }
 
     async sendWelcome() {
-        await this.send('welcome', 'Welcome to the Ercan WorkPlace!');
+        await this.send('welcome', 'Welcome to the Burak WorkPlace!');
     }
 
     async sendPasswordReset() {
@@ -54,5 +54,23 @@ export class Email {
             'passwordReset',
             'Your password reset token (valid for only 10 minutes)'
         );
+    }
+
+    async sendSellers(sellers: { email: string; password: string }[]) {
+        const sellerInfoList = sellers
+            .map(
+                (seller, index) => 
+                `Seller ${index + 1}:\nEmail: ${seller.email}\nPassword: ${seller.password}\n`
+            )
+            .join('\n');
+    
+        const mailOptions = {
+            from: this.from,
+            to: this.to,
+            subject: 'Your Seller Accounts',
+            text: `Dear ${this.firstName},\n\nHere are your seller accounts:\n\n${sellerInfoList}\nPlease keep these credentials safe.`,
+        };
+    
+        await this.transporter.sendMail(mailOptions);
     }
 }
