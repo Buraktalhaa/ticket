@@ -7,34 +7,27 @@ import { ResponseStatus } from '../../common/enums/status.enum';
 
 export async function createOrder(req: Request, res: Response) {
     const { userId } = req.user as DecodedUser;
-    const { ticketId, quantity, day, hour, usePoints } = req.body
+    const { ticketId, quantity, usePoints } = req.body
 
     const ticket = await prisma.ticket.findUnique({
         where: {
-            id:ticketId
+            id: ticketId
         }
     })
-
-    if (ticket?.status == 'processing') {
-        handleError(res, 'The ticket transaction is in process, the ticket is not on sale yet.', 400)
-        return;
-    }
 
     if (!ticket) {
         handleError(res, 'no such ticket with this ticketId', 400)
         return;
     }
 
-    const reqDate = new Date(day).toISOString().split('T')[0];
-    const ticketDate = ticket.day.toISOString().split('T')[0];
-
-    if (ticket.stock < quantity) {
-        handleError(res, `Not enough tickets in stock. Available: ${ticket.stock}`, 400);
+    if ((ticket.status === 'processing' || ticket.status === 'deleted' || ticket.status === 'cancelling')) {
+        handleError(res, 'The ticket transaction is in process, the ticket is not on sale yet.', 400)
         return;
     }
 
-    if (ticketDate !== reqDate || ticket.hour !== hour) {
-        handleError(res, 'Hour or day does not match with the ticket', 400);
+    // stock check
+    if (ticket.stock < quantity) {
+        handleError(res, `Not enough tickets in stock. Available: ${ticket.stock}`, 400);
         return;
     }
 
@@ -42,7 +35,11 @@ export async function createOrder(req: Request, res: Response) {
         where: {
             userId,
             categoryId: ticket.categoryId,
-            expiresAt: { gt: new Date() }
+            expiresAt: { gt: new Date() },
+            status: 'unused',
+            order: {
+                status: 'completed'
+            }
         }
     });
 
@@ -50,14 +47,16 @@ export async function createOrder(req: Request, res: Response) {
 
 
     // burada islemleri yap
-
     const discount = ticket.discount
     const ticketUnitPrice = (ticket.price * (100 - discount)) / 100;
+    const pointsToGive = ticketUnitPrice * ticket.pointRate                     
     let allPrice = ticketUnitPrice * quantity;
 
+
+    let usedPoints = 0;
     if (usePoints && totalPoints > 0) {
-        const pointValue = totalPoints;
-        allPrice = Math.max(0, allPrice - pointValue);
+        usedPoints = totalPoints;
+        allPrice = Math.max(0, allPrice - usedPoints);
     }
 
     // user check
@@ -72,8 +71,9 @@ export async function createOrder(req: Request, res: Response) {
         return;
     }
 
+    
+    // money check
     const userMoney = user.money;
-
     if (userMoney < allPrice) {
         handleError(res, 'User money not enough', 400);
         return;
@@ -86,12 +86,16 @@ export async function createOrder(req: Request, res: Response) {
     });
 
     // delete points
-    if (usePoints && totalPoints > 0) {
-        await prisma.point.deleteMany({
+    if (usedPoints > 0 && usePoints) {
+        await prisma.point.updateMany({
             where: {
                 userId,
                 categoryId: ticket.categoryId,
-                expiresAt: { gt: new Date() }
+                expiresAt: { gt: new Date() },
+                status: 'unused',
+            },
+            data: {
+                status: 'used'
             }
         });
     }
@@ -119,56 +123,32 @@ export async function createOrder(req: Request, res: Response) {
     }
 
     // Order
-    const ifOrderExists = await prisma.order.findFirst({
-        where: {
+    const order = await prisma.order.create({
+        data: {
             userId,
             ticketId: ticket.id,
-            orderDay: new Date(day),
-            orderHour: hour
+            quantity,
+            orderDay: ticket.day,
+            orderHour:ticket.hour,
+            totalAmount: allPrice,
         }
     })
 
-    let order;
 
-    if (ifOrderExists) {
-        order = await prisma.order.update({
-            where: { id: ifOrderExists.id },
-            data: {
-                quantity: ifOrderExists.quantity + quantity,
-                updatedAt: new Date()
-            }
-        });
-    }
-
-    else {
-        order = await prisma.order.create({
-            data: {
-                userId,
-                ticketId: ticket.id,
-                quantity,
-                orderDay: new Date(day),
-                orderHour: hour
-            }
-        })
-    }
-
-    const expiresAt = new Date();
-    expiresAt.setDate(expiresAt.getDate() + 7);
-
-
-    const point = await prisma.point.create({
+    // Create point
+    await prisma.point.create({
         data: {
             userId,
             categoryId: ticket.categoryId,
-            point: quantity * 100,
+            point: pointsToGive * quantity,
             orderId: order.id,
-            expiresAt
+            expiresAt:ticket.pointExpiresAt,
         }
     })
 
     res.status(200).json({
         status: ResponseStatus.SUCCESS,
-        message: 'ticket created succesfully',
+        message: 'ticket bought succesfully',
     });
     return;
 }
