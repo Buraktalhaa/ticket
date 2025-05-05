@@ -29,4 +29,5 @@ export async function getUserPoints(req: Request, res: Response) {
         status: ResponseStatus.SUCCESS,
         data: points,
     });
+    return
 }
