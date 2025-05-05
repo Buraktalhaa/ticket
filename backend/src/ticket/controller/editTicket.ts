@@ -9,10 +9,9 @@ export async function editTicket(req: Request, res: Response) {
     const { userId, email } = req.user as DecodedUser;
     const { id, ...restData } = req.body;
 
-    const ticket = await prisma.ticket.findFirst({
+    const ticket = await prisma.ticket.findUnique({
         where: {
-            id,
-            userId,
+            id
         }
     });
 
@@ -31,14 +30,6 @@ export async function editTicket(req: Request, res: Response) {
         where: { id },
         data: filteredData
     });
-
-    await prisma.ticket.update({
-        where: { id },
-        data: {
-            ...restData
-        }
-    });
-
 
     res.status(200).json({
         status: ResponseStatus.SUCCESS,
