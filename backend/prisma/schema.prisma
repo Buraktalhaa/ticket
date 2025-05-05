@@ -57,7 +57,7 @@ model User {
   birthday           String
   money              Int                 @default(1000)
   active             Boolean             @default(true)
-  photoName          String?             @unique
+  photoName          String?
   email              String              @unique
   companyId          String?
   company            Company?            @relation(fields: [companyId], references: [id])
@@ -122,6 +122,7 @@ model Card {
 
 model Ticket {
   id             String       @id @default(uuid())
+  pnr            String       @unique
   userId         String
   user           User         @relation(fields: [userId], references: [id])
   categoryId     String

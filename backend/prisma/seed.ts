@@ -2,6 +2,7 @@ import { RoleType } from '@prisma/client';
 import prisma from '../src/common/utils/prisma';
 import bcrypt from 'bcrypt'
 import { createToken } from '../src/auth/utils/createToken';
+import { generatePNR } from '../src/common/utils/generatePnr';
 
 
 async function main() {
@@ -121,14 +122,6 @@ async function main() {
       roleId: adminRole.id
     }
   })
-
-
-
-
-
-
-
-
 
 
 
@@ -343,6 +336,7 @@ async function main() {
       userId: seller.id,
       categoryId: category1.id,
       price: 100,
+      pnr: generatePNR(),
       description: 'Seed created this ticket',
       hour:10,  
       pointExpiresAt:expiresAt,
