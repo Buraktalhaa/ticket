@@ -1,19 +1,12 @@
 import { Request, Response } from "express";
-import { DecodedUser } from "../../common/type/request.type";
 import prisma from "../../common/utils/prisma";
 import { handleError } from "../../common/error-handling/handleError";
 import { ResponseStatus } from "../../common/enums/status.enum";
 
 
 export async function deleteTicket(req:Request, res:Response){
-    const {userId, email} = req.user as DecodedUser;
-    const {id, categoryName, hour, day, price} = req.body.description
+    const {id} = req.body
 
-    const category = await prisma.category.findUnique({
-        where:{
-            name:categoryName
-        }
-    })
 
     const ticket = await prisma.ticket.findUnique({
         where:{
@@ -26,9 +19,12 @@ export async function deleteTicket(req:Request, res:Response){
         return;
     }
 
-    await prisma.ticket.delete({
+    await prisma.ticket.update({
         where: {
-            id: ticket.id
+            id:ticket.id
+        },
+        data:{
+            status:"deleted"
         }
     });
 
