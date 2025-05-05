@@ -6,10 +6,18 @@ import { createToken } from '../src/auth/utils/createToken';
 
 async function main() {
 
+  // Default company
+  const company = await prisma.company.create({
+    data:{
+      name:'BTM',
+      phone:'05071808810',
+      email:'btm@gmail.com'
+    }
+  })
 
   // Default seller
   const password = '1234'
-  const email = 'seller@gmail.com'
+  const email = 'btmseller@gmail.com'
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const authSeller = await prisma.auth.create({
@@ -19,6 +27,7 @@ async function main() {
     }
   })
 
+  // Create seller for BTM company
   const seller = await prisma.user.create({
     data: {
       firstName: "Burak",
@@ -26,7 +35,8 @@ async function main() {
       birthday: "21.02.2001",
       active: true,
       photoName: "",
-      email: authSeller.email
+      email: authSeller.email,
+      companyId:company.id
     }
   })
 
@@ -40,8 +50,6 @@ async function main() {
       userId: seller.id
     }
   })
-
-
 
 
   // Default admin
@@ -143,6 +151,28 @@ async function main() {
     }
   });
 
+  const userPermission4 = await prisma.permission.create({
+    data: {
+      url: '/create-order'
+    }
+  });
+
+  const userPermission5 = await prisma.permission.create({
+    data: {
+      url: '/delete-order'
+    }
+  });
+
+  const userPermission6 = await prisma.permission.create({
+    data: {
+      url: '/get-orders'
+    }
+  });
+
+
+
+
+
   
 
 
@@ -187,6 +217,12 @@ async function main() {
     }
   });
 
+  const adminPermission4 = await prisma.permission.create({
+    data: {
+      url: '/update-status'
+    }
+  });
+
 
   // User
   await prisma.permit.create({
@@ -209,6 +245,30 @@ async function main() {
       permissionId: userPermission3.id
     }
   })
+
+  await prisma.permit.create({
+    data: {
+      roleId: userRole.id,
+      permissionId: userPermission4.id
+    }
+  })
+
+  await prisma.permit.create({
+    data: {
+      roleId: userRole.id,
+      permissionId: userPermission5.id
+    }
+  })
+
+  await prisma.permit.create({
+    data: {
+      roleId: userRole.id,
+      permissionId: userPermission6.id
+    }
+  })
+
+
+
 
 
   // Seller
@@ -256,6 +316,15 @@ async function main() {
     }
   })
 
+  await prisma.permit.create({
+    data: {
+      roleId: adminRole.id,
+      permissionId: adminPermission4.id
+    }
+  })
+
+
+
 
 
   // Category
@@ -265,15 +334,20 @@ async function main() {
     },
   });
 
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + 7);
 
   // Ticket
   const ticket = await prisma.ticket.create({
     data: {
       userId: seller.id,
       categoryId: category1.id,
-      price: 1000,
+      price: 100,
       description: 'Seed created this ticket',
-      hour:10,      
+      hour:10,  
+      pointExpiresAt:expiresAt,
+      pointRate:0.1, 
+      companyId:company.id,
       day: new Date('2025-05-10'),       
       stock: 10,
       sold: false,
