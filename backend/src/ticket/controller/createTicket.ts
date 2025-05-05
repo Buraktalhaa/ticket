@@ -3,11 +3,12 @@ import prisma from "../../common/utils/prisma";
 import { handleError } from "../../common/error-handling/handleError";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { DecodedUser } from '../../common/type/request.type';
+import { generatePNR } from "../../common/utils/generatePnr";
 
 
 export async function createTicket(req:Request, res:Response){
     const {userId} = req.user as DecodedUser;
-    const {categoryName, description, hour, day, stock, price} = req.body
+    const {categoryName, description, hour, day, stock, price, pointRate, pointExpiresAt, discount} = req.body
 
     const category = await prisma.category.findUnique({
         where:{
@@ -20,48 +21,38 @@ export async function createTicket(req:Request, res:Response){
         return;
     }
 
-    const existingTicket = await prisma.ticket.findFirst({
+    const seller = await prisma.user.findUnique({
         where:{
-           userId,
-           categoryId:category.id,
-           hour,
-           day:new Date(day), 
-           price
+            id:userId
         }
     })
 
-    if(existingTicket){
-        const updateTicket = await prisma.ticket.update({
-            where:{
-                id:existingTicket.id
-            },
-            data:{
-                description,
-                hour,
-                day:new Date(day), 
-                stock: existingTicket.stock + stock,
-                images: [],
-            }
-        })
-        res.status(200).json({
-            status: ResponseStatus.SUCCESS,
-            message: 'ticket updated',
-        });
-        return;
+    if(!seller){
+        handleError(res,'No seller with this userId', 400)
+        return
+    }
+
+    // user tablosu ayrilirsa gerek olmayacak
+    if(seller.companyId === null){
+        handleError(res,'Company id null', 400)
+        return
     }
 
 
-
-    const ticket = await prisma.ticket.create({
+    await prisma.ticket.create({
         data:{
             userId,
+            pnr:generatePNR(),
             categoryId:category.id,
             description,
+            companyId:seller?.companyId,
+            pointRate,
             price,
+            pointExpiresAt,
             hour,
+            discount,
             day:new Date(day), 
             stock,
-            sold: false,
             images: [],
         }
     })
