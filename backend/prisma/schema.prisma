@@ -39,15 +39,28 @@ model PasswordResetToken {
   updatedAt DateTime @default(now())
 }
 
+model Company {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  phone     String?
+  email     String?
+  ticket    Ticket[]
+  users     User[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
 model User {
   id                 String              @id @default(uuid())
   firstName          String
   lastName           String
   birthday           String
-  money              Int                 @default(0)
+  money              Int                 @default(1000)
   active             Boolean             @default(true)
   photoName          String?             @unique
   email              String              @unique
+  companyId          String?
+  company            Company?            @relation(fields: [companyId], references: [id])
   auth               Auth                @relation(fields: [email], references: [email])
   card               Card[]
   token              Token?
@@ -108,23 +121,27 @@ model Card {
 }
 
 model Ticket {
-  id          String       @id @default(uuid())
-  userId      String
-  user        User         @relation(fields: [userId], references: [id])
-  categoryId  String
-  category    Category     @relation(fields: [categoryId], references: [id])
-  description String
-  hour        Int
-  price       Int
-  day         DateTime
-  stock       Int
-  sold        Boolean
-  images      String[]
-  discount    Int          @default(0)
-  status      TicketStatus @default(processing)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @default(now())
-  order       Order[]
+  id             String       @id @default(uuid())
+  userId         String
+  user           User         @relation(fields: [userId], references: [id])
+  categoryId     String
+  category       Category     @relation(fields: [categoryId], references: [id])
+  companyId      String
+  company        Company      @relation(fields: [companyId], references: [id])
+  description    String
+  pointRate      Float
+  hour           Int
+  price          Int
+  pointExpiresAt DateTime
+  day            DateTime
+  stock          Int
+  sold           Boolean      @default(false)
+  images         String[]
+  discount       Int          @default(0)
+  status         TicketStatus @default(processing)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @default(now())
+  order          Order[]
 }
 
 enum TicketStatus {
@@ -132,6 +149,7 @@ enum TicketStatus {
   approve
   deleted
   cancelling
+  awaiting
 }
 
 model Category {
@@ -142,36 +160,43 @@ model Category {
 }
 
 model Order {
-  id        String      @id @default(uuid())
-  userId    String
-  user      User        @relation(fields: [userId], references: [id])
-  ticketId  String
-  ticket    Ticket      @relation(fields: [ticketId], references: [id])
-  quantity  Int
-  orderDay  DateTime    @default(now())
-  orderHour Int
-  status    OrderStatus @default(pending)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @default(now())
-  point     Point[]
+  id          String      @id @default(uuid())
+  userId      String
+  user        User        @relation(fields: [userId], references: [id])
+  ticketId    String
+  ticket      Ticket      @relation(fields: [ticketId], references: [id])
+  quantity    Int
+  orderDay    DateTime    @default(now())
+  orderHour   Int
+  status      OrderStatus @default(pending)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now())
+  totalAmount Float
+  point       Point[]
 }
 
 enum OrderStatus {
-  pending // sipariş alındı, ödeme bekleniyor
-  completed // sipariş başarıyla alındı
-  cancelled // kullanıcı iptal etti
-  failed // ödeme başarısız vs.
+  pending
+  completed
+  cancelled
+  failed
 }
 
 model Point {
-  id         String   @id @default(uuid())
+  id         String      @id @default(uuid())
   userId     String
-  user       User     @relation(fields: [userId], references: [id])
+  user       User        @relation(fields: [userId], references: [id])
   categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
+  category   Category    @relation(fields: [categoryId], references: [id])
   orderId    String
-  order      Order    @relation(fields: [orderId], references: [id])
+  order      Order       @relation(fields: [orderId], references: [id])
   point      Int
+  status     PointStatus @default(unused)
   expiresAt  DateTime
-  createdAt  DateTime @default(now())
+  createdAt  DateTime    @default(now())
+}
+
+enum PointStatus {
+  used
+  unused
 }
