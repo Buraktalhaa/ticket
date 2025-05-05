@@ -26,7 +26,7 @@ export async function permissionControl(req: Request, res: Response, next: NextF
     console.log("path url =>",url)
 
     try {
-        const hasPermission = userRole?.role.Permit.some((element) => element.permission.url == url);
+        const hasPermission = userRole?.role.Permit.some((element) => element.permission.url === url);
 
         if (hasPermission) {
             next()
