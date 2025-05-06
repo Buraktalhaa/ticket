@@ -3,9 +3,15 @@ import prisma from "../../common/utils/prisma";
 import { handleError } from "../../common/error-handling/handleError";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { DecodedUser } from '../../common/type/request.type';
+import Stripe from "stripe";
 
-export async function cancelOrder(req:Request, res:Response){
-    const {userId} = req.user as DecodedUser;
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+    apiVersion: '2025-04-30.basil',
+});
+
+export async function cancelOrder(req: Request, res: Response) {
+    const { userId } = req.user as DecodedUser;
     const { orderId } = req.body;
 
 
@@ -28,64 +34,62 @@ export async function cancelOrder(req:Request, res:Response){
         return;
     }
 
+    if (order.status !== 'completed') {
+        handleError(res, 'Only completed orders can be cancelled', 400);
+        return;
+    }
+
+
     const ticket = order.ticket;
 
-    // Pointsleri geri verme
-    const pointsUsed = await prisma.point.findFirst({
-        where: {
-            orderId: order.id,
-        },
-    });
-
-    if (pointsUsed) {
-        await prisma.point.updateMany({
-            where: {
-                orderId: order.id,
-            },
-            data: {
-                point: pointsUsed.point,
-            },
-        });
+    if (order.paymentId) {
+        try {
+            await stripe.refunds.create({
+                payment_intent: order.paymentId,
+            });
+        } catch (err) {
+            console.error('Stripe refund error:', err);
+            handleError(res, 'Refund failed', 500);
+            return;
+        }
     }
 
-    const user = await prisma.user.findUnique({
-        where: {
-            id: userId,
-        },
-    });
+    const pointsGained = (ticket.price * ticket.pointRate) * order.quantity;
+    const pointsToRefund = order.pointsUsed;
 
-    
-    if (user) {
-        const totalAmountToRefund = order.ticket.price * order.quantity;
-        await prisma.user.update({
+    if (order.pointsUsed > 0 || pointsGained > 0) {
+        await prisma.point.upsert({
             where: {
-                id: userId,
-            },
-            data: {
-                money: {
-                    increment: totalAmountToRefund,
+                userId_categoryId: {
+                    userId,
+                    categoryId: ticket.categoryId,
                 },
             },
+            update: {
+                point: {
+                    increment: pointsToRefund - pointsGained
+                },
+            },
+            create: {
+                userId,
+                categoryId: ticket.categoryId,
+                point: pointsToRefund - pointsGained
+            },
         });
     }
 
-    // Order status update
+
     await prisma.order.update({
-        where: {
-            id: orderId,
-        },
-        data: {
-            status: 'cancelled', 
-        },
+        where: { id: orderId },
+        data: { status: 'cancelled' },
     });
 
-    // Ticket stock increment
+
     await prisma.ticket.update({
-        where: {
-            id: ticket.id,
-        },
+        where: { id: ticket.id },
         data: {
-            stock: ticket.stock + order.quantity, 
+            stock: ticket.stock + order.quantity,
+            sold: false,
         },
     });
 
