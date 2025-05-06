@@ -7,11 +7,11 @@ import { DecodedUser } from '../../common/type/request.type';
 
 export const updateTicketStatus = async (req: Request, res: Response) => {
     const { userId } = req.user as DecodedUser;
-    const { ticketId, status } = req.body
+    const { id, status } = req.body
 
     const ticket = await prisma.ticket.findUnique({
         where: {
-            id: ticketId
+            id
         }
     });
 
@@ -21,7 +21,7 @@ export const updateTicketStatus = async (req: Request, res: Response) => {
     }
 
     const updatedTicket = await prisma.ticket.update({
-        where: { id: ticket.id },
+        where: { id },
         data: { status }
     });
 
