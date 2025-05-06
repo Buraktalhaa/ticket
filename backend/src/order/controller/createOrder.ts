@@ -10,6 +10,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
     apiVersion: '2025-04-30.basil',
 });
 
+// ngrok u ac
+
 export async function createOrder(req: Request, res: Response) {
     const { userId } = req.user as DecodedUser;
     const { ticketId, quantity, usePoints } = req.body;
@@ -51,29 +53,31 @@ export async function createOrder(req: Request, res: Response) {
     // Calculate price
     const discount = ticket.discount;
     const ticketUnitPrice = (ticket.price * (100 - discount)) / 100;
-    
-    // Get active points
-    const activePoints = await prisma.point.findMany({
-        where: {
-            userId,
-            categoryId: ticket.categoryId,
-            expiresAt: { gt: new Date() },
-            status: 'unused',
-            order: {
-                status: 'completed'
-            }
-        }
-    });
+    const totalPrice = ticketUnitPrice * quantity;
 
-    const totalPoints = activePoints.reduce((sum, p) => sum + p.point, 0);
-    let allPrice = ticketUnitPrice * quantity;
     let usedPoints = 0;
-    
-    if (usePoints && totalPoints > 0) {
-        usedPoints = totalPoints;
-        allPrice = Math.max(0, allPrice - usedPoints);
+    let discountAmount = 0;
+    let totalPoints = 0;
+    let booleanPoints = false
+
+    // Get active points
+    if (usePoints) {
+        const activePoints = await prisma.point.findMany({
+            where: {
+                userId,
+                categoryId: ticket.categoryId,
+                expiresAt: { gt: new Date() },
+            }
+        });
+
+        const totalPoints = activePoints.reduce((sum, p) => sum + p.point, 0);
+        usedPoints = Math.min(totalPoints, totalPrice);
+        discountAmount = usedPoints;
+        booleanPoints = true
     }
-    
+
+    const finalPrice = Math.max(0, totalPrice - discountAmount);
+
     // Create a pending order first
     const pendingOrder = await prisma.order.create({
         data: {
@@ -82,34 +86,45 @@ export async function createOrder(req: Request, res: Response) {
             quantity,
             orderDay: ticket.day,
             orderHour: ticket.hour,
-            totalAmount: allPrice,
+            totalAmount: finalPrice,
             status: 'pending',
             pointsUsed: usedPoints,
-            usePoints: usePoints && totalPoints > 0,
+            usePoints: booleanPoints,
         }
     });
 
     // Create Stripe payment link with order details
-    const paymentLink = await stripe.paymentLinks.create({
+    const session = await stripe.checkout.sessions.create({
+        payment_method_types: ['card'],
+        mode: 'payment',
         line_items: [
             {
-                price: 'price_1RLdB2Q7IH6uHol4Xjqq2hO8',
+                price_data: {
+                    currency: 'try',
+                    product_data: {
+                        name: ticket.description,
+                        description: ticket.description || undefined,
+                    },
+                    unit_amount: Math.round(finalPrice / quantity * 100), // kuruş cinsinden
+                },
                 quantity: quantity,
             },
         ],
+        success_url: `${process.env.CLIENT_URL}/payment-success?orderId=${pendingOrder.id}`,
+        cancel_url: `${process.env.CLIENT_URL}/payment-cancel`,
         metadata: {
             userId,
             ticketId,
             orderId: pendingOrder.id,
             quantity: String(quantity),
             usedPoints: String(usedPoints),
-            usePoints: String(usePoints && totalPoints > 0),
+            usePoints: String(usePoints && usedPoints > 0),
         },
     });
 
     res.status(200).json({
         status: ResponseStatus.SUCCESS,
-        paymentLinkUrl: paymentLink.url,
+        checkoutUrl: session.url,
         orderId: pendingOrder.id
     });
     return;
