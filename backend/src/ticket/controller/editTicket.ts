@@ -9,9 +9,14 @@ export async function editTicket(req: Request, res: Response) {
     const { userId, email } = req.user as DecodedUser;
     const { id, ...restData } = req.body;
 
+    if (!id) {
+        handleError(res, 'Ticket ID is missing', 400);
+        return
+      }
+
     const ticket = await prisma.ticket.findUnique({
         where: {
-            id
+            id:id
         }
     });
 
@@ -26,14 +31,17 @@ export async function editTicket(req: Request, res: Response) {
         Object.entries(restData).filter(([_, value]) => value !== undefined)
     );
 
-    await prisma.ticket.update({
-        where: { id },
+    const editedTicket = await prisma.ticket.update({
+        where: { 
+            id:id 
+        },
         data: filteredData
     });
 
     res.status(200).json({
         status: ResponseStatus.SUCCESS,
         message: 'ticket edited succesfully',
+        ticket: editedTicket
     });
     return;
 }
