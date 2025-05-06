@@ -5,12 +5,11 @@ import { DecodedUser } from "../../common/type/request.type";
 import { ResponseStatus } from "../../common/enums/status.enum";
 
 export async function deleteCategory(req:Request, res:Response){
-    const {userId, email} = req.user as DecodedUser;
-    const categoryName = req.body.description
+    const {id} = req.body;
 
     const category = await prisma.category.findUnique({
         where:{
-            name:categoryName
+            id
         }
     })
 
@@ -21,7 +20,7 @@ export async function deleteCategory(req:Request, res:Response){
 
     await prisma.category.delete({
         where: {
-            id: category.id
+            id
         }
     });
 
