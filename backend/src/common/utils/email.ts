@@ -73,4 +73,16 @@ export class Email {
     
         await this.transporter.sendMail(mailOptions);
     }
+
+    async sendPnr(pnr: string) {
+        const mailOptions = {
+            from: this.from,
+            to: this.to,
+            subject: 'Your Ticket PNR Information',
+            text: `Dear ${this.firstName},\n\nYour ticket has been successfully created.\nHere is your PNR number: ${pnr}\n\nKeep this code for your records.`,
+        };
+        console.log("email send")
+        await this.transporter.sendMail(mailOptions);
+    }
+    
 }
