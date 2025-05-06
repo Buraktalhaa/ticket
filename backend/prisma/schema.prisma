@@ -170,10 +170,13 @@ model Order {
   orderDay    DateTime    @default(now())
   orderHour   Int
   status      OrderStatus @default(pending)
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @default(now())
+  pointsUsed  Float       @default(0)
+  usePoints   Boolean     @default(false)
+  paymentId   String?
   totalAmount Float
   point       Point[]
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now())
 }
 
 enum OrderStatus {

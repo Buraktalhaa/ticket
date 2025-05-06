@@ -343,7 +343,7 @@ async function main() {
       pointRate:0.1, 
       companyId:company.id,
       day: new Date('2025-05-10'),       
-      stock: 10,
+      stock: 1000,
       sold: false,
       images: [],
     }
