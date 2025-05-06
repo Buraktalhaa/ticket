@@ -5,7 +5,7 @@ import { createTicket } from "../controller/createTicket";
 import { deleteTicket } from "../controller/deleteTicket";
 import { editTicket } from "../controller/editTicket";
 import { getTickets } from "../controller/getTickets"
-import { updateTicketStatus } from "../controller/updateTicketStatus";
+import { updateTicketStatus } from "../controller/changeTicketStatus";
 import { companyMiddleware } from "../middleware/companyMiddleware";
 
 const router = Router()

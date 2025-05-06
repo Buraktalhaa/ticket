@@ -5,7 +5,7 @@ import { ResponseStatus } from "../../common/enums/status.enum";
 
 
 export async function deleteTicket(req:Request, res:Response){
-    const {id} = req.body
+    const id = req.params.id
 
 
     const ticket = await prisma.ticket.findUnique({
