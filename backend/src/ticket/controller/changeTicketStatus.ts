@@ -16,13 +16,17 @@ export const updateTicketStatus = async (req: Request, res: Response) => {
     });
 
     if (!ticket) {
-        handleError(res,'ticket not found', 400)
+        handleError(res, 'ticket not found', 400)
         return;
     }
 
-    const updatedTicket = await prisma.ticket.update({
-        where: { id },
-        data: { status }
+    await prisma.ticket.update({
+        where: {
+            id
+        },
+        data: {
+            status
+        }
     });
 
     res.status(200).json({
