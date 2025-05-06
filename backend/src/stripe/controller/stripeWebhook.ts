@@ -66,31 +66,24 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
             return;
         }
         
-        // Ticket bilgisini al
-        const ticket = await prisma.ticket.findUnique({
-            where: { id: ticketId }
-        });
+        const ticket = order.ticket;
         
-        if (!ticket) {
-            console.error(`Ticket not found: ${ticketId}`);
-            return;
-        }
-        
-        // 1. Eğer puan kullanılıyorsa, puanları kullanılmış olarak işaretle
-        // Burayi tamamla TODO:
-        if (usedPoints > 0 && usePoints) {
-            await prisma.point.updateMany({
+        if (usePoints && usedPoints > 0) {
+            await prisma.point.update({
                 where: {
-                    userId,
-                    categoryId: ticket.categoryId,
-                    expiresAt: { gt: new Date() },
-                    status: 'unused',
+                    userId_categoryId: {
+                        userId,
+                        categoryId: ticket.categoryId
+                    }
                 },
                 data: {
-                    status: 'used'
+                    point: {
+                        decrement: usedPoints
+                    }
                 }
             });
         }
+
         
         const ticketUpdate = await prisma.ticket.update({
             where: {
@@ -136,15 +129,25 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
         
         const pointsToGive = (ticket.price * (100 - ticket.discount) / 100) * ticket.pointRate;
         
-        await prisma.point.create({
-            data: {
+        await prisma.point.upsert({
+            where: {
+                userId_categoryId: {
+                    userId,
+                    categoryId: ticket.categoryId
+                }
+            },
+            update: {
+                point: {
+                    increment: pointsToGive * quantity
+                }
+            },
+            create: {
                 userId,
                 categoryId: ticket.categoryId,
                 point: pointsToGive * quantity,
-                orderId: order.id,
-                expiresAt: ticket.pointExpiresAt,
             }
         });
+        
         
         console.log(`Order ${orderId} processed successfully`);
     } catch (error) {
