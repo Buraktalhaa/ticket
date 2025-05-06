@@ -9,9 +9,11 @@ export async function companyMiddleware(req: Request, res: Response, next: NextF
     const { userId } = req.user as DecodedUser
     const { id } = req.body
 
+    console.log(id)
+
     const seller = await prisma.user.findUnique({
         where: {
-            id: userId
+            id:userId
         }
     })
 
