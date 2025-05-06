@@ -10,28 +10,24 @@ import hpp from 'hpp';
 import compression from 'compression';
 import profileRouter from './profile/routers/profile.routes';
 
-// import { AppError } from './common/utils/appError'
-// import globalErrorHandler from './common/error-handling/errorController'
-
 import authRouter from './auth/routers/auth.routes';
 import ticketRouter from './ticket/routers/ticket.routes';
 import categoryRouter from './category/routers/category.routes';
 import orderRouter from './order/routers/order.routes';
 import companyRouter from './company/routers/company.routes'
-// import companyRouter from './company/routers/company.routes';
-
 
 import * as dotenv from 'dotenv';
-
+import stripeRoutes from './stripe/routers/stripe.routes';
+import bodyParser from 'body-parser';
 
 
 const port = '3000'
 const app = express();
 dotenv.config();
 
+app.post('/api/webhook', bodyParser.raw({ type: 'application/json' }), stripeRoutes);
 
-// ip secure gibi bilgileri dogru sekilde almak icin
-app.enable('trust proxy');
+app.set('trust proxy', 1); // Ya da proxy'nin tam yapılandırılmasına bağlı olarak 2 veya 0 olabilir.
 
 
 // .pug uzantılı dosyalarını alır ve dinamik HTML'ye dönüştürür.
@@ -117,6 +113,11 @@ app.use((req, res, next) => {
 });
 
 // route ayarlari
+
+app.use(bodyParser.json());
+
+// kontrol et
+
 app.use('/auth', authRouter);
 
 app.use('/profile', profileRouter);
@@ -128,6 +129,8 @@ app.use('/category', categoryRouter)
 app.use('/order', orderRouter)
 
 app.use('/company', companyRouter)
+
+
 
 
 
