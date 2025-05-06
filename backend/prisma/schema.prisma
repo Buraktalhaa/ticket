@@ -55,7 +55,6 @@ model User {
   firstName          String
   lastName           String
   birthday           String
-  money              Int                 @default(1000)
   active             Boolean             @default(true)
   photoName          String?
   email              String              @unique
@@ -174,7 +173,6 @@ model Order {
   usePoints   Boolean     @default(false)
   paymentId   String?
   totalAmount Float
-  point       Point[]
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @default(now())
 }
@@ -187,20 +185,14 @@ enum OrderStatus {
 }
 
 model Point {
-  id         String      @id @default(uuid())
+  id         String   @id @default(uuid())
   userId     String
-  user       User        @relation(fields: [userId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
   categoryId String
-  category   Category    @relation(fields: [categoryId], references: [id])
-  orderId    String
-  order      Order       @relation(fields: [orderId], references: [id])
+  category   Category @relation(fields: [categoryId], references: [id])
   point      Int
-  status     PointStatus @default(unused)
-  expiresAt  DateTime
-  createdAt  DateTime    @default(now())
-}
+  expiresAt   DateTime @default("2025-12-31T23:59:59Z")  
+  createdAt  DateTime @default(now())
 
-enum PointStatus {
-  used
-  unused
+  @@unique([userId, categoryId])
 }

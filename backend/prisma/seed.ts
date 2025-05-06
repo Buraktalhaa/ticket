@@ -162,6 +162,12 @@ async function main() {
     }
   });
 
+  const userPermission7 = await prisma.permission.create({
+    data: {
+      url: '/cancel-order'
+    }
+  });
+
 
 
 
@@ -203,6 +209,7 @@ async function main() {
       url: '/delete-category'
     }
   });
+
 
   const adminPermission3 = await prisma.permission.create({
     data: {
@@ -257,6 +264,13 @@ async function main() {
     data: {
       roleId: userRole.id,
       permissionId: userPermission6.id
+    }
+  })
+
+  await prisma.permit.create({
+    data: {
+      roleId: userRole.id,
+      permissionId: userPermission7.id
     }
   })
 
