@@ -4,10 +4,11 @@ import { handleError } from "../../common/error-handling/handleError";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { DecodedUser } from '../../common/type/request.type';
 import { generatePNR } from "../../common/utils/generatePnr";
+import { Email } from "../../common/utils/email";
 
 
 export async function createTicket(req:Request, res:Response){
-    const {userId} = req.user as DecodedUser;
+    const {userId, email} = req.user as DecodedUser;
     const {categoryName, description, hour, day, stock, price, pointRate, pointExpiresAt, discount} = req.body
 
     const category = await prisma.category.findUnique({
@@ -38,7 +39,6 @@ export async function createTicket(req:Request, res:Response){
         return
     }
 
-
     await prisma.ticket.create({
         data:{
             userId,
@@ -56,6 +56,7 @@ export async function createTicket(req:Request, res:Response){
             images: [],
         }
     })
+    
 
     res.status(200).json({
         status: ResponseStatus.SUCCESS,
