@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    platform: linux/arm64  # x86 mimarisi için
+    ports:
+      - "3000:3000"
+    restart: always
+    volumes:
+      - ./backend:/app
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - frontend
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    platform: linux/arm64  
+    ports:
+      - "8080:80"
+    restart: always
+    volumes:
+      - ./frontend:/app
+    environment:
+      - NODE_ENV=development

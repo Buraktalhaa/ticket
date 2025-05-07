@@ -1,0 +1,5 @@
+# Kök dizin için genel kurallar
+*.log
+*.tmp
+.env
+node_modules/
