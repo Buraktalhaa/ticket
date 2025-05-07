@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { DecodedUser } from '../../common/type/request.type';
 import prisma from '../../common/utils/prisma';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { randomUUID } from 'crypto';
 import { ResponseStatus } from '../../common/enums/status.enum';
 import { Email } from '../../common/utils/email';

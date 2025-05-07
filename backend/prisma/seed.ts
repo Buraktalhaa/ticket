@@ -1,6 +1,6 @@
 import { RoleType } from '@prisma/client';
 import prisma from '../src/common/utils/prisma';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { createToken } from '../src/auth/utils/createToken';
 import { generatePNR } from '../src/common/utils/generatePnr';
 

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import prisma from "../../common/utils/prisma";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { handleError } from "../../common/error-handling/handleError";

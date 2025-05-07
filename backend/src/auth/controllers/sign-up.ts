@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { checkSignUp } from './checkSignUp';
 import prisma from '../../common/utils/prisma';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { createToken } from '../utils/createToken';
 import { ResponseStatus } from '../../common/enums/status.enum';
 import { handleError } from '../../common/error-handling/handleError';

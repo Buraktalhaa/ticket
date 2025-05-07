@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import prisma from '../../common/utils/prisma';
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import { checkSignIn } from "./checkSignIn";
 import { createToken } from "../utils/createToken";
 import { ResponseStatus } from "../../common/enums/status.enum";

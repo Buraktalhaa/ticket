@@ -16,7 +16,6 @@
   "author": "Burak Talha Memiş",
   "license": "ISC",
   "devDependencies": {
-    "@types/bcrypt": "^5.0.2",
     "@types/body-parser": "^1.19.5",
     "@types/compression": "^1.7.5",
     "@types/cookie-parser": "^1.4.8",
@@ -38,7 +37,7 @@
   },
   "dependencies": {
     "@prisma/client": "^6.6.0",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
     "compression": "^1.8.0",
     "cookie-parser": "^1.4.7",

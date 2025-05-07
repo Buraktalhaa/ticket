@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { handleError } from "../../common/error-handling/handleError";
 import jwt from 'jsonwebtoken';
 import prisma from "../../common/utils/prisma";
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 
 export async function resetPasswordController(req: Request, res: Response) {
     const token = req.params.token;
