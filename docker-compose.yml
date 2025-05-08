@@ -7,8 +7,12 @@ services:
       - "3000:3000"
     depends_on:
       - db
+      - redis
     environment:
       DATABASE_URL: "postgresql://postgres:postgres@db:5432/ticketdb"
+      REDIS_URL: "redis://redis:6379"
+    volumes:
+      - ./backend:/app
 
   db:
     image: postgres:latest
@@ -21,6 +25,12 @@ services:
       POSTGRES_DB: ticketdb
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
+
+  redis:
+    image: redis:latest
+    container_name: ticket-redis
+    ports:
+      - "6379:6379"
 
 volumes:
   ticket-data:
