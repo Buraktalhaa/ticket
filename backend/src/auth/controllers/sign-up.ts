@@ -23,7 +23,7 @@ export async function signUpController(req: Request, res: Response) {
     })
 
     if (!findUserRole) {
-        handleError(res, 'Profile type user not created', 400)
+        handleError(res, 'Profile type not match any type', 400)
         return
     }
 

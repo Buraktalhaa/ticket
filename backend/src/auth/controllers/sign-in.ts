@@ -7,13 +7,17 @@ import { ResponseStatus } from "../../common/enums/status.enum";
 import { handleError } from "../../common/error-handling/handleError";
 
 export async function signInController(req: Request, res: Response) {
+    console.log(req.body)
     if (checkSignIn(req) === false) {
         handleError(res,'Email and password are required', 400)
         return;
     }
 
+    
     const email = req.body.email;
     const password = req.body.password;
+    
+    console.log("burdasin",email,password)
 
     const auth = await prisma.auth.findUnique(
         {

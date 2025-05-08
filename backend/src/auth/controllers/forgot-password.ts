@@ -7,7 +7,8 @@ import { createToken } from "../utils/createToken";
 export async function forgotPasswordController(req: Request, res: Response) {
     try {
         const { email } = req.body;
-
+        console.log(email);
+        
         const user = await prisma.user.findUnique({
             where: {
                 email
