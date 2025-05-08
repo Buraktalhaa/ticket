@@ -1,17 +1,14 @@
 version: '3.8'
-
 services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
-    platform: linux/arm64
     ports:
       - "3000:3000"
-    networks:
-      - buraknet
     depends_on:
       - db
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/ticketdb"
 
   db:
     image: postgres:latest
@@ -20,8 +17,6 @@ services:
       - "5434:5432"
     volumes:
       - ticket-data:/var/lib/postgresql/data
-    networks:
-      - buraknet
     environment:
       POSTGRES_DB: ticketdb
       POSTGRES_USER: postgres
@@ -30,5 +25,4 @@ services:
 volumes:
   ticket-data:
 
-networks:
-  buraknet:
+
