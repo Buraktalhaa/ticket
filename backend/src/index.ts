@@ -25,7 +25,7 @@ const port = '3000'
 const app = express();
 dotenv.config();
 
-app.post('/api/webhook', bodyParser.raw({ type: 'application/json' }), stripeRoutes);
+app.post('/api/payment/webhook', bodyParser.raw({ type: 'application/json' }), stripeRoutes);
 
 app.set('trust proxy', 1); // Ya da proxy'nin tam yapılandırılmasına bağlı olarak 2 veya 0 olabilir.
 
