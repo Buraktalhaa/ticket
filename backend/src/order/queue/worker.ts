@@ -10,7 +10,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 
 export const orderWorker = new Worker('order-queue', async job => {
     const { userId, ticketId, quantity, usePoints } = job.data;
-    console.log("worker calisti")
+    console.log("Worker working")
 
     const ticket = await prisma.ticket.findUnique({
         where: {
@@ -51,7 +51,6 @@ export const orderWorker = new Worker('order-queue', async job => {
 
     let usedPoints = 0;
     let discountAmount = 0;
-    let totalPoints = 0;
     let booleanPoints = false
 
     // Get active points
@@ -116,9 +115,7 @@ export const orderWorker = new Worker('order-queue', async job => {
         },
     });
 
-    await redis.set(`payment-link:${job.id}`, JSON.stringify(session.url), 'EX', 3600);
+    await redis.set(`payment-link:${userId}:${job.id}`, JSON.stringify(session.url), 'EX', 3600);
 
     return session.url; 
 }, { connection: redis });
-
-console.log('Worker started');
