@@ -1,9 +1,16 @@
-import Redis from "ioredis";
+import IORedis from "ioredis";
 
-// Ortam değişkeninden Redis bağlantısını al
-const redis = new Redis(process.env.REDIS_URL || "redis://localhost:6379");
+const redisUrl = process.env.REDIS_URL;
 
-// Bağlantı olaylarını dinle (isteğe bağlı)
+if (!redisUrl) {
+  throw new Error("❌ REDIS_URL is not defined in the environment variables");
+}
+export const redis = new IORedis({
+  host: 'ticket-redis',
+  port: 6379,
+  maxRetriesPerRequest: null,  
+});
+
 redis.on("connect", () => {
   console.log("✅ Redis connected");
 });
