@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import prisma from '../../common/utils/prisma';
 import { ResponseStatus } from "../../common/enums/status.enum";
 import fs from "fs"
+import redis from "../../common/utils/redis";
+import { setToRedis } from "../../common/utils/redisGetSet";
 
 export async function updateProfile(req: Request, res: Response) {
         const userId = req.user?.userId        
@@ -35,6 +37,8 @@ export async function updateProfile(req: Request, res: Response) {
                 photoName: req.file?.filename
             }
         })
+
+        setToRedis(`user:profile:${userId}`, JSON.stringify(updatedUser), 600)
 
         res.status(200).json({
             status: ResponseStatus.SUCCESS,

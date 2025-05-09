@@ -12,7 +12,7 @@ router.get('/myProfile', authenticateToken, permissionControl , getProfile)
 
 router.put('/myProfile/update', authenticateToken ,permissionControl, fileUploadMiddleware('photoName'), updateProfile)
 
-router.put('/myProfile/updatePassword', authenticateToken, permissionControl, editPassword)
+router.post('/myProfile/editPassword', authenticateToken, permissionControl, editPassword)
 
 
 export default router;
