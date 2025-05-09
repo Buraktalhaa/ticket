@@ -4,11 +4,10 @@ import { handleError } from "../../common/error-handling/handleError";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { DecodedUser } from '../../common/type/request.type';
 import { generatePNR } from "../../common/utils/generatePnr";
-import { Email } from "../../common/utils/email";
-
+import redis from "../../common/utils/redis";
 
 export async function createTicket(req:Request, res:Response){
-    const {userId, email} = req.user as DecodedUser;
+    const {userId} = req.user as DecodedUser;
     const {categoryName, description, hour, day, stock, price, pointRate, pointExpiresAt, discount} = req.body
 
     const category = await prisma.category.findUnique({
@@ -33,7 +32,7 @@ export async function createTicket(req:Request, res:Response){
         return
     }
 
-    // user tablosu ayrilirsa gerek olmayacak
+    // if user table will seperated thiw will be not necessary
     if(seller.companyId === null){
         handleError(res,'Company id null', 400)
         return
@@ -56,6 +55,8 @@ export async function createTicket(req:Request, res:Response){
             images: [],
         }
     })
+
+    await redis.del("tickets:available");
     
 
     res.status(200).json({
