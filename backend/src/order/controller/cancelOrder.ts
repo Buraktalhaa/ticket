@@ -4,6 +4,7 @@ import { handleError } from "../../common/error-handling/handleError";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { DecodedUser } from '../../common/type/request.type';
 import Stripe from "stripe";
+import redis from "../../common/utils/redis";
 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
@@ -13,7 +14,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 export async function cancelOrder(req: Request, res: Response) {
     const { userId } = req.user as DecodedUser;
     const { orderId } = req.body;
-
 
     const order = await prisma.order.findUnique({
         where: {
@@ -92,6 +92,8 @@ export async function cancelOrder(req: Request, res: Response) {
             sold: false,
         },
     });
+
+    await redis.del(`user:order:${userId}`)
 
     res.status(200).json({
         status: ResponseStatus.SUCCESS,
