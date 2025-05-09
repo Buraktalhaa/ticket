@@ -19,6 +19,8 @@ import companyRouter from './company/routers/company.routes'
 import * as dotenv from 'dotenv';
 import stripeRoutes from './stripe/routers/stripe.routes';
 import bodyParser from 'body-parser';
+import passport from 'passport';
+import './auth/controllers/signUpGoogleController';
 
 
 const port = '3000'
@@ -117,6 +119,8 @@ app.use((req, res, next) => {
 app.use(bodyParser.json());
 
 // kontrol et
+
+app.use(passport.initialize());
 
 app.use('/auth', authRouter);
 
