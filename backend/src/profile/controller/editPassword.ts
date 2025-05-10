@@ -3,12 +3,13 @@ import bcrypt from 'bcryptjs'
 import prisma from "../../common/utils/prisma";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { handleError } from "../../common/error-handling/handleError";
+import { DecodedUser } from "../../common/type/request.type";
 
 // email ve yeni password u frontdan al
 
 export async function editPassword(req: Request, res: Response) {
     try {
-        const decoded = req?.user;
+        const decoded = req.user as DecodedUser;;
 
         if (!decoded || !decoded.email) {
             handleError(res, 'User email not found in token', 400)

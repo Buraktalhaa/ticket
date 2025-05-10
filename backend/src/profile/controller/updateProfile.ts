@@ -2,11 +2,11 @@ import { Request, Response } from "express";
 import prisma from '../../common/utils/prisma';
 import { ResponseStatus } from "../../common/enums/status.enum";
 import fs from "fs"
-import redis from "../../common/utils/redis";
 import { setToRedis } from "../../common/utils/redisGetSet";
+import { DecodedUser } from "../../common/type/request.type";
 
 export async function updateProfile(req: Request, res: Response) {
-        const userId = req.user?.userId        
+        const { userId } = req.user as DecodedUser;
 
         const findOldPhoto = await prisma.user.findUnique({
             where: {
