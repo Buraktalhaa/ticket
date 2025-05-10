@@ -1,14 +1,16 @@
-import { Worker } from 'bullmq';
+import { Job, QueueEvents, Worker } from 'bullmq';
 import prisma from '../../common/utils/prisma';
 import Stripe from 'stripe';
 import redis from '../../common/utils/redis';
+import { orderQueue } from './orderQueue';
+import { wait } from '../../common/utils/wait';
 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
     apiVersion: '2025-04-30.basil',
 });
 
-export const orderWorker = new Worker('order-queue', async job => {
+export const orderWorker = new Worker('order-queue', async (job: Job) => {
     const { userId, ticketId, quantity, usePoints } = job.data;
     console.log("Worker working")
 
@@ -115,7 +117,54 @@ export const orderWorker = new Worker('order-queue', async job => {
         },
     });
 
-    await redis.set(`payment-link:${userId}:${job.id}`, JSON.stringify(session.url), 'EX', 3600);
+    await redis.set(`payment-link:${userId}:${job.id}`, JSON.stringify(session.url), 'EX', 180);
 
-    return session.url; 
+    return session.url;
 }, { connection: redis });
+
+
+
+
+// fail durumuna duserse
+orderWorker.on('failed', async (job, error) => {
+    if (!job) {
+        console.error('Job is undefined');
+        return;
+    }
+    console.error(`Job ${job.id} failed:`, error.message);
+    await orderQueue.add('create-order', job.data);
+});
+
+
+
+
+const orderQueueEvents = new QueueEvents('order-queue', { connection: redis });
+
+// internet kopmasi gibi bir seyde beklemeye gecerse
+// jobId: string
+orderQueueEvents.on('stalled', async ({ jobId }) => {
+    console.warn(`Job stalled: ${jobId}`);
+
+    const job = await orderQueue.getJob(jobId);
+    if (!job) {
+        console.error(`Job with ID ${jobId} not found.`);
+        return;
+    }
+
+    console.log(`⏱️ Job ${jobId} has been attempted ${job.attemptsMade} time(s)`);
+
+    const maxAttempts = 3;
+    const currentAttempts = job.attemptsMade || 0;
+
+    if (currentAttempts >= maxAttempts) {
+        console.error(`🔁 Job ${jobId} reached max retry attempts (${maxAttempts}). Skipping re-add.`);
+        return;
+    }
+
+    await orderQueue.add('create-order', job.data, {
+        attempts: maxAttempts,
+        backoff: 5000,
+    });
+
+    console.log(`🌀 Re-added stalled job ${jobId} to the queue (Attempt ${currentAttempts + 1}/${maxAttempts}).`);
+});
