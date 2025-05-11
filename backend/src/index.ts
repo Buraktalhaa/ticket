@@ -20,7 +20,7 @@ import * as dotenv from 'dotenv';
 import stripeRoutes from './stripe/routers/stripe.routes';
 import bodyParser from 'body-parser';
 import passport from 'passport';
-import './auth/controllers/signUpGoogleController';
+import './auth/controllers/googleStrategy';
 
 
 const port = '3000'
