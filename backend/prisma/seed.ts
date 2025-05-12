@@ -21,23 +21,23 @@ async function main() {
   const email = 'btmseller@gmail.com'
   const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Create seller for BTM company
+    const seller = await prisma.user.create({
+      data: {
+        firstName: "Burak",
+        lastName: "Talha",
+        birthday: "21.02.2001",
+        active: true,
+        photoName: "",
+        email,
+        companyId:company.id
+      }
+    })
+
   const authSeller = await prisma.auth.create({
     data: {
-      email,
+      email:seller.email,
       password: hashedPassword
-    }
-  })
-
-  // Create seller for BTM company
-  const seller = await prisma.user.create({
-    data: {
-      firstName: "Burak",
-      lastName: "Talha",
-      birthday: "21.02.2001",
-      active: true,
-      photoName: "",
-      email: authSeller.email,
-      companyId:company.id
     }
   })
 
@@ -58,13 +58,6 @@ async function main() {
   const emailAdmin = 'admin@gmail.com'
   const hashedPasswordAdmin = await bcrypt.hash(passwordAdmin, 10);
 
-  const authAdmin = await prisma.auth.create({
-    data: {
-      email:emailAdmin,
-      password: hashedPasswordAdmin
-    }
-  })
-
   const admin = await prisma.user.create({
     data: {
       firstName: "Admin",
@@ -72,7 +65,14 @@ async function main() {
       birthday: "21.02.2001",
       active: true,
       photoName: "a",
-      email: authAdmin.email
+      email:emailAdmin
+    }
+  })
+
+  const authAdmin = await prisma.auth.create({
+    data: {
+      email:admin.email,
+      password: hashedPasswordAdmin
     }
   })
 

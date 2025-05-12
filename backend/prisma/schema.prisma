@@ -13,10 +13,52 @@ datasource db {
 model Auth {
   id        String   @id @default(uuid())
   email     String   @unique
+  auth      User?    @relation(fields: [email], references: [email])
   password  String
-  user      User?
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
+}
+
+model GoogleAuth {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+}
+
+model User {
+  id                 String              @id @default(uuid())
+  firstName          String
+  lastName           String
+  birthday           String
+  active             Boolean             @default(true)
+  photoName          String?
+  email              String              @unique
+  companyId          String?
+  company            Company?            @relation(fields: [companyId], references: [id])
+  card               Card[]
+  token              Token?
+  passwordResetToken PasswordResetToken?
+  userRole           UserRole[]
+  ticket             Ticket[]
+  order              Order[]
+  point              Point[]
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @default(now())
+  googleToken        GoogleToken?
+  GoogleAuth         GoogleAuth?
+  Auth               Auth?
+}
+
+model GoogleToken {
+  id                 String   @id @default(uuid())
+  userId             String   @unique
+  user               User     @relation(fields: [userId], references: [id])
+  googleAccessToken  String
+  googleRefreshToken String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @default(now())
 }
 
 model Token {
@@ -49,28 +91,6 @@ model Company {
   users     User[]
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
-}
-
-model User {
-  id                 String              @id @default(uuid())
-  firstName          String
-  lastName           String
-  birthday           String
-  active             Boolean             @default(true)
-  photoName          String?
-  email              String              @unique
-  companyId          String?
-  company            Company?            @relation(fields: [companyId], references: [id])
-  auth               Auth                @relation(fields: [email], references: [email])
-  card               Card[]
-  token              Token?
-  passwordResetToken PasswordResetToken?
-  userRole           UserRole[]
-  ticket             Ticket[]
-  order              Order[]
-  point              Point[]
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @default(now())
 }
 
 model UserRole {
@@ -193,7 +213,7 @@ model Point {
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])
   point      Int
-  expiresAt  DateTime @default("2025-12-31T23:59:59Z")  
+  expiresAt  DateTime @default("2025-12-31T23:59:59Z")
   createdAt  DateTime @default(now())
 
   @@unique([userId, categoryId])
