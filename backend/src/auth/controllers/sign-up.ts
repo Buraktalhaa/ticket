@@ -6,12 +6,10 @@ import { createToken } from '../utils/createToken';
 import { ResponseStatus } from '../../common/enums/status.enum';
 import { handleError } from '../../common/error-handling/handleError';
 
-
-
 export async function signUpController(req: Request, res: Response) {
-    const {role} = req.body
+    const { email, firstName, role } = req.body;
 
-    if(role === 'seller'){
+    if (role === 'seller') {
         handleError(res, "You can't create seller", 400)
         return;
     }
@@ -33,27 +31,67 @@ export async function signUpController(req: Request, res: Response) {
     }
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const { email, firstName } = req.body;
 
-    const existingUSer = await prisma.auth.findUnique(
+    const existingUser = await prisma.user.findUnique(
         {
             where: {
                 email
             }
         });
 
-    if (existingUSer) {
-        handleError(res, 'There is a user with this email address', 400)
-        return;
-    }
+    if (existingUser) {
+        const auth = await prisma.auth.findUnique({
+            where: {
+                email
+            }
+        })
 
-    // Create Auth
-    const newAuth = await prisma.auth.create({
-        data: {
-            email,
-            password: hashedPassword
+        const googleAuth = await prisma.googleAuth.findUnique({
+            where:{
+                userId:existingUser.id
+            }
+        })
+
+        if (auth) {
+            // 1
+            handleError(res, 'There is a user with this email address', 400)
+            return;
         }
-    });
+        if(googleAuth){
+            const accessToken = createToken(existingUser.id, email, process.env.ACCESS_SECRET!, 10 * 60 * 24)
+            const refreshToken = createToken(existingUser.id, email, process.env.REFRESH_SECRET!, 48 * 60 * 60)
+        
+            // 2 
+            // new Auth
+            const auth = await prisma.auth.create({
+                data: {
+                    email:existingUser.email,
+                    password: hashedPassword
+                }
+            });
+
+            // tokens update
+            await prisma.token.update({
+                where:{
+                    userId:existingUser.id
+                },
+                data:{
+                    accessToken, 
+                    refreshToken
+                }
+            })
+            res.status(200).json({
+                status: ResponseStatus.SUCCESS,
+                message: 'Sign up successful',
+                accessToken,
+                refreshToken,
+                data: {
+                    email: auth.email,
+                }
+            });
+            return
+        }
+    }
 
     // Create User
     const user = await prisma.user.create({
@@ -65,10 +103,19 @@ export async function signUpController(req: Request, res: Response) {
             email
         }
     })
-    const userId = user.id
 
+    const userId = user.id
     const accessToken = createToken(userId, email, process.env.ACCESS_SECRET!, 10 * 60 * 24)
     const refreshToken = createToken(userId, email, process.env.REFRESH_SECRET!, 48 * 60 * 60)
+
+
+    // Create Auth
+    const newAuth = await prisma.auth.create({
+        data: {
+            email:user.email,
+            password: hashedPassword
+        }
+    });
 
     // Create Token
     await prisma.token.create({
@@ -79,13 +126,12 @@ export async function signUpController(req: Request, res: Response) {
         }
     })
 
-    const userRole = await prisma.userRole.create({
+    await prisma.userRole.create({
         data: {
             userId: user.id,
             roleId: findUserRole?.id
         }
     })
-
 
     res.status(200).json({
         status: ResponseStatus.SUCCESS,
@@ -96,4 +142,5 @@ export async function signUpController(req: Request, res: Response) {
             email: newAuth.email,
         }
     });
+    return
 }
