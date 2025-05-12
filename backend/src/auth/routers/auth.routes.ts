@@ -6,7 +6,7 @@ import { forgotPasswordController } from '../controllers/forgot-password';
 import { resetPasswordController } from '../controllers/resetPassword';
 import passport from 'passport';
 import { googleCallback } from '../controllers/googleCallback';
-import '../auth/googleStrategy';
+import '../controllers/googleStrategy';
 
 
 const router = Router();
