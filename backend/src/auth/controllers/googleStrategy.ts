@@ -1,7 +1,6 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import prisma from '../../common/utils/prisma';
-import { createToken } from '../utils/createToken';
 
 passport.use(
     new GoogleStrategy({
@@ -17,21 +16,14 @@ passport.use(
                 return
             }
 
+            // check user
             let user = await prisma.user.findUnique({
                 where: {
                     email
                 }
             });
 
-            // Eğer yoksa, yeni kullanıcı oluştur
             if (!user) {
-                const newAuth = await prisma.auth.create({
-                    data: {
-                        email,
-                        password: 'GOOGLE_USER',
-                    }
-                });
-
                 user = await prisma.user.create({
                     data: {
                         firstName: profile.name?.givenName || '',
@@ -58,19 +50,42 @@ passport.use(
                     });
                 }
             }
+
+            const googleAuth = await prisma.googleAuth.findUnique({
+                where:{
+                    userId:user.id
+                }
+            })
+
+            if(!googleAuth){
+                await prisma.googleAuth.create({
+                    data:{
+                       userId:user.id 
+                    }
+                })
+            }
+
+            // googleToken
+            await prisma.googleToken.upsert({
+                where: {
+                    userId: user.id
+                },
+                update: {
+                    googleAccessToken: accessToken,
+                    googleRefreshToken: refreshToken,
+                    updatedAt: new Date()
+                },
+                create:{
+                    userId: user.id,
+                    googleAccessToken: accessToken,
+                    googleRefreshToken: refreshToken,
+                }
+            })
+
             return done(null, {
                 id: user.id,
                 email: user.email
             });
         }
-
     )
 )
-
-passport.serializeUser((user, done) => {
-    done(null, user);
-});
-passport.deserializeUser((obj, done) => {
-    done(null, obj as Express.User);
-});
-
