@@ -1,0 +1,73 @@
+<div class="h-screen flex items-center justify-center bg-gray-100">
+  <div class="w-full max-w-xs">
+    <p
+      class="text-center py-6 font-extrabold text-3xl tracking-wide text-blue-600 drop-shadow-md"
+    >
+      Sign Up
+    </p>
+    <form class="bg-white flex flex-col shadow-md rounded px-8 pt-6 pb-8 mb-4">
+      <div class="mb-2">
+        <app-auth-input
+          [(model)]="email"
+          src="icons/email.svg"
+          label="Email"
+          placeholder="Email"
+          type="email"
+        >
+        </app-auth-input>
+      </div>
+
+      <div class="mb-2">
+        <app-auth-input
+          [(model)]="firstName"
+          src="icons/user.svg"
+          label="Username"
+          placeholder="Username"
+          type="text"
+        >
+        </app-auth-input>
+      </div>
+
+      <div class="mb-2">
+        <app-auth-input
+          [(model)]="password"
+          src="icons/password.svg"
+          label="Password"
+          placeholder="Password"
+          type="password"
+        >
+        </app-auth-input>
+      </div>
+
+      <div class="mb-2">
+        <app-auth-input
+          [(model)]="confirmPassword"
+          src="icons/password.svg"
+          label="Confirm Password"
+          placeholder="Confirm Password"
+          type="password"
+        >
+        </app-auth-input>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <button
+          class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          type="submit"
+          (click)="signUp()"
+        >
+          Sign In
+        </button>
+        <a
+          class="inline-block align-baseline font-bold text-sm text-blue-600 hover:text-blue-800"
+          href="#"
+          >Google</a
+        >
+        <!-- TODO:  # sonrasini yaz-->
+      </div>
+    </form>
+    <p class="text-center text-gray-500 text-xs">
+      &copy;2025 Ticket Project. All rights reserved.
+    </p>
+  </div>
+</div>
