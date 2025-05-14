@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import prisma from '../../common/utils/prisma';
 import bcrypt from 'bcryptjs'
-import { checkSignIn } from "./checkSignIn";
+import { checkSignIn } from "../utils/checkSignIn";
 import { createToken } from "../utils/createToken";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { handleError } from "../../common/error-handling/handleError";
@@ -14,8 +14,6 @@ export async function signInController(req: Request, res: Response) {
 
     const email = req.body.email;
     const password = req.body.password;
-    
-    console.log("burdasin",email,password)
 
     const auth = await prisma.auth.findUnique(
         {
@@ -74,4 +72,5 @@ export async function signInController(req: Request, res: Response) {
             email
         }
     })
+    return
 }

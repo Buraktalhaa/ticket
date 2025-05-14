@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { checkSignUp } from './checkSignUp';
+import { checkSignUp } from '../utils/checkSignUp';
 import prisma from '../../common/utils/prisma';
 import bcrypt from 'bcryptjs'
 import { createToken } from '../utils/createToken';
@@ -7,16 +7,11 @@ import { ResponseStatus } from '../../common/enums/status.enum';
 import { handleError } from '../../common/error-handling/handleError';
 
 export async function signUpController(req: Request, res: Response) {
-    const { email, firstName, role } = req.body;
-
-    if (role === 'seller') {
-        handleError(res, "You can't create seller", 400)
-        return;
-    }
+    const { email, firstName } = req.body;
 
     const findUserRole = await prisma.role.findUnique({
         where: {
-            name: role
+            name: 'user'
         }
     })
 
