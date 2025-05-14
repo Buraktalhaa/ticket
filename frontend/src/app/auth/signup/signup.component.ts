@@ -4,11 +4,13 @@ import { FormsModule } from '@angular/forms';
 
 import { AuthService } from '../shared/services/auth.service';
 import { AuthInputComponent } from '../shared/components/auth-input/auth-input.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
   imports: [
+    RouterLink,
     CommonModule,
     FormsModule,
     AuthInputComponent
@@ -43,7 +45,6 @@ export class SignupComponent {
       email: this.email,
       firstName: this.firstName,
       password: this.password,
-      role: "user"
     };
 
     this.authService.signUp(signupData)
@@ -51,8 +52,6 @@ export class SignupComponent {
 
   signupWithGoogle() {
     console.log("google ile giris yapma ekrani");
+    this.authService.signInGoogle();
   }
 }
-
-
-
