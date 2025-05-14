@@ -12,3 +12,9 @@ export type Signin = {
 export type Email = {
     email:string
 }
+
+export type Passwords = {
+    password:string,
+    confirmPassword:string,
+    token:string | null;
+}

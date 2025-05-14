@@ -1,4 +1,3 @@
-# Kök dizin için genel kurallar
 *.log
 *.tmp
 .env

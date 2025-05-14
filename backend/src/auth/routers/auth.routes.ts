@@ -6,7 +6,8 @@ import { resetPasswordController } from '../controllers/resetPassword';
 import passport from 'passport';
 import { googleCallback } from '../controllers/googleCallback';
 import '../controllers/googleStrategy';
-import { refreshController } from '../controllers/refreshtoken';
+import { refreshController } from '../controllers/refreshToken';
+
 
 
 const router = Router();
