@@ -1,12 +1,12 @@
 import { Router } from 'express';
 import { signUpController } from '../controllers/sign-up';
 import { signInController } from '../controllers/sign-in';
-import { refreshController } from '../controllers/refresh';
 import { forgotPasswordController } from '../controllers/forgot-password';
 import { resetPasswordController } from '../controllers/resetPassword';
 import passport from 'passport';
 import { googleCallback } from '../controllers/googleCallback';
 import '../controllers/googleStrategy';
+import { refreshController } from '../controllers/refreshtoken';
 
 
 const router = Router();
