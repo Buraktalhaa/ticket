@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ApiService } from '../../../shared/services/api.service';
-import { Email, Signin, Signup } from '../types/auth.type';
+import { Email, Passwords, Signin, Signup } from '../types/auth.type';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -17,6 +17,7 @@ export class AuthService {
     this.api
       .post('http://localhost:3000/auth/signIn', signinData)
       .subscribe((res: HttpResponse<any>) => {
+        console.log(signinData)
         const accessToken = res.body.accessToken
         const refreshToken = res.body.refreshToken
         localStorage.setItem("accessToken", accessToken)
@@ -61,5 +62,17 @@ export class AuthService {
         console.log("Error message:", error.error?.message);
       }
     });
+  }
+
+  sendNewPassword(newPassword: Passwords) {
+    this.api.post(`http://localhost:3000/auth/reset-password/${newPassword.token}`, { password: newPassword.password, confirmPassword: newPassword.confirmPassword })
+      .subscribe({
+        next: (res: HttpResponse<any>) => {
+          this.router.navigateByUrl('/mail-sent');
+        },
+        error: (error: any) => {
+          console.log("Error message:", error.error?.message);
+        }
+      });
   }
 }
