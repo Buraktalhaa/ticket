@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FooterInfoTextComponent } from '../shared/components/footer-info-text/footer-info-text.component';
 
 @Component({
   selector: 'app-reset-password',
@@ -11,6 +12,7 @@ import { FormsModule } from '@angular/forms';
     AuthInputComponent,
     CommonModule,
     FormsModule,
+    FooterInfoTextComponent
   ],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.css'
