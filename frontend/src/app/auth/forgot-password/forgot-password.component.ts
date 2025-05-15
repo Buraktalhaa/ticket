@@ -3,6 +3,8 @@ import { AuthInputComponent } from '../shared/components/auth-input/auth-input.c
 import { AuthService } from '../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FooterInfoTextComponent } from '../shared/components/footer-info-text/footer-info-text.component';
+import { SignButtonComponent } from '../shared/components/sign-button/sign-button.component';
 
 @Component({
   selector: 'app-forgot-password',
@@ -10,6 +12,8 @@ import { FormsModule } from '@angular/forms';
     AuthInputComponent,
     CommonModule,
     FormsModule,
+    FooterInfoTextComponent,
+    SignButtonComponent
   ],
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.css'
