@@ -1,9 +1,13 @@
 <div class="h-screen flex items-center justify-center bg-gray-100">
   <div class="w-full max-w-xs">
-    <p class="text-center py-6 font-extrabold text-3xl tracking-wide text-blue-600 drop-shadow-md">Sign In</p>
-    
-    <form class="bg-white flex flex-col shadow-md rounded px-8 pt-6 pb-8 mb-4" (ngSubmit)="signIn()">
-      
+    <p class="text-center py-6 font-extrabold text-3xl tracking-wide text-blue-600 drop-shadow-md">
+      Sign In
+    </p>
+
+    <form
+      class="bg-white flex flex-col shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      (ngSubmit)="signIn()"
+    >
       <div class="mb-2">
         <app-auth-input
           [(model)]="email"
@@ -25,30 +29,25 @@
       </div>
 
       <div class="flex justify-between items-center mb-4">
-        <a class="text-sm text-blue-600 hover:text-blue-800 font-semibold" routerLink="/forgot-password">
+        <a
+          class="text-sm text-blue-600 hover:text-blue-800 font-semibold"
+          routerLink="/forgot-password"
+        >
           Forgot Password?
         </a>
       </div>
 
-      <button
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        type="submit"
-      >
-        Sign In
-      </button>
+      <app-sign-button
+      text="Sign In"
+      ></app-sign-button>
     </form>
 
-    <div class="text-center">
-      <p class="text-sm">
-        Don't have an account?
-        <a routerLink="/signup" class="text-blue-600 hover:text-blue-800 font-semibold">
-          Sign Up
-        </a>
-      </p>
-    </div>
+    <app-text-link
+      text="Don't have an account?"
+      [link]="'/signup'"
+      buttonName="Sign up"
+    ></app-text-link>
 
-    <p class="text-center text-gray-500 text-xs mt-4">
-      &copy;2025 Ticket Project. All rights reserved.
-    </p>
+    <app-footer-info-text> </app-footer-info-text>
   </div>
 </div>

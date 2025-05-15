@@ -1,11 +1,15 @@
 <div class="h-screen flex items-center justify-center bg-gray-100">
   <div class="w-full max-w-xs">
-    <p class="text-center py-6 font-extrabold text-3xl tracking-wide text-blue-600 drop-shadow-md">
-      Sign Up to Ticket
+    <p
+      class="text-center py-6 font-extrabold text-3xl tracking-wide text-blue-600 drop-shadow-md"
+    >
+      Sign Up
     </p>
 
-    <form class="bg-white flex flex-col shadow-md rounded px-8 pt-6 pb-8 mb-4" (ngSubmit)="signUp()">
-      
+    <form
+      class="bg-white flex flex-col shadow-md rounded px-8 pt-6 pb-8 mb-4"
+      (ngSubmit)="signUp()"
+    >
       <div class="mb-2">
         <app-auth-input
           [(model)]="email"
@@ -46,35 +50,30 @@
         ></app-auth-input>
       </div>
 
-      <button
-        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline mb-2"
-        type="submit"
-      >
-        Sign Up
-      </button>
+      <app-sign-button
+      text="Sign Up"
+      ></app-sign-button>
 
       <button
-      type="button"
-      (click)="signupWithGoogle()"
-      class="w-full flex items-center justify-center gap-2 border border-gray-300 bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 rounded shadow-sm transition duration-200"
-    >
-      <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5" />
-      Sign Up with Google
-    </button>
-    
+        type="button"
+        (click)="signupWithGoogle()"
+        class="w-full flex items-center justify-center gap-2 border border-gray-300 bg-white hover:bg-gray-100 text-gray-700 font-semibold py-2 px-4 rounded shadow-sm transition duration-200"
+      >
+        <img
+          src="https://www.svgrepo.com/show/475656/google-color.svg"
+          alt="Google"
+          class="w-5 h-5"
+        />
+        Sign Up with Google
+      </button>
     </form>
 
-    <div class="text-center">
-      <p class="text-sm">
-        Already have an account?
-        <a routerLink="/signin" class="text-blue-600 hover:text-blue-800 font-semibold">
-          Sign In
-        </a>
-      </p>
-    </div>
+    <app-text-link
+      text="Already have an account?"
+      [link]="'/signin'"
+      buttonName="Sign In"
+    ></app-text-link>
 
-    <p class="text-center text-gray-500 text-xs mt-4">
-      &copy;2025 Ticket Project. All rights reserved.
-    </p>
+    <app-footer-info-text></app-footer-info-text>
   </div>
 </div>
