@@ -5,6 +5,7 @@ import { AuthService } from '../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FooterInfoTextComponent } from '../shared/components/footer-info-text/footer-info-text.component';
+import { SignButtonComponent } from '../shared/components/sign-button/sign-button.component';
 
 @Component({
   selector: 'app-reset-password',
@@ -12,7 +13,8 @@ import { FooterInfoTextComponent } from '../shared/components/footer-info-text/f
     AuthInputComponent,
     CommonModule,
     FormsModule,
-    FooterInfoTextComponent
+    FooterInfoTextComponent,
+    SignButtonComponent
   ],
   templateUrl: './reset-password.component.html',
   styleUrl: './reset-password.component.css'
