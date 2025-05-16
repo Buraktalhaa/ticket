@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ApiService } from '../../../shared/services/api.service';
 import { Email, Passwords, Signin, Signup } from '../types/auth.type';
@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
+  public isThereUser = signal(false)
+
   constructor(
     private api: ApiService,
     private router: Router
@@ -22,6 +24,7 @@ export class AuthService {
         const refreshToken = res.body.refreshToken
         localStorage.setItem("accessToken", accessToken)
         localStorage.setItem("refreshToken", refreshToken)
+
         this.router.navigateByUrl("/main")
       });
   }
@@ -75,4 +78,5 @@ export class AuthService {
         }
       });
   }
+
 }
