@@ -1,9 +1,7 @@
 import { Request, Response } from "express";
-import { DecodedUser } from "../../common/type/request.type";
 import prisma from "../../common/utils/prisma";
 import { handleError } from "../../common/error-handling/handleError";
 import { ResponseStatus } from "../../common/enums/status.enum";
-import redis from "../../common/utils/redis";
 
 
 export async function editTicket(req: Request, res: Response) {
@@ -37,8 +35,6 @@ export async function editTicket(req: Request, res: Response) {
         },
         data: filteredData
     });
-
-    await redis.del("tickets:available");
 
     res.status(200).json({
         status: ResponseStatus.SUCCESS,

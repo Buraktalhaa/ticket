@@ -4,7 +4,6 @@ import { handleError } from "../../common/error-handling/handleError";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { DecodedUser } from '../../common/type/request.type';
 import { generatePNR } from "../../common/utils/generatePnr";
-import redis from "../../common/utils/redis";
 
 export async function createTicket(req:Request, res:Response){
     const {userId} = req.user as DecodedUser;
@@ -54,10 +53,7 @@ export async function createTicket(req:Request, res:Response){
             stock,
             images: [],
         }
-    })
-
-    await redis.del("tickets:available");
-    
+    })    
 
     res.status(200).json({
         status: ResponseStatus.SUCCESS,

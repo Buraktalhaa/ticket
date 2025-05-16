@@ -3,8 +3,6 @@ import prisma from "../../common/utils/prisma";
 import { handleError } from "../../common/error-handling/handleError";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { DecodedUser } from '../../common/type/request.type';
-import redis from "../../common/utils/redis";
-
 
 export const updateTicketStatus = async (req: Request, res: Response) => {
     const { userId } = req.user as DecodedUser;
@@ -29,8 +27,6 @@ export const updateTicketStatus = async (req: Request, res: Response) => {
             status
         }
     });
-
-    await redis.del("tickets:available");
 
     res.status(200).json({
         status: ResponseStatus.SUCCESS,
