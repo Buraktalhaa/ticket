@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-auth-input',
@@ -18,6 +18,12 @@ export class AuthInputComponent {
   @Output() modelChange = new EventEmitter<string>();
 
   constructor() {}
+
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   //Called before any other lifecycle hook. Use it to inject dependencies, but avoid any serious work here.
+  //   //Add '${implements OnChanges}' to the class.
+  //   console.log("6",changes);
+  // }
 
   onFocus() {
     this.isFocused = true;

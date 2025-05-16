@@ -25,34 +25,16 @@ export class SigninComponent {
   email: string = '';
   password: string = '';
 
-  constructor(private authService: AuthService) { 
-    console.log("2");
-    
-  }
+  constructor(private authService: AuthService) { }
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
     console.log("3")
-  }
-  ngAfterViewInit(): void {
-    //Called after ngAfterContentInit when the component's view has been initialized. Applies to components only.
-    //Add 'implements AfterViewInit' to the class.
-    console.log("4");
-  }
-
-  ngOnDestroy(): void {
-    //Called once, before the instance is destroyed.
-    //Add 'implements OnDestroy' to the class.
-    console.log("5");
-  }
- 
+  } 
 
   signIn() {
     if (!this.email || !this.password) {
       console.log("Missing information");
       return;
     }
-    console.log("Degerler", this.email, this.password)
 
     const signInData = {
       email: this.email,

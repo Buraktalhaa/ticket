@@ -10,7 +10,6 @@ import { companyMiddleware } from "../middleware/companyMiddleware";
 
 const router = Router()
 
-
 router.post('/create-ticket', authenticateToken, permissionControl, createTicket)
 router.post('/delete-ticket', authenticateToken, permissionControl, companyMiddleware, deleteTicket)
 router.post('/edit-ticket', authenticateToken, permissionControl, companyMiddleware, editTicket)
