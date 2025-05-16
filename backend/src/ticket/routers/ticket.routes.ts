@@ -7,6 +7,7 @@ import { editTicket } from "../controller/editTicket";
 import { getTickets } from "../controller/getTickets"
 import { updateTicketStatus } from "../controller/changeTicketStatus";
 import { companyMiddleware } from "../middleware/companyMiddleware";
+import { isSeller } from "../controller/isSeller";
 
 const router = Router()
 
@@ -15,5 +16,7 @@ router.post('/delete-ticket', authenticateToken, permissionControl, companyMiddl
 router.post('/edit-ticket', authenticateToken, permissionControl, companyMiddleware, editTicket)
 router.post('/update-status', authenticateToken, permissionControl, updateTicketStatus)
 router.get('/get-tickets', getTickets)
+router.get('/is-seller', authenticateToken, permissionControl, isSeller)
+
 
 export default router;
