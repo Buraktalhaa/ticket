@@ -334,34 +334,158 @@ async function main() {
 
 
 
-  // Category
-  const category1 = await prisma.category.create({
-    data: {
-      name: 'Concert',
-    },
-  });
+// Category
+const category1 = await prisma.category.create({
+  data: { name: 'Concert' },
+});
 
-  const expiresAt = new Date();
-  expiresAt.setDate(expiresAt.getDate() + 7);
+const category2 = await prisma.category.create({
+  data: { name: 'Theater' },
+});
 
-  // Ticket
-  const ticket = await prisma.ticket.create({
-    data: {
-      userId: seller.id,
-      categoryId: category1.id,
-      price: 100,
-      pnr: generatePNR(),
-      description: 'Seed created this ticket',
-      hour:10,  
-      pointExpiresAt:expiresAt,
-      pointRate:0.1, 
-      companyId:company.id,
-      day: new Date('2025-05-10'),       
-      stock: 1000,
-      sold: false,
-      images: [],
-    }
-  })
+const category3 = await prisma.category.create({
+  data: { name: 'Festival' },
+});
+
+const expiresAt = new Date();
+expiresAt.setDate(expiresAt.getDate() + 7);
+
+// Concert Tickets
+await prisma.ticket.create({
+  data: {
+    userId: seller.id,
+    categoryId: category1.id,
+    price: 100,
+    pnr: generatePNR(),
+    description: 'Rock concert in the city',
+    hour: 20,
+    pointExpiresAt: expiresAt,
+    pointRate: 0.1,
+    companyId: company.id,
+    day: new Date('2025-06-01'),
+    stock: 500,
+    sold: false,
+    images: [],
+    status:'approve'
+  },
+});
+
+await prisma.ticket.create({
+  data: {
+    userId: seller.id,
+    categoryId: category1.id,
+    price: 80,
+    pnr: generatePNR(),
+    description: 'Pop music live show',
+    hour: 19,
+    pointExpiresAt: expiresAt,
+    pointRate: 0.05,
+    companyId: company.id,
+    day: new Date('2025-06-03'),
+    stock: 300,
+    sold: false,
+    images: [],
+    status:'approve'
+
+  },
+});
+
+// Theater Tickets
+await prisma.ticket.create({
+  data: {
+    userId: seller.id,
+    categoryId: category2.id,
+    price: 60,
+    pnr: generatePNR(),
+    description: 'Shakespeare play night',
+    hour: 18,
+    pointExpiresAt: expiresAt,
+    pointRate: 0.08,
+    companyId: company.id,
+    day: new Date('2025-06-05'),
+    stock: 200,
+    sold: false,
+    images: [],
+    status:'approve'
+  },
+});
+
+await prisma.ticket.create({
+  data: {
+    userId: seller.id,
+    categoryId: category2.id,
+    price: 50,
+    pnr: generatePNR(),
+    description: 'Modern comedy theater',
+    hour: 21,
+    pointExpiresAt: expiresAt,
+    pointRate: 0.07,
+    companyId: company.id,
+    day: new Date('2025-06-07'),
+    stock: 250,
+    sold: false,
+    images: [],
+    status:'approve'
+  },
+});
+
+// Festival Tickets
+await prisma.ticket.create({
+  data: {
+    userId: seller.id,
+    categoryId: category3.id,
+    price: 120,
+    pnr: generatePNR(),
+    description: 'Summer music festival',
+    hour: 15,
+    pointExpiresAt: expiresAt,
+    pointRate: 0.1,
+    companyId: company.id,
+    day: new Date('2025-06-10'),
+    stock: 1000,
+    sold: false,
+    images: [],
+    status:'approve'
+  },
+});
+
+await prisma.ticket.create({
+  data: {
+    userId: seller.id,
+    categoryId: category3.id,
+    price: 95,
+    pnr: generatePNR(),
+    description: 'Food and culture festival',
+    hour: 13,
+    pointExpiresAt: expiresAt,
+    pointRate: 0.09,
+    companyId: company.id,
+    day: new Date('2025-06-12'),
+    stock: 700,
+    sold: false,
+    images: [],
+    status:'approve'
+  },
+});
+
+await prisma.ticket.create({
+  data: {
+    userId: seller.id,
+    categoryId: category3.id,
+    price: 95,
+    pnr: generatePNR(),
+    description: 'It is for testing',
+    hour: 13,
+    pointExpiresAt: expiresAt,
+    pointRate: 0.09,
+    companyId: company.id,
+    day: new Date('2025-06-12'),
+    stock: 700,
+    sold: false,
+    images: [],
+  },
+});
+
 
 
 
