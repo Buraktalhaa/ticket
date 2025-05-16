@@ -3,26 +3,24 @@ import { handleError } from "../../common/error-handling/handleError";
 import jwt from 'jsonwebtoken';
 import prisma from "../../common/utils/prisma";
 import bcrypt from 'bcryptjs'
+import { log } from "console";
 
 export async function resetPasswordController(req: Request, res: Response) {
     const token = req.params.token;
     const { password, confirmPassword } = req.body
+
+    console.log(token, req.body);
 
     // password check
     if (password !== confirmPassword) {
         handleError(res, "Password not equal to confirmPassword", 400);
         return
     }
-    let payload: any;
+    let payload = jwt.verify(token, process.env.ACCESS_SECRET!)
 
-    try {
-        payload = jwt.verify(token, process.env.ACCESS_SECRET!)
-    } catch (error) {
-        handleError(res, "Invalid token.", 400)
-        return;
-    }
-
-    const { email, userId } = payload
+    console.log(payload);
+    
+    const { email, userId } = payload as any
 
     // find token in db
     const findResetToken = await prisma.passwordResetToken.findUnique({
