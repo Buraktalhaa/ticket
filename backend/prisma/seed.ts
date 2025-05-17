@@ -86,8 +86,8 @@ async function main() {
 
 
   // Default admin
-  const passwordAdmin = '1234'
-  const emailAdmin = 'admin@gmail.com'
+  const passwordAdmin = 'admin'
+  const emailAdmin = 'admin'
   const hashedPasswordAdmin = await bcrypt.hash(passwordAdmin, 10);
 
   const admin = await prisma.user.create({
@@ -275,6 +275,11 @@ async function main() {
       url: '/update-status'
     }
   });
+  const adminPermission5 = await prisma.permission.create({
+    data: {
+      url: '/admin/statusPanel'
+    }
+  });
 
 
   // User
@@ -394,6 +399,13 @@ async function main() {
     data: {
       roleId: adminRole.id,
       permissionId: adminPermission4.id
+    }
+  })
+
+  await prisma.permit.create({
+    data: {
+      roleId: adminRole.id,
+      permissionId: adminPermission5.id
     }
   })
 
