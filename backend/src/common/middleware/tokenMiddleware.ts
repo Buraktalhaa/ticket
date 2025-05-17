@@ -1,5 +1,5 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 import { handleError } from "../error-handling/handleError";
 
 export async function authenticateToken(req: Request, res: Response, next: NextFunction): Promise<void> {
