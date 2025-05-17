@@ -1,0 +1,25 @@
+<app-navbar></app-navbar>
+<form [formGroup]="ticketForm" (ngSubmit)="updateTicket()" class="max-w-md mx-auto p-6 bg-white shadow-md rounded-md space-y-4">
+    <div>
+      <label>Description</label>
+      <input type="text" formControlName="description" class="w-full border p-2 rounded" />
+    </div>
+  
+    <div>
+      <label>Price</label>
+      <input type="number" formControlName="price" class="w-full border p-2 rounded" />
+    </div>
+  
+    <div>
+      <label>Stock</label>
+      <input type="number" formControlName="stock" class="w-full border p-2 rounded" />
+    </div>
+  
+    <div>
+      <label>Discount (%)</label>
+      <input type="number" formControlName="discount" class="w-full border p-2 rounded" />
+    </div>
+  
+    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Update Ticket</button>
+  </form>
+  
