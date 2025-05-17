@@ -12,6 +12,9 @@ export class TicketService {
   private ticketsSubject = new BehaviorSubject<any[]>([]);
   tickets$ = this.ticketsSubject.asObservable();
 
+  private sellerTickets = new BehaviorSubject<any[]>([]);
+  sellerTickets$ = this.sellerTickets.asObservable();
+
   constructor(
     private api: ApiService,
     private router: Router
@@ -27,5 +30,64 @@ export class TicketService {
         console.error('ticket error:', err);
       }
     });
+  }
+
+  routeToCreateTicketPage() {
+    this.api.get('http://localhost:3000/ticket/is-seller').subscribe({
+      next: (res: HttpResponse<any>) => {
+        const data = res.body?.data;
+        this.router.navigateByUrl('create-ticket')
+      },
+      error: (err) => {
+        console.error('ticket error:', err);
+        // this.router.navigateByUrl('/unauthorized');
+      }
+    });
+  }
+
+  createTicket(ticket: any) {
+    this.api.post('http://localhost:3000/ticket/create-ticket', ticket)
+      .subscribe({
+        next: () => alert('Ticket created successfully'),
+        error: (err) => alert('Error: ' + err.error?.message || 'Something went wrong')
+      });
+  }
+
+  getSellerTickets() {
+    this.api.get('http://localhost:3000/ticket/seller/sellerTickets')
+      .subscribe({
+        next: (res: HttpResponse<any>) => {
+          const data = res.body?.data;
+          this.sellerTickets.next(data);
+          this.router.navigateByUrl('seller/sellerTickets')
+        },
+        error: (err) => {
+          console.error('ticket error:', err);
+          // this.router.navigateByUrl('/unauthorized');
+        }
+      });
+  }
+
+  editTicket(ticket: any) {
+    this.api.post('http://localhost:3000/ticket/edit-ticket', ticket)
+      .subscribe({
+        next: () => alert('Ticket edited successfully'),
+        error: (err) => alert('Error: ' + err.error?.message || 'Something went wrong')
+      });
+  }
+
+  goAdminPanel() {
+    this.api.get('http://localhost:3000/ticket/admin/statusPanel')
+      .subscribe({
+        next: (res: HttpResponse<any>) => {
+          const data = res.body?.data;
+          this.sellerTickets.next(data);
+          this.router.navigateByUrl('admin/statusPanel')
+        },
+        error: (err) => {
+          console.error('ticket error:', err);
+          // this.router.navigateByUrl('/unauthorized');
+        }
+      })
   }
 }
