@@ -1,4 +1,4 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-ticket-card',
@@ -9,6 +9,8 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 export class TicketCardComponent {
   @Input() description: string =''
   @Input() stock: string =''
+  @Input() buttonText: string = '';
+  @Output() buttonClick = new EventEmitter<void>();
   @Input() price!: number
   @Input() discount!: number
   discountedPrice!:number 
@@ -23,5 +25,9 @@ export class TicketCardComponent {
     } else {
       this.discountedPrice = this.price;
     }
+  }
+
+  onButtonClick() {
+    this.buttonClick.emit();
   }
 }
