@@ -101,6 +101,12 @@ model UserRole {
   role   Role   @relation(fields: [roleId], references: [id])
 }
 
+enum RoleType {
+  user
+  seller
+  admin
+}
+
 model Permission {
   id        String   @id @default(uuid())
   url       String   @unique
@@ -116,12 +122,6 @@ model Permit {
   permissionId String
   permission   Permission @relation(fields: [permissionId], references: [id])
   createdAt    DateTime   @default(now())
-}
-
-enum RoleType {
-  user
-  seller
-  admin
 }
 
 model Role {

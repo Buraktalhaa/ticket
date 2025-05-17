@@ -17,9 +17,11 @@ async function main() {
   })
 
   // Default seller
-  const password = '1234'
-  const email = 'btmseller@gmail.com'
+  const password = 'b'
+  const email = 'b'
+  const email2 = 'c'
   const hashedPassword = await bcrypt.hash(password, 10);
+  const hashedPassword2 = await bcrypt.hash('c', 10);
 
     // Create seller for BTM company
     const seller = await prisma.user.create({
@@ -34,10 +36,29 @@ async function main() {
       }
     })
 
-  const authSeller = await prisma.auth.create({
+    const seller2 = await prisma.user.create({
+      data: {
+        firstName: "Burak",
+        lastName: "Talha",
+        birthday: "21.02.2001",
+        active: true,
+        photoName: "",
+        email:email2,
+        companyId:company.id
+      }
+    })
+
+  const sellerAuth = await prisma.auth.create({
     data: {
       email:seller.email,
       password: hashedPassword
+    }
+  })
+
+  const sellerAuth2 = await prisma.auth.create({
+    data: {
+      email:seller2.email,
+      password: hashedPassword2
     }
   })
 
@@ -49,6 +70,17 @@ async function main() {
       accessToken:accessTokenSeller,
       refreshToken:refreshTokenSeller,
       userId: seller.id
+    }
+  })
+  
+  const accessTokenSeller2 = createToken(seller2.id, email, process.env.ACCESS_SECRET!, 10 * 60 * 24)
+  const refreshTokenSeller2 = createToken(seller2.id, email, process.env.REFRESH_SECRET!, 48 * 60 * 60)
+
+  await prisma.token.create({
+    data: {
+      accessToken:accessTokenSeller2,
+      refreshToken:refreshTokenSeller2,
+      userId: seller2.id
     }
   })
 
@@ -115,6 +147,13 @@ async function main() {
       roleId: sellerRole.id
     }
   })
+
+  await prisma.userRole.create({
+    data: {
+      userId: seller2.id,
+      roleId: sellerRole.id
+    }
+  })  
 
   await prisma.userRole.create({ // Sil TODO:
     data:{
@@ -194,6 +233,20 @@ async function main() {
       url: '/edit-ticket'
     }
   });
+
+  const sellerPermission4 = await prisma.permission.create({
+    data: {
+      url: '/is-seller'
+    }
+  });
+
+  const sellerPermission5 = await prisma.permission.create({
+    data: {
+      url: '/seller/sellerTickets'
+    }
+  });
+
+
 
 
   // Admin Permission 
@@ -297,6 +350,20 @@ async function main() {
     data: {
       roleId: sellerRole.id,
       permissionId: sellerPermission3.id
+    }
+  })  
+
+  await prisma.permit.create({
+    data: {
+      roleId: sellerRole.id,
+      permissionId: sellerPermission4.id
+    }
+  })  
+
+  await prisma.permit.create({
+    data: {
+      roleId: sellerRole.id,
+      permissionId: sellerPermission5.id
     }
   })  
 
@@ -432,7 +499,7 @@ await prisma.ticket.create({
 // Festival Tickets
 await prisma.ticket.create({
   data: {
-    userId: seller.id,
+    userId: seller2.id,
     categoryId: category3.id,
     price: 120,
     pnr: generatePNR(),
@@ -451,7 +518,7 @@ await prisma.ticket.create({
 
 await prisma.ticket.create({
   data: {
-    userId: seller.id,
+    userId: seller2.id,
     categoryId: category3.id,
     price: 95,
     pnr: generatePNR(),
@@ -470,7 +537,7 @@ await prisma.ticket.create({
 
 await prisma.ticket.create({
   data: {
-    userId: seller.id,
+    userId: seller2.id,
     categoryId: category3.id,
     price: 95,
     pnr: generatePNR(),
