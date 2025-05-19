@@ -2,13 +2,13 @@ import { Component } from '@angular/core';
 import { AuthButtonsComponent } from '../auth-buttons/auth-buttons.component';
 import { ProfileService } from '../../../../profile/shared/services/profile.service';
 import { Router } from '@angular/router';
-import { NotificationService } from '../../../../shared/services/notification.service';
 import { AuthService } from '../../../../auth/shared/services/auth.service';
+import { TicketService } from '../../../../ticket/shared/services/ticket.service';
 
 @Component({
   selector: 'app-navbar',
   imports: [
-    AuthButtonsComponent
+    AuthButtonsComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.css'
@@ -19,19 +19,33 @@ export class NavbarComponent {
     private profileService: ProfileService,
     public authService: AuthService,
     private router: Router,
-    private notificationService: NotificationService
+    private ticketService: TicketService
   ) {}
   
   getMyProfile() {
-    this.profileService.myProfile().subscribe({
-      next: (res: any) => {
-        this.profileService.setProfileData(res.body?.data.user)
-        this.router.navigateByUrl('/my-profile');
-      },
-      error: (err:any) => {
-        this.notificationService.showNotification('error', 'Profile could not be loaded.');
-        console.error(err);
-      }
-    });
+    this.profileService.myProfile()
+  }
+
+  getAlltickets(){
+    this.ticketService.allTickets()
+    this.router.navigateByUrl('/tickets');
+    // permission gerekmedigi icin burada yonlendirme yapmakta sorun yok
+  }
+
+  goToCreateTicket(){
+    this.ticketService.routeToCreateTicketPage()
+  }
+
+  logOut(){
+    localStorage.clear()
+    this.router.navigateByUrl('/signin');
+  }
+
+  sellerTicket(){
+    this.ticketService.getSellerTickets()
+  }
+
+  goToAdminStatusPanel(){
+    this.ticketService.goAdminStatusPanel()
   }
 }
