@@ -281,6 +281,12 @@ async function main() {
     }
   });
 
+  const adminPermission6 = await prisma.permission.create({
+    data: {
+      url: '/admin/statusPanel/update-status'
+    }
+  });
+
 
   // User
   await prisma.permit.create({
@@ -406,6 +412,13 @@ async function main() {
     data: {
       roleId: adminRole.id,
       permissionId: adminPermission5.id
+    }
+  })
+
+  await prisma.permit.create({
+    data: {
+      roleId: adminRole.id,
+      permissionId: adminPermission6.id
     }
   })
 
