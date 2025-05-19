@@ -1,1 +1,78 @@
-<p>create-ticket works!</p>
+<app-navbar></app-navbar>
+
+<div class="max-w-xl mx-auto mt-8 p-4 border rounded shadow-md bg-white">
+  <div class="mb-4">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Category</label>
+    <select
+      class="shadow border border-gray-300 rounded w-full py-2 px-3 text-gray-700 focus:outline-none focus:shadow-outline"
+      [(ngModel)]="ticket.categoryName"
+    >
+      <option value="" disabled selected>Select a category</option>
+      @for (category of categoryOptions; track $index) {
+        <option [value]="category">{{ category }}</option>
+      }
+    </select>
+  </div>
+
+  <!-- Other Label Inputs -->
+  <app-labels
+    label="Description"
+    placeholder="Enter description"
+    [(model)]="ticket.description"
+  ></app-labels>
+
+  <app-labels
+    label="Hour"
+    type="number"
+    placeholder="Enter number of hours"
+    [(model)]="ticket.hour"
+  ></app-labels>
+
+  <app-labels
+    label="Date"
+    type="date"
+    [(model)]="ticket.day"
+  ></app-labels>
+
+  <app-labels
+    label="Stock"
+    type="number"
+    placeholder="Enter stock quantity"
+    [(model)]="ticket.stock"
+  ></app-labels>
+
+  <app-labels
+    label="Price"
+    type="number"
+    placeholder="Enter price"
+    [(model)]="ticket.price"
+  ></app-labels>
+
+  <app-labels
+    label="Point Rate"
+    type="number"
+    placeholder="Enter point rate"
+    [(model)]="ticket.pointRate"
+  ></app-labels>
+
+  <app-labels
+    label="Point Expiry Date"
+    type="date"
+    [(model)]="ticket.pointExpiresAt"
+  ></app-labels>
+
+  <app-labels
+    label="Discount (%)"
+    type="number"
+    placeholder="Enter discount percentage"
+    [(model)]="ticket.discount"
+  ></app-labels>
+
+  <!-- Submit Button -->
+  <button
+    (click)="createTicket()"
+    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded"
+  >
+    Create Ticket
+  </button>
+</div>
