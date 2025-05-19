@@ -22,6 +22,6 @@ router.get('/seller/sellerTickets', authenticateToken, permissionControl, seller
 router.post('/edit-ticket', authenticateToken, permissionControl, companyMiddleware, editTicket)    //TODO:
 
 router.get('/admin/statusPanel', authenticateToken, permissionControl, statusPanel)
-router.post('admin/stausPanel/update-status', authenticateToken, permissionControl, updateTicketStatus)
+router.post('/admin/statusPanel/update-status', authenticateToken, permissionControl, updateTicketStatus)
 
 export default router;
