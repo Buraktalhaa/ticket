@@ -15,6 +15,9 @@ export class TicketService {
   private sellerTickets = new BehaviorSubject<any[]>([]);
   sellerTickets$ = this.sellerTickets.asObservable();
 
+  private adminTickets = new BehaviorSubject<any[]>([]);
+  adminTickets$ = this.adminTickets.asObservable();
+
   constructor(
     private api: ApiService,
     private router: Router
@@ -76,18 +79,26 @@ export class TicketService {
       });
   }
 
-  goAdminPanel() {
+  goAdminStatusPanel() {
     this.api.get('http://localhost:3000/ticket/admin/statusPanel')
       .subscribe({
         next: (res: HttpResponse<any>) => {
           const data = res.body?.data;
-          this.sellerTickets.next(data);
-          this.router.navigateByUrl('admin/statusPanel')
+          this.adminTickets.next(data);
+          this.router.navigateByUrl('admin/statusPanel/tickets')
         },
         error: (err) => {
           console.error('ticket error:', err);
           // this.router.navigateByUrl('/unauthorized');
         }
       })
+  }
+
+  editStatus(ticket: any) {
+    this.api.post('http://localhost:3000/ticket/admin/statusPanel/update-status', ticket)
+      .subscribe({
+        next: () => alert('Ticket edited successfully'),
+        error: (err) => alert('Error: ' + err.error?.message || 'Something went wrong')
+      });
   }
 }

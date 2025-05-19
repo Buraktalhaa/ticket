@@ -8,7 +8,10 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  public isThereUser = signal(false)
+  public isThereUser = signal(
+    !!localStorage.getItem("accessToken") ||
+        !!localStorage.getItem("refreshToken")
+  )
 
   constructor(
     private api: ApiService,
@@ -24,7 +27,7 @@ export class AuthService {
         const refreshToken = res.body.refreshToken
         localStorage.setItem("accessToken", accessToken)
         localStorage.setItem("refreshToken", refreshToken)
-
+        this.isThereUser.set(true)
         this.router.navigateByUrl("/main")
       });
   }
@@ -37,6 +40,7 @@ export class AuthService {
         const refreshToken = res.body.refreshToken
         localStorage.setItem("accessToken", accessToken)
         localStorage.setItem("refreshToken", refreshToken)
+        this.isThereUser.set(true)
         this.router.navigateByUrl("/signin")
       });
   }
@@ -50,6 +54,7 @@ export class AuthService {
         localStorage.setItem("accessToken", accessToken)
         localStorage.setItem("refreshToken", refreshToken)
 
+        this.isThereUser.set(true)
         setTimeout(() => {
           this.router.navigateByUrl('/main');
         }, 3000);
@@ -78,5 +83,4 @@ export class AuthService {
         }
       });
   }
-
 }
