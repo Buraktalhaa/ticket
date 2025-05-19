@@ -17,8 +17,6 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       const status = error?.status;
-      const message = error?.error?.message;
-
       if (status === 401) {
         const refreshToken = localStorage.getItem('refreshToken');
         if (!refreshToken) {

@@ -17,6 +17,7 @@ export class MyProfileComponent {
   email:string =''
 
   constructor(private profileService: ProfileService){}
+
   ngOnInit(): void {
     this.profileService.profileData$.subscribe((data:any) => { 
       if (data) {
@@ -27,5 +28,6 @@ export class MyProfileComponent {
         this.birtday = data.birtday;
       }
     });
+    this.profileService.myProfile()
   }
 }
