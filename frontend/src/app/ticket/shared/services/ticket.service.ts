@@ -35,11 +35,25 @@ export class TicketService {
     });
   }
 
+  getMyTickets() {
+    this.api.get('http://localhost:3000/ticket/seller/sellerTickets')
+      .subscribe({
+        next: (res: HttpResponse<any>) => {
+          const data = res.body?.data;
+          this.sellerTickets.next(data);
+          this.router.navigateByUrl('sellerDashboard/myTickets')
+        },
+        error: (err) => {
+          console.error('ticket error:', err);
+        }
+      });
+  }
+
   routeToCreateTicketPage() {
-    this.api.get('http://localhost:3000/ticket/is-seller').subscribe({
+    this.api.get('http://localhost:3000/ticket/is-seller').subscribe({    //Seller dashbooard yapacaksin hem back hem front
       next: (res: HttpResponse<any>) => {
         const data = res.body?.data;
-        this.router.navigateByUrl('create-ticket')
+        this.router.navigateByUrl('sellerDashboard/create-ticket')
       },
       error: (err) => {
         console.error('ticket error:', err);
@@ -51,32 +65,29 @@ export class TicketService {
   createTicket(ticket: any) {
     this.api.post('http://localhost:3000/ticket/create-ticket', ticket)
       .subscribe({
-        next: () => alert('Ticket created successfully'),
-        error: (err) => alert('Error: ' + err.error?.message || 'Something went wrong')
-      });
-  }
-
-  getSellerTickets() {
-    this.api.get('http://localhost:3000/ticket/seller/sellerTickets')
-      .subscribe({
-        next: (res: HttpResponse<any>) => {
-          const data = res.body?.data;
-          this.sellerTickets.next(data);
-          this.router.navigateByUrl('seller/tickets')
+        next: () => {
+          alert('Ticket created successfully')
+          this.router.navigateByUrl('sellerDashboard/myTickets')
         },
-        error: (err) => {
-          console.error('ticket error:', err);
-        }
+        error: (err) => alert('Error: ' + err.error?.message || 'Something went wrong')
       });
   }
 
   editTicket(ticket: any) {
     this.api.post('http://localhost:3000/ticket/edit-ticket', ticket)
       .subscribe({
-        next: () => alert('Ticket edited successfully'),
+        next: (res: HttpResponse<any>) =>{
+          alert('Ticket edited successfully')
+          this.router.navigateByUrl('sellerDashboard/myTickets')
+        },
         error: (err) => alert('Error: ' + err.error?.message || 'Something went wrong')
       });
   }
+
+
+
+
+
 
   goAdminStatusPanel() {
     this.api.get('http://localhost:3000/ticket/admin/statusPanel')
@@ -84,7 +95,7 @@ export class TicketService {
         next: (res: HttpResponse<any>) => {
           const data = res.body?.data;
           this.adminTickets.next(data);
-          this.router.navigateByUrl('admin/statusPanel/tickets')
+          this.router.navigateByUrl('adminDashboard/statusPanel')
         },
         error: (err) => {
           console.error('ticket error:', err);
@@ -96,7 +107,10 @@ export class TicketService {
   editStatus(ticket: any) {
     this.api.post('http://localhost:3000/ticket/admin/statusPanel/update-status', ticket)
       .subscribe({
-        next: () => alert('Ticket edited successfully'),
+        next: () => {
+          alert('Ticket edited successfully')
+          this.router.navigateByUrl('adminDashboard/statusPanel')
+        },
         error: (err) => alert('Error: ' + err.error?.message || 'Something went wrong')
       });
   }

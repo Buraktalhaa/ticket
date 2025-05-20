@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
-import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
-import { LabelsComponent } from '../labels/labels.component';
+import { Component } from '@angular/core'
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { TicketService } from '../../shared/services/ticket.service';
+import { NavbarComponent } from '../../../../main/shared/components/navbar/navbar.component';
+import { LabelsComponent } from '../labels/labels.component';
+import { TicketService } from '../../../shared/services/ticket.service';
 
 @Component({
   selector: 'app-create-ticket',

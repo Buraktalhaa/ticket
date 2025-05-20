@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { ApiService } from '../../../shared/services/api.service';
 import { Router } from '@angular/router';
-import { TicketService } from '../../shared/services/ticket.service';
+import { NavbarComponent } from '../../../../main/shared/components/navbar/navbar.component';
+import { ApiService } from '../../../../shared/services/api.service';
+import { TicketService } from '../../../shared/services/ticket.service';
 
 @Component({
   selector: 'app-status-panel-edit',
@@ -31,7 +31,7 @@ export class StatusPanelEditComponent {
 
     if (!ticket) {
       console.error('No ticket found in state.');
-      this.router.navigate(['/admin/statusPanel']);
+      this.router.navigate(['/adminDashboard/statusPanel']);
       return;
     }
 

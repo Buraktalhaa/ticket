@@ -1,9 +1,10 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
-import { TicketService } from '../../shared/services/ticket.service';
-import { TicketCardComponent } from '../../shared/components/ticket-card/ticket-card.component';
 import { Router } from '@angular/router';
-import { TicketFilterComponent } from '../../../shared/components/ticket-filter/ticket-filter.component';
+import { NavbarComponent } from '../../../../main/shared/components/navbar/navbar.component';
+import { TicketCardComponent } from '../../../shared/components/ticket-card/ticket-card.component';
+import { TicketFilterComponent } from '../../../../shared/components/ticket-filter/ticket-filter.component';
+import { TicketService } from '../../../shared/services/ticket.service';
+
 
 @Component({
   selector: 'app-seller-tickets',
@@ -31,11 +32,11 @@ export class SellerTicketsComponent {
       console.log(data)
     });
 
-    this.ticketService.getSellerTickets();
+    this.ticketService.getMyTickets();
   }
 
   goToEditPage(ticket: any) {
-    this.router.navigate(['/seller/tickets/edit'], { state: { ticket } });
+    this.router.navigate(['sellerDashboard/myTickets/edit'], { state: { ticket } });
   }
 
   onFilter(filter: { sortBy: string; keyword: string }) {
