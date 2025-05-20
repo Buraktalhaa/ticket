@@ -28,7 +28,7 @@ export class SigninComponent {
 
   constructor(private authService: AuthService) { }
   ngOnInit(): void {
-    console.log("3")
+    this.authService.logOut()
   } 
 
   signIn() {

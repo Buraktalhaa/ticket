@@ -4,6 +4,7 @@ import { ProfileService } from '../../../../profile/shared/services/profile.serv
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../auth/shared/services/auth.service';
 import { TicketService } from '../../../../ticket/shared/services/ticket.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-navbar',
@@ -19,7 +20,8 @@ export class NavbarComponent {
     private profileService: ProfileService,
     public authService: AuthService,
     private router: Router,
-    private ticketService: TicketService
+    private ticketService: TicketService,
+    private cookieService:CookieService
   ) {}
   
   getMyProfile() {
@@ -32,20 +34,15 @@ export class NavbarComponent {
     // permission gerekmedigi icin burada yonlendirme yapmakta sorun yok
   }
 
-  goToCreateTicket(){
-    this.ticketService.routeToCreateTicketPage()
+  goToAdminDashboard(){
+    this.router.navigateByUrl('/adminDashboard');
   }
 
-  sellerTicketsPage(){
-    this.ticketService.getSellerTickets()
-  }
-
-  goToAdminStatusPanel(){
-    this.ticketService.goAdminStatusPanel()
+  goToSellerDashboard(){
+    this.router.navigateByUrl('/sellerDashboard');
   }
 
   logOut(){
-    localStorage.clear()
-    this.router.navigateByUrl('/signin');
+    this.authService.logOut()
   }
 }
