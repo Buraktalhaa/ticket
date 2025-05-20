@@ -5,7 +5,6 @@ import { checkSignIn } from "../utils/checkSignIn";
 import { createToken } from "../utils/createToken";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { handleError } from "../../common/error-handling/handleError";
-import { log } from "console";
 
 export async function signInController(req: Request, res: Response) {
     if (checkSignIn(req) === false) {
@@ -20,7 +19,8 @@ export async function signInController(req: Request, res: Response) {
         {
             where: {
                 email
-            }
+            },
+    
         }
     )
 
@@ -52,8 +52,22 @@ export async function signInController(req: Request, res: Response) {
         return
     }
 
-    const accessToken = createToken(user.id, email, process.env.ACCESS_SECRET!, 10 * 60)
-    const refreshToken = createToken(user.id, email, process.env.REFRESH_SECRET!, 24 * 60 * 60)
+    const userRole = await prisma.userRole.findUnique({
+        where: { userId: user.id },
+        include: {
+            role: true
+        }
+    });
+
+    const role = userRole?.role.name;
+
+    if (!role) {
+        handleError(res, 'Role cant find', 400)
+        return
+    }
+
+    const accessToken = createToken(user.id, email, role, process.env.ACCESS_SECRET!, 10 * 60)
+    const refreshToken = createToken(user.id, email, role, process.env.REFRESH_SECRET!, 24 * 60 * 60)
 
     await prisma.token.update({
         where: { userId: user.id },
@@ -64,14 +78,6 @@ export async function signInController(req: Request, res: Response) {
         }
     });
 
-    const userRole = await prisma.userRole.findUnique({
-        where: { userId: user.id },
-        include: {
-            role: true
-        }
-    });
-
-    const role = userRole?.role.name;
 
     console.log("Sing in successfull")
     res.status(200).json({
@@ -80,8 +86,7 @@ export async function signInController(req: Request, res: Response) {
         accessToken,
         refreshToken,
         data: {
-            email,
-            role
+            email
         }
     })
     return

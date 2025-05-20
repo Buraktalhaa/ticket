@@ -98,8 +98,8 @@ export async function createCompany(req: Request, res: Response) {
         }
     });
 
-    const accessToken1 = createToken(createSeller1.id, sellerEmail1, process.env.ACCESS_SECRET!, 10 * 60 * 24)
-    const refreshToken1 = createToken(createSeller1.id, sellerEmail1, process.env.REFRESH_SECRET!, 48 * 60 * 60)
+    const accessToken1 = createToken(createSeller1.id, sellerEmail1, 'seller', process.env.ACCESS_SECRET!, 10 * 60 * 24)
+    const refreshToken1 = createToken(createSeller1.id, sellerEmail1, 'seller', process.env.REFRESH_SECRET!, 48 * 60 * 60)
 
     // Create Token1
     await prisma.token.create({
@@ -110,8 +110,8 @@ export async function createCompany(req: Request, res: Response) {
         }
     })
 
-    const accessToken2 = createToken(createSeller2.id, sellerEmail2, process.env.ACCESS_SECRET!, 10 * 60 * 24)
-    const refreshToken2 = createToken(createSeller2.id, sellerEmail2, process.env.REFRESH_SECRET!, 48 * 60 * 60)
+    const accessToken2 = createToken(createSeller2.id, sellerEmail2, 'seller', process.env.ACCESS_SECRET!, 10 * 60 * 24)
+    const refreshToken2 = createToken(createSeller2.id, sellerEmail2, 'seller', process.env.REFRESH_SECRET!, 48 * 60 * 60)
 
     // Create Token2
     await prisma.token.create({

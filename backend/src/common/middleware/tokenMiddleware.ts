@@ -6,7 +6,6 @@ export async function authenticateToken(req: Request, res: Response, next: NextF
 
     const header = req.headers['authorization'];
     const token = header && header.split(' ')[1];
-
     if (!token) {
         handleError(res, 'Access token is missing', 401)
         return

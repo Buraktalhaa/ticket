@@ -4,7 +4,6 @@ import bcrypt from 'bcryptjs'
 import { createToken } from '../src/auth/utils/createToken';
 import { generatePNR } from '../src/common/utils/generatePnr';
 
-
 async function main() {
 
   // Default company
@@ -62,8 +61,8 @@ async function main() {
     }
   })
 
-  const accessTokenSeller = createToken(seller.id, email, process.env.ACCESS_SECRET!, 10 * 60 * 24)
-  const refreshTokenSeller = createToken(seller.id, email, process.env.REFRESH_SECRET!, 48 * 60 * 60)
+  const accessTokenSeller = createToken(seller.id, email, 'seller', process.env.ACCESS_SECRET!, 10 * 60 * 24)
+  const refreshTokenSeller = createToken(seller.id, email, 'seller', process.env.REFRESH_SECRET!, 48 * 60 * 60)
 
   await prisma.token.create({
     data: {
@@ -73,8 +72,8 @@ async function main() {
     }
   })
   
-  const accessTokenSeller2 = createToken(seller2.id, email, process.env.ACCESS_SECRET!, 10 * 60 * 24)
-  const refreshTokenSeller2 = createToken(seller2.id, email, process.env.REFRESH_SECRET!, 48 * 60 * 60)
+  const accessTokenSeller2 = createToken(seller2.id, email, 'seller', process.env.ACCESS_SECRET!, 10 * 60 * 24)
+  const refreshTokenSeller2 = createToken(seller2.id, email, 'seller', process.env.REFRESH_SECRET!, 48 * 60 * 60)
 
   await prisma.token.create({
     data: {
@@ -108,8 +107,8 @@ async function main() {
     }
   })
 
-  const accessTokenAdmin = createToken(admin.id, emailAdmin, process.env.ACCESS_SECRET!, 10 * 60 * 24)
-  const refreshTokenAdmin = createToken(admin.id, emailAdmin, process.env.REFRESH_SECRET!, 48 * 60 * 60)
+  const accessTokenAdmin = createToken(admin.id, emailAdmin, 'admin', process.env.ACCESS_SECRET!, 10 * 60 * 24)
+  const refreshTokenAdmin = createToken(admin.id, emailAdmin, 'admin', process.env.REFRESH_SECRET!, 48 * 60 * 60)
 
   await prisma.token.create({
     data: {
@@ -287,6 +286,8 @@ async function main() {
     }
   });
 
+
+  
 
   // User
   await prisma.permit.create({

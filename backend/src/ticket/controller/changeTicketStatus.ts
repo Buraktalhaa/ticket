@@ -5,7 +5,6 @@ import { ResponseStatus } from "../../common/enums/status.enum";
 import { DecodedUser } from '../../common/type/request.type';
 
 export const updateTicketStatus = async (req: Request, res: Response) => {
-    const { userId } = req.user as DecodedUser;
     const { id, status } = req.body
 
     const ticket = await prisma.ticket.findUnique({
