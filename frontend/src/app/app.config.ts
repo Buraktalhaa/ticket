@@ -1,5 +1,7 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
+
 
 import { routes } from './app.routes';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -16,5 +18,7 @@ export const appConfig: ApplicationConfig = {
       provideHttpClient(withInterceptors([
         notificationInterceptor,
         authInterceptor
-      ]))]
+      ])),
+      CookieService
+    ]
 };
