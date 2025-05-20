@@ -34,7 +34,7 @@ export class StatusPanelComponent {
   }
 
   goToChangeStatusPage(ticket: any) {
-    this.router.navigate(['adminDashboard/statusPanel/edit'], { state: { ticket } });
+    this.router.navigate(['admin-dashboard/status-panel/edit'], { state: { ticket } });
   }
 
   onFilter(filter: { sortBy: string; keyword: string }) {

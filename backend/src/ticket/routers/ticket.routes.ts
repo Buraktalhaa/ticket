@@ -1,15 +1,15 @@
 import { Router } from "express";
-import { authenticateToken } from "../../common/middleware/tokenMiddleware";
-import { permissionControl } from "../../profile/middleware/permissionMiddleware";
-import { createTicket } from "../controller/createTicket";
-import { deleteTicket } from "../controller/deleteTicket";
-import { editTicket } from "../controller/editTicket";
-import { getTickets } from "../controller/getTickets"
-import { updateTicketStatus } from "../controller/changeTicketStatus";
+import { authenticateToken } from "../../common/middleware/token-middleware";
+import { permissionControl } from "../../profile/middleware/permission-middleware";
+import { createTicket } from "../controller/create-ticket";
+import { deleteTicket } from "../controller/delete-ticket";
+import { editTicket } from "../controller/edit-ticket";
+import { getTickets } from "../controller/get-tickets"
+import { updateTicketStatus } from "../controller/change-ticket-status";
 import { companyMiddleware } from "../middleware/companyMiddleware";
-import { isSeller } from "../controller/isSeller";
-import { sellerTickets } from "../controller/sellerTickets";
-import { statusPanel } from "../controller/statusPanel";
+import { isSeller } from "../controller/is-seller";
+import { sellerTickets } from "../controller/seller-tickets";
+import { statusPanel } from "../controller/status-panel";
 
 const router = Router()
 

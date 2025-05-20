@@ -1,9 +1,9 @@
 import { Router } from "express";
-import { authenticateToken } from '../../common/middleware/tokenMiddleware'
-import { getProfile } from "../controller/getProfile";
-import { updateProfile } from "../controller/updateProfile";
-import { editPassword } from "../controller/editPassword";
-import { permissionControl } from "../middleware/permissionMiddleware";
+import { authenticateToken } from '../../common/middleware/token-middleware'
+import { getProfile } from "../controller/get-profile";
+import { updateProfile } from "../controller/update-profile";
+import { editPassword } from "../controller/edit-password";
+import { permissionControl } from "../middleware/permission-middleware";
 import fileUploadMiddleware from "../../common/middleware/file-upload";
 
 const router = Router()

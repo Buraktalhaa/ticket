@@ -41,7 +41,7 @@ export class TicketService {
         next: (res: HttpResponse<any>) => {
           const data = res.body?.data;
           this.sellerTickets.next(data);
-          this.router.navigateByUrl('sellerDashboard/myTickets')
+          this.router.navigateByUrl('seller-dashboard/my-tickets')
         },
         error: (err) => {
           console.error('ticket error:', err);
@@ -53,7 +53,7 @@ export class TicketService {
     this.api.get('http://localhost:3000/ticket/is-seller').subscribe({    //Seller dashbooard yapacaksin hem back hem front
       next: (res: HttpResponse<any>) => {
         const data = res.body?.data;
-        this.router.navigateByUrl('sellerDashboard/create-ticket')
+        this.router.navigateByUrl('seller-dashboard/create-ticket')
       },
       error: (err) => {
         console.error('ticket error:', err);
@@ -67,7 +67,7 @@ export class TicketService {
       .subscribe({
         next: () => {
           alert('Ticket created successfully')
-          this.router.navigateByUrl('sellerDashboard/myTickets')
+          this.router.navigateByUrl('seller-dashboard/my-tickets')
         },
         error: (err) => alert('Error: ' + err.error?.message || 'Something went wrong')
       });
@@ -78,7 +78,7 @@ export class TicketService {
       .subscribe({
         next: (res: HttpResponse<any>) =>{
           alert('Ticket edited successfully')
-          this.router.navigateByUrl('sellerDashboard/myTickets')
+          this.router.navigateByUrl('seller-dashboard/my-tickets')
         },
         error: (err) => alert('Error: ' + err.error?.message || 'Something went wrong')
       });
@@ -95,7 +95,7 @@ export class TicketService {
         next: (res: HttpResponse<any>) => {
           const data = res.body?.data;
           this.adminTickets.next(data);
-          this.router.navigateByUrl('adminDashboard/statusPanel')
+          this.router.navigateByUrl('admin-dashboard/status-panel')
         },
         error: (err) => {
           console.error('ticket error:', err);
@@ -109,7 +109,7 @@ export class TicketService {
       .subscribe({
         next: () => {
           alert('Ticket edited successfully')
-          this.router.navigateByUrl('adminDashboard/statusPanel')
+          this.router.navigateByUrl('admin-dashboard/status-panel')
         },
         error: (err) => alert('Error: ' + err.error?.message || 'Something went wrong')
       });

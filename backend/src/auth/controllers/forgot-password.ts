@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { handleError } from "../../common/error-handling/handleError";
+import { handleError } from "../../common/error-handling/handle-error";
 import { Email } from "../../common/utils/email";
 import prisma from "../../common/utils/prisma";
-import { createToken } from "../utils/createToken";
+import { createToken } from "../utils/create-token";
 
 export async function forgotPasswordController(req: Request, res: Response) {
     try {

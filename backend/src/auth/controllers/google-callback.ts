@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createToken } from "../utils/createToken";
+import { createToken } from "../utils/create-token";
 import prisma from "../../common/utils/prisma";
 
 export async function googleCallback(req: Request, res: Response) {

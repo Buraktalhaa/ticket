@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
 import prisma from '../../common/utils/prisma';
 import bcrypt from 'bcryptjs'
-import { checkSignIn } from "../utils/checkSignIn";
-import { createToken } from "../utils/createToken";
+import { checkSignIn } from "../utils/check-sign-in";
+import { createToken } from "../utils/create-token";
 import { ResponseStatus } from "../../common/enums/status.enum";
-import { handleError } from "../../common/error-handling/handleError";
+import { handleError } from "../../common/error-handling/handle-error";
 
 export async function signInController(req: Request, res: Response) {
     if (checkSignIn(req) === false) {

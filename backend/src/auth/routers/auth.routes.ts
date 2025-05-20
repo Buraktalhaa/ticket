@@ -2,11 +2,11 @@ import { Router } from 'express';
 import { signUpController } from '../controllers/sign-up';
 import { signInController } from '../controllers/sign-in';
 import { forgotPasswordController } from '../controllers/forgot-password';
-import { resetPasswordController } from '../controllers/resetPassword';
+import { resetPasswordController } from '../controllers/reset-password';
 import passport from 'passport';
-import { googleCallback } from '../controllers/googleCallback';
-import '../controllers/googleStrategy';
-import { refreshController } from '../controllers/refreshToken';
+import { googleCallback } from '../controllers/google-callback';
+import '../controllers/google-strategy';
+import { refreshController } from '../controllers/refresh-token';
 
 
 

@@ -1,5 +1,5 @@
 import { Job } from "bullmq";
-import { orderQueue } from "./orderQueue";
+import { orderQueue } from "./order-queue";
 
 export const handleFailedJob = async (job: Job, error: Error) => {
     if (!job) {

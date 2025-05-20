@@ -2,7 +2,7 @@ import { Job, QueueEvents, Worker } from 'bullmq';
 import prisma from '../../common/utils/prisma';
 import Stripe from 'stripe';
 import redis from '../../common/utils/redis';
-import { orderQueue } from './orderQueue';
+import { orderQueue } from './order-queue';
 import { wait } from '../../common/utils/wait';
 
 

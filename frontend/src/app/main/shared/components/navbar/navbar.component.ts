@@ -35,11 +35,11 @@ export class NavbarComponent {
   }
 
   goToAdminDashboard(){
-    this.router.navigateByUrl('/adminDashboard');
+    this.router.navigateByUrl('/admin-dashboard');
   }
 
   goToSellerDashboard(){
-    this.router.navigateByUrl('/sellerDashboard');
+    this.router.navigateByUrl('/seller-dashboard');
   }
 
   logOut(){

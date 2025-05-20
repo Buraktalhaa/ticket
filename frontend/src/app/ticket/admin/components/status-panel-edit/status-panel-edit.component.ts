@@ -31,7 +31,7 @@ export class StatusPanelEditComponent {
 
     if (!ticket) {
       console.error('No ticket found in state.');
-      this.router.navigate(['/adminDashboard/statusPanel']);
+      this.router.navigate(['/admin-dashboard/status-panel']);
       return;
     }
 

@@ -1,9 +1,9 @@
 import prisma from '../../common/utils/prisma';
 import { Request, Response } from "express";
 import jwt from 'jsonwebtoken';
-import { createToken } from "../utils/createToken";
+import { createToken } from "../utils/create-token";
 import { ResponseStatus } from '../../common/enums/status.enum';
-import { handleError } from '../../common/error-handling/handleError';
+import { handleError } from '../../common/error-handling/handle-error';
 
 
 export async function refreshController(req: Request, res: Response) {

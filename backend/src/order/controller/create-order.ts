@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
 import { DecodedUser } from '../../common/type/request.type';
-import { handleError } from '../../common/error-handling/handleError';
+import { handleError } from '../../common/error-handling/handle-error';
 import { ResponseStatus } from '../../common/enums/status.enum';
-import { orderQueue } from '../queue/orderQueue';
-import '../queue/orderWorker';
+import { orderQueue } from '../queue/order-queue';
+import '../queue/order-worker';
 import redis from '../../common/utils/redis';
 import { wait } from '../../common/utils/wait';
 

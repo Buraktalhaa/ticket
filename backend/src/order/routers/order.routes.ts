@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { authenticateToken } from "../../common/middleware/tokenMiddleware";
-import { permissionControl } from "../../profile/middleware/permissionMiddleware";
-import { createOrder } from "../controller/createOrder";
-import { cancelOrder } from "../controller/cancelOrder";
-import { getOrders } from "../controller/getOrders";
-import { getUserPoints } from "../controller/getPoints"
+import { authenticateToken } from "../../common/middleware/token-middleware";
+import { permissionControl } from "../../profile/middleware/permission-middleware";
+import { createOrder } from "../controller/create-order";
+import { cancelOrder } from "../controller/cancel-order";
+import { getOrders } from "../controller/get-orders";
+import { getUserPoints } from "../controller/get-points"
 
 const router = Router()
 

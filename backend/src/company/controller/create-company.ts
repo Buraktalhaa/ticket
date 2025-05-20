@@ -5,8 +5,8 @@ import bcrypt from 'bcryptjs'
 import { randomUUID } from 'crypto';
 import { ResponseStatus } from '../../common/enums/status.enum';
 import { Email } from '../../common/utils/email';
-import { handleError } from '../../common/error-handling/handleError';
-import { createToken } from '../../auth/utils/createToken';
+import { handleError } from '../../common/error-handling/handle-error';
+import { createToken } from '../../auth/utils/create-token';
 import { RoleType } from '@prisma/client';
 
 export async function createCompany(req: Request, res: Response) {

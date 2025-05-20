@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { checkSignUp } from '../utils/checkSignUp';
+import { checkSignUp } from '../utils/check-sign-up';
 import prisma from '../../common/utils/prisma';
 import bcrypt from 'bcryptjs'
-import { createToken } from '../utils/createToken';
+import { createToken } from '../utils/create-token';
 import { ResponseStatus } from '../../common/enums/status.enum';
-import { handleError } from '../../common/error-handling/handleError';
+import { handleError } from '../../common/error-handling/handle-error';
 
 export async function signUpController(req: Request, res: Response) {
     const { email, firstName } = req.body;

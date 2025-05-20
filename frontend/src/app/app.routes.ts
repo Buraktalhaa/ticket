@@ -29,14 +29,14 @@ export const routes: Routes = [
     { path: 'tickets', component: TicketsComponent },
     { path: 'unauthorized', component: UnauthorizedComponent },
 
-    { path: 'sellerDashboard', component: SellerDashboardComponent, canActivate:[canActiveteGuard],data:{roles:['seller']} },
-    { path: 'sellerDashboard/create-ticket', component: CreateTicketComponent, canActivate:[canActiveteGuard],data:{roles:['seller']} },
-    { path: 'sellerDashboard/myTickets', component:  SellerTicketsComponent, canActivate:[canActiveteGuard],data:{roles:['seller']}},
-    { path: 'sellerDashboard/myTickets/edit', component: TicketEditComponent, canActivate:[canActiveteGuard],data:{roles:['seller']}},
+    { path: 'seller-dashboard', component: SellerDashboardComponent, canActivate:[canActiveteGuard],data:{roles:['seller']} },
+    { path: 'seller-dashboard/create-ticket', component: CreateTicketComponent, canActivate:[canActiveteGuard],data:{roles:['seller']} },
+    { path: 'seller-dashboard/my-tickets', component:  SellerTicketsComponent, canActivate:[canActiveteGuard],data:{roles:['seller']}},
+    { path: 'seller-dashboard/my-tickets/edit', component: TicketEditComponent, canActivate:[canActiveteGuard],data:{roles:['seller']}},
     
-    { path: 'adminDashboard', component: AdminDashboardComponent, canActivate:[canActiveteGuard],data:{roles:['admin']}},
-    { path: 'adminDashboard/statusPanel', component: StatusPanelComponent, canActivate:[canActiveteGuard],data:{roles:['admin']}},
-    { path: 'adminDashboard/statusPanel/edit', component: StatusPanelEditComponent, canActivate:[canActiveteGuard],data:{roles:['admin']}},
+    { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate:[canActiveteGuard],data:{roles:['admin']}},
+    { path: 'admin-dashboard/status-panel', component: StatusPanelComponent, canActivate:[canActiveteGuard],data:{roles:['admin']}},
+    { path: 'admin-dashboard/status-panel/edit', component: StatusPanelEditComponent, canActivate:[canActiveteGuard],data:{roles:['admin']}},
 
     { path: '**', redirectTo: '/main'}
 ];

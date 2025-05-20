@@ -36,7 +36,7 @@ export class SellerTicketsComponent {
   }
 
   goToEditPage(ticket: any) {
-    this.router.navigate(['sellerDashboard/myTickets/edit'], { state: { ticket } });
+    this.router.navigate(['seller-dashboard/my-tickets/edit'], { state: { ticket } });
   }
 
   onFilter(filter: { sortBy: string; keyword: string }) {

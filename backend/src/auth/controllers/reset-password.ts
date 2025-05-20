@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { handleError } from "../../common/error-handling/handleError";
+import { handleError } from "../../common/error-handling/handle-error";
 import jwt from 'jsonwebtoken';
 import prisma from "../../common/utils/prisma";
 import bcrypt from 'bcryptjs'

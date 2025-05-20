@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../../common/utils/prisma";
-import { handleError } from "../../common/error-handling/handleError";
+import { handleError } from "../../common/error-handling/handle-error";
 import { ResponseStatus } from "../../common/enums/status.enum";
 
 export async function deleteTicket(req:Request, res:Response){
