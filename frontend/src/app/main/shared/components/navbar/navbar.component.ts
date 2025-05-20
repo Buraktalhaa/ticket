@@ -36,16 +36,16 @@ export class NavbarComponent {
     this.ticketService.routeToCreateTicketPage()
   }
 
-  logOut(){
-    localStorage.clear()
-    this.router.navigateByUrl('/signin');
-  }
-
-  sellerTicket(){
+  sellerTicketsPage(){
     this.ticketService.getSellerTickets()
   }
 
   goToAdminStatusPanel(){
     this.ticketService.goAdminStatusPanel()
+  }
+
+  logOut(){
+    localStorage.clear()
+    this.router.navigateByUrl('/signin');
   }
 }

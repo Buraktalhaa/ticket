@@ -107,6 +107,13 @@ enum RoleType {
   admin
 }
 
+model Role {
+  id       String     @id @default(uuid())
+  name     RoleType   @unique
+  UserRole UserRole[]
+  Permit   Permit[]
+}
+
 model Permission {
   id        String   @id @default(uuid())
   url       String   @unique
@@ -122,13 +129,6 @@ model Permit {
   permissionId String
   permission   Permission @relation(fields: [permissionId], references: [id])
   createdAt    DateTime   @default(now())
-}
-
-model Role {
-  id       String     @id @default(uuid())
-  name     RoleType   @unique
-  UserRole UserRole[]
-  Permit   Permit[]
 }
 
 model Card {

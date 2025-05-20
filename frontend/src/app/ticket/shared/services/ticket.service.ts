@@ -62,11 +62,10 @@ export class TicketService {
         next: (res: HttpResponse<any>) => {
           const data = res.body?.data;
           this.sellerTickets.next(data);
-          this.router.navigateByUrl('seller/sellerTickets')
+          this.router.navigateByUrl('seller/tickets')
         },
         error: (err) => {
           console.error('ticket error:', err);
-          // this.router.navigateByUrl('/unauthorized');
         }
       });
   }

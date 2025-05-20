@@ -5,10 +5,11 @@ import { checkSignIn } from "../utils/checkSignIn";
 import { createToken } from "../utils/createToken";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { handleError } from "../../common/error-handling/handleError";
+import { log } from "console";
 
 export async function signInController(req: Request, res: Response) {
     if (checkSignIn(req) === false) {
-        handleError(res,'Email and password are required', 400)
+        handleError(res, 'Email and password are required', 400)
         return;
     }
 
@@ -24,7 +25,7 @@ export async function signInController(req: Request, res: Response) {
     )
 
     if (!auth) {
-        handleError(res,'Auth not found', 400)
+        handleError(res, 'Auth not found', 400)
         return
     }
 
@@ -36,25 +37,26 @@ export async function signInController(req: Request, res: Response) {
         }
     )
     if (!user) {
-        handleError(res,'User not found', 400)
+        handleError(res, 'User not found', 400)
         return;
     }
 
     const isPasswordValid = await bcrypt.compare(password, auth.password);
     if (!isPasswordValid) {
-        handleError(res,'Incorrect password', 400)
+        handleError(res, 'Incorrect password', 400)
         return
     }
 
     if (!process.env.ACCESS_SECRET && !process.env.REFRESH_SECRET) {
-        handleError(res,"JWT_SECRET is not defined in environment variables", 400)
+        handleError(res, "JWT_SECRET is not defined in environment variables", 400)
+        return
     }
 
     const accessToken = createToken(user.id, email, process.env.ACCESS_SECRET!, 10 * 60)
     const refreshToken = createToken(user.id, email, process.env.REFRESH_SECRET!, 24 * 60 * 60)
 
     await prisma.token.update({
-        where: { userId:user.id  },
+        where: { userId: user.id },
         data: {
             accessToken,
             refreshToken,
@@ -62,14 +64,24 @@ export async function signInController(req: Request, res: Response) {
         }
     });
 
+    const userRole = await prisma.userRole.findUnique({
+        where: { userId: user.id },
+        include: {
+            role: true
+        }
+    });
+
+    const role = userRole?.role.name;
+
     console.log("Sing in successfull")
     res.status(200).json({
-        status:ResponseStatus.SUCCESS,
+        status: ResponseStatus.SUCCESS,
         message: "Sign in succesfull",
         accessToken,
         refreshToken,
         data: {
-            email
+            email,
+            role
         }
     })
     return

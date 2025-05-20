@@ -1,12 +1,13 @@
 import { Component, SimpleChanges } from '@angular/core';
-import { AuthInputComponent } from '../shared/components/auth-input/auth-input.component';
-import { AuthService } from '../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { TextLinkComponent } from '../shared/components/text-link/text-link.component';
-import { FooterInfoTextComponent } from '../shared/components/footer-info-text/footer-info-text.component';
-import { SignButtonComponent } from '../shared/components/sign-button/sign-button.component';
+import { AuthInputComponent } from '../../shared/components/auth-input/auth-input.component';
+import { TextLinkComponent } from '../../shared/components/text-link/text-link.component';
+import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
+import { SignButtonComponent } from '../../shared/components/sign-button/sign-button.component';
+import { AuthService } from '../../shared/services/auth.service';
+
 @Component({
   selector: 'app-signin',
   imports: [

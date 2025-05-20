@@ -21,7 +21,6 @@ export async function isSeller(req: Request, res: Response) {
 
     console.log(userRole.role.name);
     
-
     res.status(200).json({
         status: ResponseStatus.SUCCESS,
         data: userRole.role.name

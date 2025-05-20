@@ -1,11 +1,11 @@
 import { Component, SimpleChanges } from '@angular/core';
-import { AuthInputComponent } from '../shared/components/auth-input/auth-input.component';
 import { ActivatedRoute } from '@angular/router';
-import { AuthService } from '../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FooterInfoTextComponent } from '../shared/components/footer-info-text/footer-info-text.component';
-import { SignButtonComponent } from '../shared/components/sign-button/sign-button.component';
+import { AuthInputComponent } from '../../shared/components/auth-input/auth-input.component';
+import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
+import { SignButtonComponent } from '../../shared/components/sign-button/sign-button.component';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-reset-password',

@@ -38,7 +38,7 @@ export async function editTicket(req: Request, res: Response) {
 
     res.status(200).json({
         status: ResponseStatus.SUCCESS,
-        message: 'ticket edited succesfully',
+        message: 'Ticket edited succesfully',
         ticket: editedTicket
     });
     return;

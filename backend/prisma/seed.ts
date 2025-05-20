@@ -424,8 +424,6 @@ async function main() {
 
 
 
-
-
 // Category
 const category1 = await prisma.category.create({
   data: { name: 'Concert' },

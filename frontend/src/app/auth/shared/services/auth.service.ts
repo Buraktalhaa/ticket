@@ -8,10 +8,7 @@ import { Router } from '@angular/router';
   providedIn: 'root',
 })
 export class AuthService {
-  public isThereUser = signal(
-    !!localStorage.getItem("accessToken") ||
-        !!localStorage.getItem("refreshToken")
-  )
+  public isThereUser = signal(!!localStorage.getItem("accessToken") || !!localStorage.getItem("refreshToken"))
 
   constructor(
     private api: ApiService,
@@ -22,11 +19,13 @@ export class AuthService {
     this.api
       .post('http://localhost:3000/auth/signIn', signinData)
       .subscribe((res: HttpResponse<any>) => {
-        console.log(signinData)
         const accessToken = res.body.accessToken
-        const refreshToken = res.body.refreshToken
         localStorage.setItem("accessToken", accessToken)
+        const refreshToken = res.body.refreshToken
         localStorage.setItem("refreshToken", refreshToken)
+        const role = res.body.data.role;
+        localStorage.setItem("role", role)
+        
         this.isThereUser.set(true)
         this.router.navigateByUrl("/main")
       });
