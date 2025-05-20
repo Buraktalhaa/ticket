@@ -1,20 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ProfileService } from '../../profile/shared/services/profile.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ApiService {
-  constructor(private httpClient: HttpClient) {}
-
-
+  constructor(
+    private httpClient: HttpClient,
+    private cookieService: CookieService
+  ) {}
 
   get(url: string) {
     return this.httpClient.get(url, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+        Authorization: 'Bearer ' + this.cookieService.get('accessToken'),
       },
       observe: 'response',
     });
@@ -24,7 +26,7 @@ export class ApiService {
     return this.httpClient.post(url, data, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+        Authorization: 'Bearer ' + this.cookieService.get('accessToken'),
       },
       observe: 'response',
     });
@@ -34,7 +36,7 @@ export class ApiService {
     return this.httpClient.put(url, data, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+        Authorization: 'Bearer ' + this.cookieService.get('accessToken'),
       },
       observe: 'response',
     });
@@ -44,7 +46,7 @@ export class ApiService {
     return this.httpClient.patch(url, data, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+        Authorization: 'Bearer ' + this.cookieService.get('accessToken'),
       },
       observe: 'response',
     });
@@ -54,7 +56,7 @@ export class ApiService {
     return this.httpClient.delete(url, {
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + localStorage.getItem('accessToken'),
+        Authorization: 'Bearer ' + this.cookieService.get('accessToken'),
       },
       observe: 'response',
     });
