@@ -36,6 +36,19 @@ export class TicketService {
     });
   }
 
+  categoryTickets(category: string) {
+    this.api.get(`http://localhost:3000/ticket/get-tickets/by-category/${category}`).subscribe({
+      next: (res: HttpResponse<any>) => {
+        const data = res.body?.data || [];
+        this.ticketsSubject.next(data);
+        this.router.navigateByUrl(`/main/${category}`);
+      },
+      error: (err) => {
+        console.error('ticket category error:', err);
+      }
+    });
+  }
+
   getMyTickets() {
     this.api.get('http://localhost:3000/ticket/seller/seller-tickets')
       .subscribe({
@@ -77,7 +90,7 @@ export class TicketService {
   editTicket(ticket: any) {
     this.api.post('http://localhost:3000/ticket/edit-ticket', ticket)
       .subscribe({
-        next: (res: HttpResponse<any>) =>{
+        next: (res: HttpResponse<any>) => {
           alert('Ticket edited successfully')
           this.router.navigateByUrl('seller-dashboard/my-tickets')
         },

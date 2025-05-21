@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthButtonsComponent } from '../auth-buttons/auth-buttons.component';
 import { ProfileService } from '../../../../profile/shared/services/profile.service';
 import { Router } from '@angular/router';
@@ -15,7 +15,6 @@ import { CookieService } from 'ngx-cookie-service';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-
   role: string | null = null;
   isLoggedIn: boolean = false;
 
@@ -50,5 +49,11 @@ export class NavbarComponent {
 
   logOut() {
     this.authService.logOut()
+  }
+
+  selectCategory(category: string) {
+    const allowedCategories = ['flight', 'train', 'bus', 'hotel', 'movie', 'theater', 'concert'];
+    if (!allowedCategories.includes(category)) return;
+    this.router.navigate(['/main', category]);
   }
 }
