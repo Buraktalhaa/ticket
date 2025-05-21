@@ -2,8 +2,9 @@ import { Component } from '@angular/core';
 import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 import { TicketService } from '../../../ticket/shared/services/ticket.service';
 import { TicketFilterComponent } from '../../../shared/components/ticket-filter/ticket-filter.component';
-import { TicketCardComponent } from '../../../ticket/shared/components/ticket-card/ticket-card.component';
-import { ActivatedRoute } from '@angular/router';
+import { TicketCardComponent } from '../../../shared/components/ticket-card/ticket-card.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CartService } from '../../../cart/services/cart.service';
 
 @Component({
   selector: 'app-main',
@@ -24,7 +25,8 @@ export class MainComponent {
 
   constructor(
     private ticketService: TicketService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -44,6 +46,12 @@ export class MainComponent {
       this.filteredTickets = [...data];
       console.log(data);
     });
+  }
+
+  goTicketDetailPage(ticket:any){
+    this.ticketService.setSelectedTicket(ticket);
+    const category = ticket.category.name;
+    this.router.navigate(['/main', category, ticket.id]);
   }
 
   onFilter(filter: { sortBy: string; keyword: string }) {

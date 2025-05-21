@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { NavbarComponent } from '../../../../main/shared/components/navbar/navbar.component';
-import { ApiService } from '../../../../shared/services/api.service';
-import { TicketService } from '../../../shared/services/ticket.service';
+import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
+import { ApiService } from '../../../shared/services/api.service';
+import { TicketService } from '../../../ticket/shared/services/ticket.service';
+
 
 @Component({
   selector: 'app-status-panel-edit',

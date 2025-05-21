@@ -11,12 +11,14 @@ import { isSeller } from "../controller/is-seller";
 import { sellerTickets } from "../controller/seller-tickets";
 import { statusPanel } from "../controller/status-panel";
 import { getTicketsByCategory } from "../controller/get-tickets-by-category";
+import { getTicketById } from "../controller/get-ticket-by-id";
 
 const router = Router()
 
 router.post('/create-ticket', authenticateToken, permissionControl, createTicket)
 router.post('/delete-ticket', authenticateToken, permissionControl, companyMiddleware, deleteTicket)
 router.get('/get-tickets', getTickets)
+router.get('/get-tickets/by-id/:id', getTicketById)
 router.get('/get-tickets/by-category/:category', getTicketsByCategory)
 
 router.get('/is-seller', authenticateToken, permissionControl, isSeller)

@@ -35,7 +35,7 @@ export class NavbarComponent {
     this.profileService.myProfile()
   }
 
-  getAlltickets() {
+  getAllTickets() {
     this.ticketService.allTickets()
   }
 
@@ -55,5 +55,9 @@ export class NavbarComponent {
     const allowedCategories = ['flight', 'train', 'bus', 'hotel', 'movie', 'theater', 'concert'];
     if (!allowedCategories.includes(category)) return;
     this.router.navigate(['/main', category]);
+  }
+
+  goToCart(){
+    this.router.navigateByUrl('my-profile/cart');
   }
 }

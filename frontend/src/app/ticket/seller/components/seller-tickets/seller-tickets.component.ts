@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavbarComponent } from '../../../../main/shared/components/navbar/navbar.component';
-import { TicketCardComponent } from '../../../shared/components/ticket-card/ticket-card.component';
+import { TicketCardComponent } from '../../../../shared/components/ticket-card/ticket-card.component';
 import { TicketFilterComponent } from '../../../../shared/components/ticket-filter/ticket-filter.component';
 import { TicketService } from '../../../shared/services/ticket.service';
 

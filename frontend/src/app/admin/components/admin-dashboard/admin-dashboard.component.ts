@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { NavbarComponent } from '../../../../main/shared/components/navbar/navbar.component';
-import { RouterLink } from '@angular/router';
-import { TicketService } from '../../../shared/services/ticket.service';
+import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
+import { TicketService } from '../../../ticket/shared/services/ticket.service';
+
 
 @Component({
   selector: 'app-admin-dashboard',

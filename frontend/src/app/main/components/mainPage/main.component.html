@@ -11,6 +11,8 @@
       [price]="item.price"
       [discount]="item.discount"
       [imageUrl]="item.images[0] ? item.images[0] : 'defaultImage.webp'"
+      [buttonText]="'Add to cart'"
+      (buttonClick)="goTicketDetailPage(item)"
       ></app-ticket-card>
       }
     </div>
