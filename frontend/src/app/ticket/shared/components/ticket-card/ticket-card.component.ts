@@ -13,6 +13,7 @@ export class TicketCardComponent {
   @Output() buttonClick = new EventEmitter<void>();
   @Input() price!: number
   @Input() discount!: number
+  @Input() imageUrl: string = "/defaultImage.webp";
   discountedPrice!:number 
 
   ngOnChanges(changes: SimpleChanges) {
