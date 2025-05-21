@@ -208,8 +208,6 @@ async function main() {
 
 
 
-
-
   
 
 
@@ -225,7 +223,6 @@ async function main() {
       url: '/delete-ticket'
     }
   });
-
 
   const sellerPermission3 = await prisma.permission.create({
     data: {
@@ -427,16 +424,34 @@ async function main() {
 
 // Category
 const category1 = await prisma.category.create({
-  data: { name: 'Concert' },
+  data: { name: 'flight' },
 });
 
 const category2 = await prisma.category.create({
-  data: { name: 'Theater' },
+  data: { name: 'train' },
 });
 
 const category3 = await prisma.category.create({
-  data: { name: 'Festival' },
+  data: { name: 'bus' },
 });
+
+const category4 = await prisma.category.create({
+  data: { name: 'hotel' },
+});
+
+const category5 = await prisma.category.create({
+  data: { name: 'movie' },
+});
+
+const category6 = await prisma.category.create({
+  data: { name: 'theater' },
+});
+
+const category7 = await prisma.category.create({
+  data: { name: 'concert' },
+});
+
+
 
 const expiresAt = new Date();
 expiresAt.setDate(expiresAt.getDate() + 7);
@@ -445,7 +460,7 @@ expiresAt.setDate(expiresAt.getDate() + 7);
 await prisma.ticket.create({
   data: {
     userId: seller.id,
-    categoryId: category1.id,
+    categoryId: category7.id,
     price: 100,
     pnr: generatePNR(),
     description: 'Rock concert in the city',
@@ -464,7 +479,7 @@ await prisma.ticket.create({
 await prisma.ticket.create({
   data: {
     userId: seller.id,
-    categoryId: category1.id,
+    categoryId: category7.id,
     price: 80,
     pnr: generatePNR(),
     description: 'Pop music live show',
@@ -485,7 +500,7 @@ await prisma.ticket.create({
 await prisma.ticket.create({
   data: {
     userId: seller.id,
-    categoryId: category2.id,
+    categoryId: category6.id,
     price: 60,
     pnr: generatePNR(),
     description: 'Shakespeare play night',
@@ -504,7 +519,7 @@ await prisma.ticket.create({
 await prisma.ticket.create({
   data: {
     userId: seller.id,
-    categoryId: category2.id,
+    categoryId: category6.id,
     price: 50,
     pnr: generatePNR(),
     description: 'Modern comedy theater',
@@ -524,10 +539,10 @@ await prisma.ticket.create({
 await prisma.ticket.create({
   data: {
     userId: seller2.id,
-    categoryId: category3.id,
+    categoryId: category5.id,
     price: 120,
     pnr: generatePNR(),
-    description: 'Summer music festival',
+    description: 'The Lord of the Rings: The Two Towers',
     hour: 15,
     pointExpiresAt: expiresAt,
     pointRate: 0.1,
@@ -543,10 +558,10 @@ await prisma.ticket.create({
 await prisma.ticket.create({
   data: {
     userId: seller2.id,
-    categoryId: category3.id,
+    categoryId: category1.id,
     price: 95,
     pnr: generatePNR(),
-    description: 'Food and culture festival',
+    description: 'Ankara-Muğla Thy flight',
     hour: 13,
     pointExpiresAt: expiresAt,
     pointRate: 0.09,
@@ -565,7 +580,7 @@ await prisma.ticket.create({
     categoryId: category3.id,
     price: 95,
     pnr: generatePNR(),
-    description: 'It is for testing',
+    description: 'Muğla-Ankara Thy flight',
     hour: 13,
     pointExpiresAt: expiresAt,
     pointRate: 0.09,
@@ -576,11 +591,6 @@ await prisma.ticket.create({
     images: [],
   },
 });
-
-
-
-
-
 
   console.log('Seed işlemi tamamlandı.');
 }
@@ -594,6 +604,3 @@ main()
     await prisma.$disconnect()
     process.exit(1)
   })
-
-
-//   npx prisma db seed
