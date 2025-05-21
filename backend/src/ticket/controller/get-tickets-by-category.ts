@@ -17,10 +17,17 @@ export async function getTicketsByCategory(req: Request, res: Response) {
                 },
             },
             include: {
-                category: true,
+                category:true,
                 company: true,
                 user: true,
+
             },
+            omit:{
+                categoryId:true,
+                companyId:true,
+                createdAt:true,
+                pnr:true,
+            }
         });
 
         res.status(200).json({

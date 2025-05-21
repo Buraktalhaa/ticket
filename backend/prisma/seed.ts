@@ -8,10 +8,10 @@ async function main() {
 
   // Default company
   const company = await prisma.company.create({
-    data:{
-      name:'BTM',
-      phone:'05071808810',
-      email:'btm@gmail.com'
+    data: {
+      name: 'BTM',
+      phone: '05071808810',
+      email: 'btm@gmail.com'
     }
   })
 
@@ -22,41 +22,41 @@ async function main() {
   const hashedPassword = await bcrypt.hash(password, 10);
   const hashedPassword2 = await bcrypt.hash('c', 10);
 
-    // Create seller for BTM company
-    const seller = await prisma.user.create({
-      data: {
-        firstName: "Burak",
-        lastName: "Talha",
-        birthday: "21.02.2001",
-        active: true,
-        photoName: "",
-        email,
-        companyId:company.id
-      }
-    })
+  // Create seller for BTM company
+  const seller = await prisma.user.create({
+    data: {
+      firstName: "Burak",
+      lastName: "Talha",
+      birthday: "21.02.2001",
+      active: true,
+      photoName: "",
+      email,
+      companyId: company.id
+    }
+  })
 
-    const seller2 = await prisma.user.create({
-      data: {
-        firstName: "Burak",
-        lastName: "Talha",
-        birthday: "21.02.2001",
-        active: true,
-        photoName: "",
-        email:email2,
-        companyId:company.id
-      }
-    })
+  const seller2 = await prisma.user.create({
+    data: {
+      firstName: "Burak",
+      lastName: "Talha",
+      birthday: "21.02.2001",
+      active: true,
+      photoName: "",
+      email: email2,
+      companyId: company.id
+    }
+  })
 
   const sellerAuth = await prisma.auth.create({
     data: {
-      email:seller.email,
+      email: seller.email,
       password: hashedPassword
     }
   })
 
   const sellerAuth2 = await prisma.auth.create({
     data: {
-      email:seller2.email,
+      email: seller2.email,
       password: hashedPassword2
     }
   })
@@ -66,19 +66,19 @@ async function main() {
 
   await prisma.token.create({
     data: {
-      accessToken:accessTokenSeller,
-      refreshToken:refreshTokenSeller,
+      accessToken: accessTokenSeller,
+      refreshToken: refreshTokenSeller,
       userId: seller.id
     }
   })
-  
-  const accessTokenSeller2 = createToken(seller2.id, email, 'seller', process.env.ACCESS_SECRET!, 10 * 60 * 24)
-  const refreshTokenSeller2 = createToken(seller2.id, email, 'seller', process.env.REFRESH_SECRET!, 48 * 60 * 60)
+
+  const accessTokenSeller2 = createToken(seller2.id, email2, 'seller', process.env.ACCESS_SECRET!, 10 * 60 * 24)
+  const refreshTokenSeller2 = createToken(seller2.id, email2, 'seller', process.env.REFRESH_SECRET!, 48 * 60 * 60)
 
   await prisma.token.create({
     data: {
-      accessToken:accessTokenSeller2,
-      refreshToken:refreshTokenSeller2,
+      accessToken: accessTokenSeller2,
+      refreshToken: refreshTokenSeller2,
       userId: seller2.id
     }
   })
@@ -96,13 +96,13 @@ async function main() {
       birthday: "21.02.2001",
       active: true,
       photoName: "a",
-      email:emailAdmin
+      email: emailAdmin
     }
   })
 
   const authAdmin = await prisma.auth.create({
     data: {
-      email:admin.email,
+      email: admin.email,
       password: hashedPasswordAdmin
     }
   })
@@ -112,8 +112,8 @@ async function main() {
 
   await prisma.token.create({
     data: {
-      accessToken:accessTokenAdmin,
-      refreshToken:refreshTokenAdmin,
+      accessToken: accessTokenAdmin,
+      refreshToken: refreshTokenAdmin,
       userId: admin.id
     }
   })
@@ -152,10 +152,10 @@ async function main() {
       userId: seller2.id,
       roleId: sellerRole.id
     }
-  })  
+  })
 
   await prisma.userRole.create({ // Sil TODO:
-    data:{
+    data: {
       userId: admin.id,
       roleId: adminRole.id
     }
@@ -208,7 +208,7 @@ async function main() {
 
 
 
-  
+
 
 
   // Seller Permission 
@@ -284,7 +284,7 @@ async function main() {
   });
 
 
-  
+
 
   // User
   await prisma.permit.create({
@@ -360,21 +360,21 @@ async function main() {
       roleId: sellerRole.id,
       permissionId: sellerPermission3.id
     }
-  })  
+  })
 
   await prisma.permit.create({
     data: {
       roleId: sellerRole.id,
       permissionId: sellerPermission4.id
     }
-  })  
+  })
 
   await prisma.permit.create({
     data: {
       roleId: sellerRole.id,
       permissionId: sellerPermission5.id
     }
-  })  
+  })
 
 
   // Admin
@@ -422,175 +422,176 @@ async function main() {
 
 
 
-// Category
-const category1 = await prisma.category.create({
-  data: { name: 'flight' },
-});
+  // Category
+  const category1 = await prisma.category.create({
+    data: { name: 'flight' },
+  });
 
-const category2 = await prisma.category.create({
-  data: { name: 'train' },
-});
+  const category2 = await prisma.category.create({
+    data: { name: 'train' },
+  });
 
-const category3 = await prisma.category.create({
-  data: { name: 'bus' },
-});
+  const category3 = await prisma.category.create({
+    data: { name: 'bus' },
+  });
 
-const category4 = await prisma.category.create({
-  data: { name: 'hotel' },
-});
+  const category4 = await prisma.category.create({
+    data: { name: 'hotel' },
+  });
 
-const category5 = await prisma.category.create({
-  data: { name: 'movie' },
-});
+  const category5 = await prisma.category.create({
+    data: { name: 'movie' },
+  });
 
-const category6 = await prisma.category.create({
-  data: { name: 'theater' },
-});
+  const category6 = await prisma.category.create({
+    data: { name: 'theater' },
+  });
 
-const category7 = await prisma.category.create({
-  data: { name: 'concert' },
-});
+  const category7 = await prisma.category.create({
+    data: { name: 'concert' },
+  });
 
 
 
-const expiresAt = new Date();
-expiresAt.setDate(expiresAt.getDate() + 7);
+  const expiresAt = new Date();
+  expiresAt.setDate(expiresAt.getDate() + 7);
 
-// Concert Tickets
-await prisma.ticket.create({
-  data: {
-    userId: seller.id,
-    categoryId: category7.id,
-    price: 100,
-    pnr: generatePNR(),
-    description: 'Rock concert in the city',
-    hour: 20,
-    pointExpiresAt: expiresAt,
-    pointRate: 0.1,
-    companyId: company.id,
-    day: new Date('2025-06-01'),
-    stock: 500,
-    sold: false,
-    images: [],
-    status:'approve'
-  },
-});
+  // Concert Tickets
+  await prisma.ticket.create({
+    data: {
+      userId: seller.id,
+      categoryId: category7.id,
+      price: 100,
+      pnr: generatePNR(),
+      description: 'Rock concert in the city',
+      hour: 20,
+      pointExpiresAt: expiresAt,
+      pointRate: 0.1,
+      companyId: company.id,
+      day: new Date('2025-06-01'),
+      stock: 500,
+      sold: false,
+      images: [],
+      status: 'approve'
+    },
+  });
 
-await prisma.ticket.create({
-  data: {
-    userId: seller.id,
-    categoryId: category7.id,
-    price: 80,
-    pnr: generatePNR(),
-    description: 'Pop music live show',
-    hour: 19,
-    pointExpiresAt: expiresAt,
-    pointRate: 0.05,
-    companyId: company.id,
-    day: new Date('2025-06-03'),
-    stock: 300,
-    sold: false,
-    images: [],
-    status:'approve'
+  await prisma.ticket.create({
+    data: {
+      userId: seller.id,
+      categoryId: category7.id,
+      price: 80,
+      pnr: generatePNR(),
+      description: 'Pop music live show',
+      hour: 19,
+      pointExpiresAt: expiresAt,
+      pointRate: 0.05,
+      companyId: company.id,
+      day: new Date('2025-06-03'),
+      stock: 300,
+      sold: false,
+      images: ['https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4'],
+      status: 'approve'
 
-  },
-});
+    },
+  });
 
-// Theater Tickets
-await prisma.ticket.create({
-  data: {
-    userId: seller.id,
-    categoryId: category6.id,
-    price: 60,
-    pnr: generatePNR(),
-    description: 'Shakespeare play night',
-    hour: 18,
-    pointExpiresAt: expiresAt,
-    pointRate: 0.08,
-    companyId: company.id,
-    day: new Date('2025-06-05'),
-    stock: 200,
-    sold: false,
-    images: [],
-    status:'approve'
-  },
-});
+  // Theater Tickets
+  await prisma.ticket.create({
+    data: {
+      userId: seller.id,
+      categoryId: category6.id,
+      price: 60,
+      pnr: generatePNR(),
+      description: 'Shakespeare play night',
+      hour: 18,
+      pointExpiresAt: expiresAt,
+      pointRate: 0.08,
+      companyId: company.id,
+      day: new Date('2025-06-05'),
+      stock: 200,
+      sold: false,
+      images: [],
+      status: 'approve'
+    },
+  });
 
-await prisma.ticket.create({
-  data: {
-    userId: seller.id,
-    categoryId: category6.id,
-    price: 50,
-    pnr: generatePNR(),
-    description: 'Modern comedy theater',
-    hour: 21,
-    pointExpiresAt: expiresAt,
-    pointRate: 0.07,
-    companyId: company.id,
-    day: new Date('2025-06-07'),
-    stock: 250,
-    sold: false,
-    images: [],
-    status:'approve'
-  },
-});
+  await prisma.ticket.create({
+    data: {
+      userId: seller.id,
+      categoryId: category6.id,
+      price: 50,
+      pnr: generatePNR(),
+      description: 'Modern comedy theater',
+      hour: 21,
+      pointExpiresAt: expiresAt,
+      pointRate: 0.07,
+      companyId: company.id,
+      day: new Date('2025-06-07'),
+      stock: 250,
+      sold: false,
+      images: [],
+      status: 'approve'
+    },
+  });
 
-// Festival Tickets
-await prisma.ticket.create({
-  data: {
-    userId: seller2.id,
-    categoryId: category5.id,
-    price: 120,
-    pnr: generatePNR(),
-    description: 'The Lord of the Rings: The Two Towers',
-    hour: 15,
-    pointExpiresAt: expiresAt,
-    pointRate: 0.1,
-    companyId: company.id,
-    day: new Date('2025-06-10'),
-    stock: 1000,
-    sold: false,
-    images: [],
-    status:'approve'
-  },
-});
+  // Festival Tickets
+  await prisma.ticket.create({
+    data: {
+      userId: seller2.id,
+      categoryId: category5.id,
+      price: 120,
+      pnr: generatePNR(),
+      description: 'The Lord of the Rings: The Two Towers',
+      hour: 15,
+      pointExpiresAt: expiresAt,
+      pointRate: 0.1,
+      companyId: company.id,
+      day: new Date('2025-06-10'),
+      stock: 1000,
+      sold: false,
+      images: ['https://atthemovies.uk/cdn/shop/products/LORthetwotowers2002dsAdv27x40in150.jpg?v=1621381412&width=1400'],
+      status: 'approve'
+    },
+  });
 
-await prisma.ticket.create({
-  data: {
-    userId: seller2.id,
-    categoryId: category1.id,
-    price: 95,
-    pnr: generatePNR(),
-    description: 'Ankara-Muğla Thy flight',
-    hour: 13,
-    pointExpiresAt: expiresAt,
-    pointRate: 0.09,
-    companyId: company.id,
-    day: new Date('2025-06-12'),
-    stock: 700,
-    sold: false,
-    images: [],
-    status:'approve'
-  },
-});
+  await prisma.ticket.create({
+    data: {
+      userId: seller2.id,
+      categoryId: category1.id,
+      price: 95,
+      pnr: generatePNR(),
+      description: 'Ankara-Muğla Thy flight',
+      hour: 13,
+      pointExpiresAt: expiresAt,
+      pointRate: 0.09,
+      companyId: company.id,
+      day: new Date('2025-06-12'),
+      stock: 700,
+      sold: false,
+      images: [],
+      status: 'approve'
+    },
+  });
 
-await prisma.ticket.create({
-  data: {
-    userId: seller2.id,
-    categoryId: category3.id,
-    price: 95,
-    pnr: generatePNR(),
-    description: 'Muğla-Ankara Thy flight',
-    hour: 13,
-    pointExpiresAt: expiresAt,
-    pointRate: 0.09,
-    companyId: company.id,
-    day: new Date('2025-06-12'),
-    stock: 700,
-    sold: false,
-    images: [],
-  },
-});
+  await prisma.ticket.create({
+    data: {
+      userId: seller2.id,
+      categoryId: category3.id,
+      price: 95,
+      pnr: generatePNR(),
+      description: 'Muğla-Ankara Thy flight',
+      hour: 13,
+      pointExpiresAt: expiresAt,
+      pointRate: 0.09,
+      companyId: company.id,
+      day: new Date('2025-06-12'),
+      stock: 700,
+      sold: false,
+      images: [],
+      status: 'approve'
+    },
+  });
 
   console.log('Seed işlemi tamamlandı.');
 }

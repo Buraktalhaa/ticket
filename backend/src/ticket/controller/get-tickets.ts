@@ -9,11 +9,21 @@ export async function getTickets(req: Request, res: Response) {
       sold: {
         not: true
       },
-      status:{
-        equals:"approve"
+      status: {
+        equals: "approve"
       }
+    },
+    include:{
+      category:true
+    },
+    omit:{
+      categoryId:true,
+      companyId:true,
+      createdAt:true,
+      pnr:true,
     }
   })
+
 
   res.status(200).json({
     status: ResponseStatus.SUCCESS,
