@@ -16,33 +16,39 @@ import { CookieService } from 'ngx-cookie-service';
 })
 export class NavbarComponent {
 
+  role: string | null = null;
+  isLoggedIn: boolean = false;
+
   constructor(
     private profileService: ProfileService,
     public authService: AuthService,
     private router: Router,
     private ticketService: TicketService,
-    private cookieService:CookieService
-  ) {}
-  
+    private cookieService: CookieService
+  ) { }
+
+  ngOnInit(): void {
+    this.role = this.cookieService.get('role');
+    this.isLoggedIn = this.cookieService.check('accessToken');
+  }
+
   getMyProfile() {
     this.profileService.myProfile()
   }
 
-  getAlltickets(){
+  getAlltickets() {
     this.ticketService.allTickets()
-    this.router.navigateByUrl('/tickets');
-    // permission gerekmedigi icin burada yonlendirme yapmakta sorun yok
   }
 
-  goToAdminDashboard(){
+  goToAdminDashboard() {
     this.router.navigateByUrl('/admin-dashboard');
   }
 
-  goToSellerDashboard(){
+  goToSellerDashboard() {
     this.router.navigateByUrl('/seller-dashboard');
   }
 
-  logOut(){
+  logOut() {
     this.authService.logOut()
   }
 }

@@ -11,7 +11,7 @@ export const canActiveteGuard: CanActivateFn = (route: ActivatedRouteSnapshot) =
   const isUserLoggedIn = authService.isThereUser();
 
   if (!isUserLoggedIn) {
-    router.navigateByUrl('/signin');
+    router.navigateByUrl('/sign-in');
     return false;
   }
 

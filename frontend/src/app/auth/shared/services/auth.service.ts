@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ApiService } from '../../../shared/services/api.service';
-import { Email, Passwords, Signin, Signup } from '../types/auth.type';
+import { Email, Passwords, SignIn, SignUp } from '../types/auth.type';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { jwtDecode } from "jwt-decode";
@@ -24,9 +24,9 @@ export class AuthService {
     this.isThereUser.set(hasTokens);
   }
   
-  signIn(signinData: Signin) {
+  signIn(signinData: SignIn) {
     this.api
-      .post('http://localhost:3000/auth/signIn', signinData)
+      .post('http://localhost:3000/auth/sign-in', signinData)
       .subscribe((res: HttpResponse<any>) => {
         const accessToken = res.body.accessToken
         const refreshToken = res.body.refreshToken
@@ -47,9 +47,9 @@ export class AuthService {
       });
   }
 
-  signUp(signupData: Signup) {
+  signUp(signupData: SignUp) {
     this.api
-      .post('http://localhost:3000/auth/signUp', signupData)
+      .post('http://localhost:3000/auth/sign-up', signupData)
       .subscribe((res: HttpResponse<any>) => {
         const accessToken = res.body.accessToken
         const refreshToken = res.body.refreshToken
@@ -62,7 +62,7 @@ export class AuthService {
         this.cookieService.set('role', role);
 
         this.isThereUser.set(true)
-        this.router.navigateByUrl("/signin")
+        this.router.navigateByUrl("/sign-in")
       });
   }
 
@@ -113,14 +113,22 @@ export class AuthService {
   decodeJwt(token: string): any {
     try {
       return jwtDecode(token);
-    } catch (e) {
-      console.error('Invalid JWT', e);
+    } catch (error) {
+      console.error('Invalid JWT', error);
       return null;
     }
   }
 
-  logOut(){
-    this.cookieService.deleteAll();
-    this.router.navigateByUrl('/signin');
+  logOut() {
+    this.cookieService.delete('accessToken', '/');
+    this.cookieService.delete('refreshToken', '/');
+    this.cookieService.delete('role', '/');
+  
+    this.cookieService.delete('accessToken'); // fallback
+    this.cookieService.delete('refreshToken');
+    this.cookieService.delete('role');
+  
+    this.isThereUser.set(false);
+    this.router.navigateByUrl('/sign-in');
   }
 }

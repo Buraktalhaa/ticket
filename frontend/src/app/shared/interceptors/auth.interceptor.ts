@@ -23,7 +23,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           localStorage.removeItem('accessToken');
           localStorage.removeItem('refreshToken');
           notificationService.showNotification('error', 'Please log in again.');
-          router.navigateByUrl('/signin');
+          router.navigateByUrl('/sign-in');
           return throwError(() => error);
         }
 
@@ -42,7 +42,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
               localStorage.removeItem('accessToken');
               localStorage.removeItem('refreshToken');
               notificationService.showNotification('error', 'Session expired. Please log in again.');
-              router.navigateByUrl('/signin');
+              router.navigateByUrl('/sign-in');
               return throwError(() => error);
             }
           }),
@@ -50,7 +50,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
             notificationService.showNotification('error', 'Session expired. Please log in again.');
-            router.navigateByUrl('/signin');
+            router.navigateByUrl('/sign-in');
             return throwError(() => error);
           })
         );

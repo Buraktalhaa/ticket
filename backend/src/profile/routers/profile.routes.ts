@@ -8,11 +8,11 @@ import fileUploadMiddleware from "../../common/middleware/file-upload";
 
 const router = Router()
 
-router.get('/myProfile', authenticateToken, permissionControl , getProfile)
+router.get('/my-profile', authenticateToken, permissionControl , getProfile)
 
-router.put('/myProfile/update', authenticateToken ,permissionControl, fileUploadMiddleware('photoName'), updateProfile)
+router.put('/my-profile/update', authenticateToken ,permissionControl, fileUploadMiddleware('photoName'), updateProfile)
 
-router.post('/myProfile/editPassword', authenticateToken, permissionControl, editPassword)
+router.post('/my-rofile/edit-password', authenticateToken, permissionControl, editPassword)
 
 
 export default router;

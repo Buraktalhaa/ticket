@@ -166,13 +166,13 @@ async function main() {
   // User permissions
   const userPermission1 = await prisma.permission.create({
     data: {
-      url: '/myProfile'
+      url: '/my-profile'
     }
   });
 
   const userPermission2 = await prisma.permission.create({
     data: {
-      url: '/myProfile/update'
+      url: '/my-profile/update'
     }
   });
 
@@ -241,7 +241,7 @@ async function main() {
 
   const sellerPermission5 = await prisma.permission.create({
     data: {
-      url: '/seller/sellerTickets'
+      url: '/seller/seller-tickets'
     }
   });
 
@@ -276,13 +276,13 @@ async function main() {
   });
   const adminPermission5 = await prisma.permission.create({
     data: {
-      url: '/admin/statusPanel'
+      url: '/admin/status-panel'
     }
   });
 
   const adminPermission6 = await prisma.permission.create({
     data: {
-      url: '/admin/statusPanel/update-status'
+      url: '/admin/status-panel/update-status'
     }
   });
 

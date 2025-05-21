@@ -3,12 +3,27 @@
     class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
     aria-label="Global"
   >
-    <div class="flex lg:flex-1">
+    <div class="flex lg:flex-1 items-center space-x-6">
       <a href="#">
         <span class="sr-only">Your Company</span>
         <img class="h-12 w-auto" src="BTMlogo.png" alt="logo" />
       </a>
+
+      @if(role === 'admin') {
+      <a
+        (click)="goToAdminDashboard()"
+        class="text-sm font-semibold cursor-pointer text-white hover:text-indigo-400"
+        >Admin Dashboard</a
+      >
+      } @else if(role === 'seller') {
+      <a
+        (click)="goToSellerDashboard()"
+        class="text-sm font-semibold cursor-pointer text-white hover:text-indigo-400"
+        >Seller Dashboard</a
+      >
+      }
     </div>
+
     <div class="flex lg:hidden">
       <button
         type="button"
@@ -35,21 +50,15 @@
       <a
         (click)="getAlltickets()"
         class="text-sm font-semibold cursor-pointer text-white hover:text-indigo-400"
-        >Tickets</a
+        >Home</a
       >
       <a
-        (click)="goToAdminDashboard()"
         class="text-sm font-semibold cursor-pointer text-white hover:text-indigo-400"
-        >Admin Dashboard</a
-      >
-      <a
-        (click)="goToSellerDashboard()"
-        class="text-sm font-semibold cursor-pointer text-white hover:text-indigo-400"
-        >Seller Dashboard</a
+        >Support</a
       >
     </div>
 
-    <div class="hidden lg:flex lg:flex-1 lg:justify-end">
+    <div class="hidden lg:flex lg:flex-1 lg:justify-end items-center space-x-6">
       @if(authService.isThereUser()) {
       <a
         (click)="getMyProfile()"
@@ -64,10 +73,21 @@
         >Logout</a
       >
       } @else {
-      <app-auth-buttons
-        class="hidden lg:flex lg:flex-1 lg:justify-end"
-      ></app-auth-buttons>
+      <app-auth-buttons class="flex"></app-auth-buttons>
       }
     </div>
   </nav>
 </header>
+
+
+<nav class="bg-gray-800">
+  <div class="mx-auto max-w-7xl flex justify-center space-x-18 py-3">
+    <a class="text-white hover:text-indigo-400 cursor-pointer">Flights</a>
+    <a class="text-white hover:text-indigo-400 cursor-pointer">Train</a>
+    <a class="text-white hover:text-indigo-400 cursor-pointer">Bus</a>
+    <a class="text-white hover:text-indigo-400 cursor-pointer">Hotel</a>
+    <a class="text-white hover:text-indigo-400 cursor-pointer">Movies</a>
+    <a class="text-white hover:text-indigo-400 cursor-pointer">Theater</a>
+    <a class="text-white hover:text-indigo-400 cursor-pointer">Concerts</a>
+  </div>
+</nav>

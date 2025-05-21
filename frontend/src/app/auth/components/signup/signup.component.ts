@@ -46,16 +46,16 @@ export class SignupComponent {
     // Mail kontrol TODO:
     // Sifre uzunluk kontrol TODO:
 
-    const signupData = {
+    const signUpData = {
       email: this.email,
       firstName: this.firstName,
       password: this.password,
     };
 
-    this.authService.signUp(signupData)
+    this.authService.signUp(signUpData)
   }
 
-  signupWithGoogle() {
+  signUpWithGoogle() {
     console.log("google ile giris yapma ekrani");
     this.authService.signInGoogle();
   }

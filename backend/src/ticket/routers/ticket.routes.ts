@@ -18,10 +18,10 @@ router.post('/delete-ticket', authenticateToken, permissionControl, companyMiddl
 router.get('/get-tickets', getTickets)
 
 router.get('/is-seller', authenticateToken, permissionControl, isSeller)
-router.get('/seller/sellerTickets', authenticateToken, permissionControl, sellerTickets)
+router.get('/seller/seller-tickets', authenticateToken, permissionControl, sellerTickets)
 router.post('/edit-ticket', authenticateToken, permissionControl, companyMiddleware, editTicket)    //TODO:
 
-router.get('/admin/statusPanel', authenticateToken, permissionControl, statusPanel)
-router.post('/admin/statusPanel/update-status', authenticateToken, permissionControl, updateTicketStatus)
+router.get('/admin/status-panel', authenticateToken, permissionControl, statusPanel)
+router.post('/admin/status-panel/update-status', authenticateToken, permissionControl, updateTicketStatus)
 
 export default router;

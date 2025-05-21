@@ -1,10 +1,10 @@
-export type Signup = {
+export type SignUp = {
     email:string,
     firstName:string,
     password:string,
 } 
 
-export type Signin = {
+export type SignIn = {
     email:string,
     password:string,
 } 

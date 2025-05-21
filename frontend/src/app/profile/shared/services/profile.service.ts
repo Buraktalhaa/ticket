@@ -19,7 +19,7 @@ export class ProfileService {
 
 
   myProfile() {
-    this.api.get('http://localhost:3000/profile/myProfile').subscribe({
+    this.api.get('http://localhost:3000/profile/my-profile').subscribe({
       next: (res: HttpResponse<any>) => {
         const data = res.body?.data || [];
         this.profileDataSubject.next(data);

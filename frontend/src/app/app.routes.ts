@@ -2,7 +2,6 @@ import { Routes } from '@angular/router';
 import { ForgotPasswordComponent } from './auth/components/forgot-password/forgot-password.component';
 import { MailSentComponent } from './auth/components/mail-sent/mail-sent.component';
 import { MyProfileComponent } from './profile/my-profile/my-profile.component';
-import { TicketsComponent } from './ticket/user/tickets/tickets.component';
 import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
 import { canActiveteGuard } from './guards/can-activete.guard';
 import { SignupComponent } from './auth/components/signup/signup.component';
@@ -20,13 +19,12 @@ import { SellerDashboardComponent } from './ticket/seller/components/seller-dash
 export const routes: Routes = [
     { path: '', redirectTo: '/main', pathMatch: 'full' },
     { path: 'main', component: MainComponent },
-    { path: 'signup', component: SignupComponent },
-    { path: 'signin', component: SigninComponent },
+    { path: 'sign-up', component: SignupComponent },
+    { path: 'sign-in', component: SigninComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'mail-sent', component: MailSentComponent },
     { path: 'reset-password/:token', component: ResetPasswordComponent },
     { path: 'my-profile', component: MyProfileComponent, canActivate:[canActiveteGuard],data:{roles:['user']}},
-    { path: 'tickets', component: TicketsComponent },
     { path: 'unauthorized', component: UnauthorizedComponent },
 
     { path: 'seller-dashboard', component: SellerDashboardComponent, canActivate:[canActiveteGuard],data:{roles:['seller']} },

@@ -28,6 +28,7 @@ export class TicketService {
       next: (res: HttpResponse<any>) => {
         const data = res.body?.data || [];
         this.ticketsSubject.next(data);
+        this.router.navigateByUrl('/main');
       },
       error: (err) => {
         console.error('ticket error:', err);
@@ -36,7 +37,7 @@ export class TicketService {
   }
 
   getMyTickets() {
-    this.api.get('http://localhost:3000/ticket/seller/sellerTickets')
+    this.api.get('http://localhost:3000/ticket/seller/seller-tickets')
       .subscribe({
         next: (res: HttpResponse<any>) => {
           const data = res.body?.data;
@@ -90,7 +91,7 @@ export class TicketService {
 
 
   goAdminStatusPanel() {
-    this.api.get('http://localhost:3000/ticket/admin/statusPanel')
+    this.api.get('http://localhost:3000/ticket/admin/status-panel')
       .subscribe({
         next: (res: HttpResponse<any>) => {
           const data = res.body?.data;
@@ -105,7 +106,7 @@ export class TicketService {
   }
 
   editStatus(ticket: any) {
-    this.api.post('http://localhost:3000/ticket/admin/statusPanel/update-status', ticket)
+    this.api.post('http://localhost:3000/ticket/admin/status-panel/update-status', ticket)
       .subscribe({
         next: () => {
           alert('Ticket edited successfully')
