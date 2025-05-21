@@ -8,16 +8,16 @@ import { SignupComponent } from './auth/components/signup/signup.component';
 import { SigninComponent } from './auth/components/signin/signin.component';
 import { ResetPasswordComponent } from './auth/components/reset-password/reset-password.component';
 import { MainComponent } from './main/components/mainPage/main.component';
-import { TicketEditComponent } from './ticket/seller/components/ticket-edit/ticket-edit.component';
-import { CreateTicketComponent } from './ticket/seller/components/create-ticket/create-ticket.component';
-import { SellerTicketsComponent } from './ticket/seller/components/seller-tickets/seller-tickets.component';
 
-import { SellerDashboardComponent } from './ticket/seller/components/seller-dashboard/seller-dashboard.component';
 import { CartComponent } from './cart/components/cart/cart.component';
-import { TicketDetailComponent } from './ticket/user/components/ticket-detail/ticket-detail.component';
 import { AdminDashboardComponent } from './admin/components/admin-dashboard/admin-dashboard.component';
 import { StatusPanelComponent } from './admin/components/status-panel/status-panel.component';
 import { StatusPanelEditComponent } from './admin/components/status-panel-edit/status-panel-edit.component';
+import { SellerDashboardComponent } from './seller/components/seller-dashboard/seller-dashboard.component';
+import { CreateTicketComponent } from './seller/components/create-ticket/create-ticket.component';
+import { SellerTicketsComponent } from './seller/components/seller-tickets/seller-tickets.component';
+import { TicketEditComponent } from './seller/components/ticket-edit/ticket-edit.component';
+import { TicketDetailComponent } from './ticket/components/ticket-detail/ticket-detail.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/main', pathMatch: 'full' },
@@ -30,7 +30,7 @@ export const routes: Routes = [
     { path: 'reset-password/:token', component: ResetPasswordComponent },
     { path: 'my-profile', component: MyProfileComponent, canActivate:[canActiveteGuard],data:{roles:['user']}},
     { path: 'unauthorized', component: UnauthorizedComponent },
-    { path: 'my-profile/cart', component: CartComponent, canActivate:[canActiveteGuard],data:{roles:['user']}},
+    { path: 'my-profile/cart', component: CartComponent},
     { path: 'main/:category/:ticket', component: TicketDetailComponent },
 
     { path: 'seller-dashboard', component: SellerDashboardComponent, canActivate:[canActiveteGuard],data:{roles:['seller']} },

@@ -1,16 +1,18 @@
 import { Component } from '@angular/core'
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { NavbarComponent } from '../../../../main/shared/components/navbar/navbar.component';
 import { LabelsComponent } from '../labels/labels.component';
-import { TicketService } from '../../../shared/services/ticket.service';
+import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
+import { TicketService } from '../../../ticket/services/ticket.service';
+import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 
 @Component({
   selector: 'app-create-ticket',
   imports: [
     NavbarComponent,
     LabelsComponent,
-    FormsModule
+    FormsModule,
+    FooterInfoTextComponent
   ],
   templateUrl: './create-ticket.component.html',
   styleUrl: './create-ticket.component.css'
