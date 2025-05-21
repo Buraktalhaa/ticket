@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
-import { TicketService } from '../../../ticket/shared/services/ticket.service';
+import { TicketService } from '../../../ticket/services/ticket.service';
+import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 
 
 @Component({
   selector: 'app-admin-dashboard',
   imports: [
-    NavbarComponent
+    NavbarComponent,
+    FooterInfoTextComponent
   ],
   templateUrl: './admin-dashboard.component.html',
   styleUrl: './admin-dashboard.component.css'

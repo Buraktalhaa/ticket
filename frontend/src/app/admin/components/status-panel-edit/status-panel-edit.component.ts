@@ -3,16 +3,16 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
-import { ApiService } from '../../../shared/services/api.service';
-import { TicketService } from '../../../ticket/shared/services/ticket.service';
-
+import { TicketService } from '../../../ticket/services/ticket.service';
+import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 
 @Component({
   selector: 'app-status-panel-edit',
   imports: [
     NavbarComponent,
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FooterInfoTextComponent
   ],
   templateUrl: './status-panel-edit.component.html',
   styleUrl: './status-panel-edit.component.css'
@@ -22,7 +22,6 @@ export class StatusPanelEditComponent {
 
   constructor(
     private fb: FormBuilder,
-    private api: ApiService,
     private router: Router,
     private ticketService: TicketService
   ) {}

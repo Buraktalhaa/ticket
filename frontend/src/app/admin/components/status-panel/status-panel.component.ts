@@ -3,7 +3,8 @@ import { Router } from '@angular/router';
 import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
 import { TicketCardComponent } from '../../../shared/components/ticket-card/ticket-card.component';
 import { TicketFilterComponent } from '../../../shared/components/ticket-filter/ticket-filter.component';
-import { TicketService } from '../../../ticket/shared/services/ticket.service';
+import { TicketService } from '../../../ticket/services/ticket.service';
+import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 
 
 @Component({
@@ -12,7 +13,8 @@ import { TicketService } from '../../../ticket/shared/services/ticket.service';
   imports: [
     NavbarComponent,
     TicketCardComponent,
-    TicketFilterComponent
+    TicketFilterComponent,
+    FooterInfoTextComponent
   ],
   templateUrl: './status-panel.component.html',
   styleUrl: './status-panel.component.css'

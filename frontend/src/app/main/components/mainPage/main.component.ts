@@ -1,17 +1,18 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
-import { TicketService } from '../../../ticket/shared/services/ticket.service';
 import { TicketFilterComponent } from '../../../shared/components/ticket-filter/ticket-filter.component';
 import { TicketCardComponent } from '../../../shared/components/ticket-card/ticket-card.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CartService } from '../../../cart/services/cart.service';
+import { TicketService } from '../../../ticket/services/ticket.service';
+import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 
 @Component({
   selector: 'app-main',
   imports: [
     NavbarComponent,
     TicketCardComponent,
-    TicketFilterComponent
+    TicketFilterComponent,
+    FooterInfoTextComponent
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css'

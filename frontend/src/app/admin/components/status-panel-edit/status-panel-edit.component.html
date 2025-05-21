@@ -1,41 +1,46 @@
-<app-navbar></app-navbar>
+<div class="min-h-screen flex flex-col">
+  <app-navbar></app-navbar>
 
-<div class="max-w-md mx-auto p-6 bg-white shadow-md rounded-md space-y-4 mt-6">
-  <form [formGroup]="ticketForm" (ngSubmit)="updateStatus()">
-    <div>
-      <label class="block">Description</label>
-      <input formControlName="description" class="w-full border p-2 rounded" />
+  <main class="flex-grow">
+    <div class="max-w-md mx-auto p-6 bg-white shadow-md rounded-md space-y-4 mt-6">
+      <form [formGroup]="ticketForm" (ngSubmit)="updateStatus()">
+        <div>
+          <label class="block">Description</label>
+          <input formControlName="description" class="w-full border p-2 rounded" />
+        </div>
+
+        <div>
+          <label class="block">Price</label>
+          <input formControlName="price" class="w-full border p-2 rounded" />
+        </div>
+
+        <div>
+          <label class="block">Stock</label>
+          <input formControlName="stock" class="w-full border p-2 rounded" />
+        </div>
+
+        <div>
+          <label class="block">Discount (%)</label>
+          <input formControlName="discount" class="w-full border p-2 rounded" />
+        </div>
+
+        <div>
+          <label class="block">Status</label>
+          <select formControlName="status" class="w-full border p-2 rounded">
+            <option value="processing">processing</option>
+            <option value="approve">approve</option>
+            <option value="deleted">deleted</option>
+            <option value="cancelling">cancelling</option>
+            <option value="awaiting">awaiting</option>
+          </select>
+        </div>
+
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full mt-4">
+          Update Status
+        </button>
+      </form>
     </div>
+  </main>
 
-    <div>
-      <label class="block">Price</label>
-      <input formControlName="price" class="w-full border p-2 rounded" />
-    </div>
-
-    <div>
-      <label class="block">Stock</label>
-      <input formControlName="stock" class="w-full border p-2 rounded" />
-    </div>
-
-    <div>
-      <label class="block">Discount (%)</label>
-      <input formControlName="discount" class="w-full border p-2 rounded" />
-    </div>
-
-    <div>
-      <label class="block">Status</label>
-      <select formControlName="status" class="w-full border p-2 rounded">
-        <option value="processing">processing</option>
-        <option value="approve">approve</option>
-        <option value="deleted">deleted</option>
-        <option value="cancelling">cancelling</option>
-        <option value="awaiting">awaiting</option>
-      </select>
-    </div>
-
-    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded w-full mt-4">
-      Update Status
-    </button>
-  </form>
+  <app-footer-info-text></app-footer-info-text>
 </div>
-
