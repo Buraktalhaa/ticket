@@ -8,6 +8,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class TicketService {
+  private selectedTicket: any;
 
   private ticketsSubject = new BehaviorSubject<any[]>([]);
   tickets$ = this.ticketsSubject.asObservable();
@@ -128,4 +129,17 @@ export class TicketService {
         error: (err) => alert('Error: ' + err.error?.message || 'Something went wrong')
       });
   }
+
+  setSelectedTicket(ticket: any) {
+    this.selectedTicket = ticket;
+  }
+  
+  getSelectedTicket() {
+    return this.selectedTicket;
+  }
+
+  getTicketById(id: string) {
+    return this.api.get(`http://localhost:3000/ticket/get-tickets/by-id/${id}`);
+  }
+  
 }
