@@ -3,7 +3,7 @@ import { ForgotPasswordComponent } from './auth/components/forgot-password/forgo
 import { MailSentComponent } from './auth/components/mail-sent/mail-sent.component';
 import { MyProfileComponent } from './profile/my-profile/my-profile.component';
 import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
-import { canActiveteGuard } from './guards/can-activete.guard';
+import { canActiveteGuard } from './guard/can-activete.guard';
 import { SignupComponent } from './auth/components/signup/signup.component';
 import { SigninComponent } from './auth/components/signin/signin.component';
 import { ResetPasswordComponent } from './auth/components/reset-password/reset-password.component';
@@ -19,6 +19,7 @@ import { SellerDashboardComponent } from './ticket/seller/components/seller-dash
 export const routes: Routes = [
     { path: '', redirectTo: '/main', pathMatch: 'full' },
     { path: 'main', component: MainComponent },
+    { path: 'main/:category', component: MainComponent},
     { path: 'sign-up', component: SignupComponent },
     { path: 'sign-in', component: SigninComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
