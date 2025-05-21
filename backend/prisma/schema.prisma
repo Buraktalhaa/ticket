@@ -149,7 +149,10 @@ model Ticket {
   category       Category     @relation(fields: [categoryId], references: [id])
   companyId      String
   company        Company      @relation(fields: [companyId], references: [id])
+  title          String
   description    String
+  city           String
+  location       String
   pointRate      Float
   hour           Int
   price          Int

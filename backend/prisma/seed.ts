@@ -452,146 +452,168 @@ async function main() {
   });
 
 
-
   const expiresAt = new Date();
   expiresAt.setDate(expiresAt.getDate() + 7);
 
-  // Concert Tickets
-  await prisma.ticket.create({
-    data: {
-      userId: seller.id,
-      categoryId: category7.id,
-      price: 100,
-      pnr: generatePNR(),
-      description: 'Rock concert in the city',
-      hour: 20,
-      pointExpiresAt: expiresAt,
-      pointRate: 0.1,
-      companyId: company.id,
-      day: new Date('2025-06-01'),
-      stock: 500,
-      sold: false,
-      images: [],
-      status: 'approve'
-    },
-  });
+  
+await prisma.ticket.create({
+  data: {
+    userId: seller.id,
+    categoryId: category7.id,
+    price: 100,
+    pnr: generatePNR(),
+    title: 'Rock Concert',
+    description: 'An unforgettable night of powerful rock music and energetic performances.',
+    city: 'Istanbul',
+    location: 'Vodafone Park, Besiktas, Istanbul, Turkey',
+    hour: 20,
+    pointExpiresAt: expiresAt,
+    pointRate: 0.1,
+    companyId: company.id,
+    day: new Date('2025-06-01'),
+    stock: 500,
+    sold: false,
+    images: [],
+    status: 'approve'
+  },
+});
 
-  await prisma.ticket.create({
-    data: {
-      userId: seller.id,
-      categoryId: category7.id,
-      price: 80,
-      pnr: generatePNR(),
-      description: 'Pop music live show',
-      hour: 19,
-      pointExpiresAt: expiresAt,
-      pointRate: 0.05,
-      companyId: company.id,
-      day: new Date('2025-06-03'),
-      stock: 300,
-      sold: false,
-      images: ['https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4'],
-      status: 'approve'
+await prisma.ticket.create({
+  data: {
+    userId: seller.id,
+    categoryId: category7.id,
+    price: 80,
+    pnr: generatePNR(),
+    title: 'Pop Music Show',
+    description: 'Live pop music concert with dazzling lights and world-famous artists.',
+    city: 'Izmir',
+    location: 'Kültürpark Open Air Theater, Izmir, Turkey',
+    hour: 19,
+    pointExpiresAt: expiresAt,
+    pointRate: 0.05,
+    companyId: company.id,
+    day: new Date('2025-06-03'),
+    stock: 300,
+    sold: false,
+    images: ['https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4'],
+    status: 'approve'
+  },
+});
 
-    },
-  });
+// Theater Tickets
+await prisma.ticket.create({
+  data: {
+    userId: seller.id,
+    categoryId: category6.id,
+    price: 60,
+    pnr: generatePNR(),
+    title: 'Shakespeare Night',
+    description: 'Classic Shakespearean drama brought to life with modern flair.',
+    city: 'Ankara',
+    location: 'State Theater, Tunali Hilmi Street, Ankara, Turkey',
+    hour: 18,
+    pointExpiresAt: expiresAt,
+    pointRate: 0.08,
+    companyId: company.id,
+    day: new Date('2025-06-05'),
+    stock: 200,
+    sold: false,
+    images: [],
+    status: 'approve'
+  },
+});
 
-  // Theater Tickets
-  await prisma.ticket.create({
-    data: {
-      userId: seller.id,
-      categoryId: category6.id,
-      price: 60,
-      pnr: generatePNR(),
-      description: 'Shakespeare play night',
-      hour: 18,
-      pointExpiresAt: expiresAt,
-      pointRate: 0.08,
-      companyId: company.id,
-      day: new Date('2025-06-05'),
-      stock: 200,
-      sold: false,
-      images: [],
-      status: 'approve'
-    },
-  });
+await prisma.ticket.create({
+  data: {
+    userId: seller.id,
+    categoryId: category6.id,
+    price: 50,
+    pnr: generatePNR(),
+    title: 'Modern Comedy',
+    description: 'A hilarious modern comedy play guaranteed to make you laugh out loud.',
+    city: 'Istanbul',
+    location: 'Kadikoy Public Theater, Istanbul, Turkey',
+    hour: 21,
+    pointExpiresAt: expiresAt,
+    pointRate: 0.07,
+    companyId: company.id,
+    day: new Date('2025-06-07'),
+    stock: 250,
+    sold: false,
+    images: [],
+    status: 'approve'
+  },
+});
 
-  await prisma.ticket.create({
-    data: {
-      userId: seller.id,
-      categoryId: category6.id,
-      price: 50,
-      pnr: generatePNR(),
-      description: 'Modern comedy theater',
-      hour: 21,
-      pointExpiresAt: expiresAt,
-      pointRate: 0.07,
-      companyId: company.id,
-      day: new Date('2025-06-07'),
-      stock: 250,
-      sold: false,
-      images: [],
-      status: 'approve'
-    },
-  });
+// Festival Tickets
+await prisma.ticket.create({
+  data: {
+    userId: seller2.id,
+    categoryId: category5.id,
+    price: 120,
+    pnr: generatePNR(),
+    title: 'The Two Towers Screening',
+    description: 'A special outdoor screening of The Lord of the Rings: The Two Towers.',
+    city: 'Antalya',
+    location: 'Beachside Cinema Festival Area, Lara, Antalya, Turkey',
+    hour: 15,
+    pointExpiresAt: expiresAt,
+    pointRate: 0.1,
+    companyId: company.id,
+    day: new Date('2025-06-10'),
+    stock: 1000,
+    sold: false,
+    images: ['https://atthemovies.uk/cdn/shop/products/LORthetwotowers2002dsAdv27x40in150.jpg?v=1621381412&width=1400'],
+    status: 'approve'
+  },
+});
 
-  // Festival Tickets
-  await prisma.ticket.create({
-    data: {
-      userId: seller2.id,
-      categoryId: category5.id,
-      price: 120,
-      pnr: generatePNR(),
-      description: 'The Lord of the Rings: The Two Towers',
-      hour: 15,
-      pointExpiresAt: expiresAt,
-      pointRate: 0.1,
-      companyId: company.id,
-      day: new Date('2025-06-10'),
-      stock: 1000,
-      sold: false,
-      images: ['https://atthemovies.uk/cdn/shop/products/LORthetwotowers2002dsAdv27x40in150.jpg?v=1621381412&width=1400'],
-      status: 'approve'
-    },
-  });
+await prisma.ticket.create({
+  data: {
+    userId: seller2.id,
+    categoryId: category1.id,
+    price: 95,
+    pnr: generatePNR(),
+    title: 'Flight to Mugla',
+    description: 'Direct flight from Ankara to Mugla operated by Turkish Airlines.',
+    city: 'Ankara',
+    location: 'Esenboga Airport, Domestic Terminal, Ankara, Turkey',
+    hour: 13,
+    pointExpiresAt: expiresAt,
+    pointRate: 0.09,
+    companyId: company.id,
+    day: new Date('2025-06-12'),
+    stock: 700,
+    sold: false,
+    images: [],
+    status: 'approve'
+  },
+});
 
-  await prisma.ticket.create({
-    data: {
-      userId: seller2.id,
-      categoryId: category1.id,
-      price: 95,
-      pnr: generatePNR(),
-      description: 'Ankara-Muğla Thy flight',
-      hour: 13,
-      pointExpiresAt: expiresAt,
-      pointRate: 0.09,
-      companyId: company.id,
-      day: new Date('2025-06-12'),
-      stock: 700,
-      sold: false,
-      images: [],
-      status: 'approve'
-    },
-  });
+await prisma.ticket.create({
+  data: {
+    userId: seller2.id,
+    categoryId: category3.id,
+    price: 95,
+    pnr: generatePNR(),
+    title: 'Flight to Ankara',
+    description: 'Direct flight from Mugla to Ankara with excellent onboard service.',
+    city: 'Mugla',
+    location: 'Milas-Bodrum Airport, Mugla, Turkey',
+    hour: 13,
+    pointExpiresAt: expiresAt,
+    pointRate: 0.09,
+    companyId: company.id,
+    day: new Date('2025-06-12'),
+    stock: 700,
+    sold: false,
+    images: [],
+    status: 'approve'
+  },
+});
 
-  await prisma.ticket.create({
-    data: {
-      userId: seller2.id,
-      categoryId: category3.id,
-      price: 95,
-      pnr: generatePNR(),
-      description: 'Muğla-Ankara Thy flight',
-      hour: 13,
-      pointExpiresAt: expiresAt,
-      pointRate: 0.09,
-      companyId: company.id,
-      day: new Date('2025-06-12'),
-      stock: 700,
-      sold: false,
-      images: [],
-      status: 'approve'
-    },
-  });
+
+
 
   console.log('Seed işlemi tamamlandı.');
 }

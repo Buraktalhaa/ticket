@@ -6,7 +6,7 @@ export async function getTicketById(req: Request, res: Response) {
   const id = req.params.id;
 
   try {
-    const ticket = await prisma.ticket.findFirst({
+    const ticket = await prisma.ticket.findUnique({
       where: {
         id,
         sold: false,
