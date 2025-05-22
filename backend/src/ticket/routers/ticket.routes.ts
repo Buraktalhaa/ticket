@@ -18,12 +18,12 @@ const router = Router()
 router.post('/create-ticket', authenticateToken, permissionControl, createTicket)
 router.post('/delete-ticket', authenticateToken, permissionControl, companyMiddleware, deleteTicket)
 router.get('/get-tickets', getTickets)
-router.get('/get-tickets/by-id/:id', getTicketById)
+router.get('/get-tickets/by-id/:id', authenticateToken, permissionControl, getTicketById)
 router.get('/get-tickets/by-category/:category', getTicketsByCategory)
 
 router.get('/is-seller', authenticateToken, permissionControl, isSeller)
 router.get('/seller/seller-tickets', authenticateToken, permissionControl, sellerTickets)
-router.post('/edit-ticket', authenticateToken, permissionControl, companyMiddleware, editTicket)    //TODO:
+router.post('/edit-ticket', authenticateToken, permissionControl, companyMiddleware, editTicket) 
 
 router.get('/admin/status-panel', authenticateToken, permissionControl, statusPanel)
 router.post('/admin/status-panel/update-status', authenticateToken, permissionControl, updateTicketStatus)

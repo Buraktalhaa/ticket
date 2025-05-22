@@ -105,7 +105,7 @@ export const orderWorker = new Worker('order-queue', async (job: Job) => {
                 quantity: quantity,
             },
         ],
-        success_url: `${process.env.CLIENT_URL}/payment-success?orderId=${pendingOrder.id}`,
+        success_url: `${process.env.CLIENT_URL}/order/my-orders`,
         cancel_url: `${process.env.CLIENT_URL}/payment-cancel`,
         metadata: {
             userId,
@@ -117,7 +117,15 @@ export const orderWorker = new Worker('order-queue', async (job: Job) => {
         },
     });
 
-    await redis.set(`payment-link:${userId}:${job.id}`, JSON.stringify(session.url), 'EX', 180);
+    console.log('Stripe session:', session);
+
+
+    if (session.url) {
+        await redis.set(`payment-link:${userId}:${job.id}`, session.url, 'EX', 180);
+    } else {
+        throw new Error('Stripe session URL is null');
+    }
+
 
     return session.url;
 }, { connection: redis });

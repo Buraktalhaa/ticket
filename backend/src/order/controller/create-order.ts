@@ -40,7 +40,7 @@ export async function createOrder(req: Request, res: Response) {
             break;
         }
         await wait(1000);
-    }
+    }    
 
     if (paymentLink) {
         res.status(200).json({

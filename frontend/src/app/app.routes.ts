@@ -18,20 +18,25 @@ import { CreateTicketComponent } from './seller/components/create-ticket/create-
 import { SellerTicketsComponent } from './seller/components/seller-tickets/seller-tickets.component';
 import { TicketEditComponent } from './seller/components/ticket-edit/ticket-edit.component';
 import { TicketDetailComponent } from './ticket/components/ticket-detail/ticket-detail.component';
+import { MyOrdersComponent } from './order/components/my-orders/my-orders.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/main', pathMatch: 'full' },
     { path: 'main', component: MainComponent },
     { path: 'main/:category', component: MainComponent},
+    { path: 'main/:category/:ticket', component: TicketDetailComponent },
+
+    { path: 'my-profile', component: MyProfileComponent, canActivate:[canActiveteGuard],data:{roles:['user']}},
+    { path: 'my-profile/cart', component: CartComponent, canActivate:[canActiveteGuard],data:{roles:['user']}},
+
+    { path: 'order/my-orders', component: MyOrdersComponent, canActivate:[canActiveteGuard],data:{roles:['user']}},
+
     { path: 'sign-up', component: SignupComponent },
     { path: 'sign-in', component: SigninComponent },
     { path: 'forgot-password', component: ForgotPasswordComponent },
     { path: 'mail-sent', component: MailSentComponent },
     { path: 'reset-password/:token', component: ResetPasswordComponent },
-    { path: 'my-profile', component: MyProfileComponent, canActivate:[canActiveteGuard],data:{roles:['user']}},
     { path: 'unauthorized', component: UnauthorizedComponent },
-    { path: 'my-profile/cart', component: CartComponent},
-    { path: 'main/:category/:ticket', component: TicketDetailComponent },
 
     { path: 'seller-dashboard', component: SellerDashboardComponent, canActivate:[canActiveteGuard],data:{roles:['seller']} },
     { path: 'seller-dashboard/create-ticket', component: CreateTicketComponent, canActivate:[canActiveteGuard],data:{roles:['seller']} },

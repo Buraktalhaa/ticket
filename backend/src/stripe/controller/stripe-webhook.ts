@@ -9,7 +9,6 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 });
 
 export async function handleStripeWebhook(req: Request, res: Response) {
-    console.log("Webhookta")
     const sig = req.headers['stripe-signature'] as string;
     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET as string;
     
@@ -22,12 +21,10 @@ export async function handleStripeWebhook(req: Request, res: Response) {
             endpointSecret
         );
     } catch (err: any) {
-        console.log("hata burada")
         res.status(400).send(`Webhook Error: ${err.message}`);
         return;
     }
     
-    // Ödeme tamamlandı olayını dinle
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object as Stripe.Checkout.Session;
         await handleSuccessfulPayment(session);
@@ -118,8 +115,14 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
                 ticket: true,
             }
         });
+
+        // Card update
+        await prisma.cart.delete({
+            where:{
+                userId
+            }
+        })
         
-        // 5. E-posta gönder
         const emailService = new Email({ 
             email: updatedOrder.user.email, 
             firstName: updatedOrder.user.firstName 
