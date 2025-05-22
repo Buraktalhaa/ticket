@@ -141,5 +141,4 @@ export class TicketService {
   getTicketById(id: string) {
     return this.api.get(`http://localhost:3000/ticket/get-tickets/by-id/${id}`);
   }
-  
 }

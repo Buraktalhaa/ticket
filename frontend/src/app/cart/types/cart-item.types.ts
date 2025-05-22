@@ -18,6 +18,11 @@ export interface Ticket {
   
   export interface CartItem {
     ticket: Ticket;
-    quantity: number;
+    count: number;
+  }
+
+  export interface CartUpdatedTo {
+    ticketId: string;
+    count: number;
   }
   

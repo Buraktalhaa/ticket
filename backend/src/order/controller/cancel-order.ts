@@ -4,8 +4,6 @@ import { handleError } from "../../common/error-handling/handle-error";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { DecodedUser } from '../../common/type/request.type';
 import Stripe from "stripe";
-import redis from "../../common/utils/redis";
-
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
     apiVersion: '2025-04-30.basil',
@@ -92,8 +90,6 @@ export async function cancelOrder(req: Request, res: Response) {
             sold: false,
         },
     });
-
-    await redis.del(`user:order:${userId}`)
 
     res.status(200).json({
         status: ResponseStatus.SUCCESS,

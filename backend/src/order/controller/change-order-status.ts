@@ -51,8 +51,6 @@ export async function changeOrderStatus(req: Request, res: Response) {
         // });
     }
 
-    // redis yaz
-
     res.status(200).json({
         status: ResponseStatus.SUCCESS,
         message: "Order status updated",
