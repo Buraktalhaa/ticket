@@ -21,6 +21,7 @@ import stripeRoutes from './stripe/routers/stripe.routes';
 import bodyParser from 'body-parser';
 import passport from 'passport';
 import './auth/controllers/google-strategy';
+import cartRoutes from './cart/routers/cart.routes';
 
 
 const port = '3000'
@@ -133,6 +134,8 @@ app.use('/category', categoryRouter)
 app.use('/order', orderRouter)
 
 app.use('/company', companyRouter)
+
+app.use('/cart', cartRoutes);
 
 
 
