@@ -1,5 +1,9 @@
 import { Injectable } from '@angular/core';
-import { CartItem } from '../types/cart-item.types';
+import { CartItem, CartUpdatedTo } from '../types/cart-item.types';
+import { ApiService } from '../../shared/services/api.service';
+import { map, Observable } from 'rxjs';
+import { HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -7,48 +11,31 @@ import { CartItem } from '../types/cart-item.types';
 export class CartService {
   private cartItem: CartItem | null = null;
 
-  constructor() {
-    this.loadFromStorage();
+  constructor(
+    private apiService: ApiService,
+    private router: Router
+  ) {}
+
+  getCurrentItem(): Observable<CartItem | null> {
+    return this.apiService.get('http://localhost:3000/cart/get-cart').pipe(
+      map((res: HttpResponse<any>) => res.body?.data ?? null)
+    );
   }
 
-  private saveToStorage() {
-    if (this.cartItem) {
-      localStorage.setItem('cartItem', JSON.stringify(this.cartItem));
-    } else {
-      localStorage.removeItem('cartItem');
-    }
+  addToCart(item: CartUpdatedTo): Observable<any> {
+    return this.apiService.post('http://localhost:3000/cart/add-to-cart', item);
   }
 
-  private loadFromStorage() {
-    const item = localStorage.getItem('cartItem');
-    if (item) {
-      this.cartItem = JSON.parse(item);
-    }
+  updateItem(item: CartUpdatedTo): Observable<any> {
+    return this.apiService.post(`http://localhost:3000/cart/update-cart`, item);
   }
 
-  getCurrentItem(): CartItem | null {
-    return this.cartItem;
+  clearCart(): Observable<any> {
+    return this.apiService.delete('http://localhost:3000/cart/delete-cart');
   }
 
-  addToCart(item: CartItem) {
-    console.log(item)
-    this.cartItem = item ;
-    console.log(this.cartItem)
-    this.saveToStorage();
+  buy(data: any): Observable<any> {
+    return this.apiService.post('http://localhost:3000/order/create-order', data);
   }
-
-  updateItem(item: CartItem) {
-    if (!this.cartItem || this.cartItem.ticket.id !== item.ticket.id) {
-      throw new Error('Güncellenecek ürün sepette yok ya da farklı ürün');
-    }
-    this.cartItem = { ...item };
-    this.saveToStorage();
-  }
-
-  clearCart() {
-    console.log("1",this.cartItem)
-    this.cartItem = null;
-    console.log("2",this.cartItem)
-    this.saveToStorage();
-  }
+  
 }

@@ -18,61 +18,65 @@ import { CartService } from '../../../cart/services/cart.service';
 })
 export class TicketDetailComponent {
   ticket: any;
-  ticketCount:number = 1
+  ticketCount: number = 1;
 
   constructor(
     private ticketService: TicketService,
     private route: ActivatedRoute,
     private cartService: CartService
-  ){}
+  ) {}
 
   ngOnInit() {
     const ticket = this.ticketService.getSelectedTicket();
-  
+
     if (ticket) {
       this.ticket = ticket;
     } else {
       const id = this.route.snapshot.paramMap.get('ticket');
-      if(id == null){
-        return
-      }
-      this.ticketService.getTicketById(id).subscribe((data: any) => {
-        this.ticket = data.body?.data;
-      });      
-    }
-    console.log(ticket)
+      if (id == null) return;
+    
+      this.ticketService.getTicketById(id).subscribe((res: any) => {
+        this.ticket = res.body?.data;
+      });
+    }    
   }
 
   purchaseTicket() {
     const newItem = {
-      ticket: this.ticket,
-      quantity: this.ticketCount
+      ticketId: this.ticket.id,
+      count: this.ticketCount
     };
-  
-    const existing = this.cartService.getCurrentItem();
-  
-    if (existing) {
-      if (existing.ticket.id !== newItem.ticket.id) {
-        const confirmed = confirm(
-          `You already have a product "${existing.ticket.title}" in your cart. Do you want to replace it?`
-        );
-  
-        if (confirmed) {
-          this.cartService.clearCart();
-          this.cartService.addToCart(newItem);
-          alert('New item added, old item removed.');
+
+    this.cartService.getCurrentItem().subscribe(existing => {
+      if (existing) {
+        if (existing.ticket.id !== newItem.ticketId) {
+          const confirmed = confirm(
+            `You already have a product "${existing.ticket.title}" in your cart. Do you want to replace it?`
+          );
+
+          if (confirmed) {
+            this.cartService.clearCart().subscribe(() => {
+              this.cartService.addToCart(newItem).subscribe(() => {
+                alert('New item added, old item removed.');
+              });
+            });
+          } else {
+            alert('No changes made.');
+          }
         } else {
-          alert('No changes made.');
+          const updatedItem = {
+            ticketId: existing.ticket.id,
+            count: existing.count + this.ticketCount
+          };
+          this.cartService.updateItem(updatedItem).subscribe(() => {
+            alert(`Product count updated to ${updatedItem.count}.`);
+          });
         }
       } else {
-        existing.quantity += this.ticketCount;
-        this.cartService.updateItem(existing);
-        alert(`Product quantity updated to ${existing.quantity}.`);
+        this.cartService.addToCart(newItem).subscribe(() => {
+          alert('Product added to the cart.');
+        });
       }
-    } else {
-      this.cartService.addToCart(newItem);
-      alert('Product added to the cart.');
-    }
+    });
   }
-  
 }

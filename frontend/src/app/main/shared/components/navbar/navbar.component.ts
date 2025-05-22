@@ -60,4 +60,8 @@ export class NavbarComponent {
   goToCart(){
     this.router.navigateByUrl('/my-profile/cart');
   }
+
+  goToOrders(){
+    this.router.navigateByUrl('/order/my-orders');
+  }
 }
