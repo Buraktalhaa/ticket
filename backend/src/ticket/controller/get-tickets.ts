@@ -14,12 +14,15 @@ export async function getTickets(req: Request, res: Response) {
       }
     },
     include:{
-      category:true
+      category:{
+        omit:{
+          id:true
+        }
+      }
     },
     omit:{
       categoryId:true,
       companyId:true,
-      createdAt:true,
       pnr:true,
     }
   })

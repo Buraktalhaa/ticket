@@ -80,27 +80,6 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
                 }
             });
         }
-
-        
-        const ticketUpdate = await prisma.ticket.update({
-            where: {
-                id: ticket.id,
-            },
-            data: {
-                stock: ticket.stock - quantity
-            }
-        });
-        
-        if (ticketUpdate.stock === 0) {
-            await prisma.ticket.update({
-                where: {
-                    id: ticket.id
-                },
-                data: {
-                    sold: true
-                }
-            });
-        }
         
         const updatedOrder = await prisma.order.update({
             where: {

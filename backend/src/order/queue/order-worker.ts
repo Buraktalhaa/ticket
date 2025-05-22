@@ -3,7 +3,7 @@ import prisma from '../../common/utils/prisma';
 import Stripe from 'stripe';
 import redis from '../../common/utils/redis';
 import { orderQueue } from './order-queue';
-import { wait } from '../../common/utils/wait';
+import { cleanupQueue } from './order-queue';
 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
@@ -32,7 +32,6 @@ export const orderWorker = new Worker('order-queue', async (job: Job) => {
     // stock check
     if (ticket.stock < quantity) {
         throw new Error(`Not enough tickets in stock. Available: ${ticket.stock}`);
-
     }
 
     // user check
@@ -72,6 +71,18 @@ export const orderWorker = new Worker('order-queue', async (job: Job) => {
     }
 
     const finalPrice = Math.max(0, totalPrice - discountAmount);
+
+    // stock decreased
+    await prisma.ticket.update({
+        where: {
+            id: ticket.id,
+        },
+        data: {
+            stock: {
+                decrement: quantity,
+            },
+        },
+    });
 
     // Create a pending order first
     const pendingOrder = await prisma.order.create({
@@ -126,6 +137,15 @@ export const orderWorker = new Worker('order-queue', async (job: Job) => {
         throw new Error('Stripe session URL is null');
     }
 
+    // 5 dakiak sonra completed olmadiysa silcek
+    await cleanupQueue.add('cleanup-order', {
+        orderId: pendingOrder.id,
+        ticketId: ticket.id,
+        quantity
+    }, {
+        delay: 30 * 1000
+    });
+
 
     return session.url;
 }, { connection: redis });
@@ -139,9 +159,32 @@ orderWorker.on('failed', async (job, error) => {
         console.error('Job is undefined');
         return;
     }
+
     console.error(`Job ${job.id} failed:`, error.message);
-    await orderQueue.add('create-order', job.data);
+
+    await redis.set(`payment-link:${job.data.userId}:${job.id}`, `ERROR:${error.message}`, 'EX', 180);
+
+    const maxAttempts = 3;
+    const currentAttempts = job.attemptsMade || 0;
+
+    if (currentAttempts >= maxAttempts) {
+        console.error(`🔁 Job ${job.id} reached max retry attempts (${maxAttempts}). Not re-adding.`);
+        return;
+    }
+
+    if (error.message.includes('Not enough tickets in stock')) {
+        console.warn(`🎟️ Stock problem for Job ${job.id}, not retrying.`);
+        return;
+    }
+
+    await orderQueue.add('create-order', job.data, {
+        attempts: maxAttempts,
+        backoff: 5000,
+    });
+
+    console.log(`🌀 Re-added failed job ${job.id} to the queue (Attempt ${currentAttempts + 1}/${maxAttempts})`);
 });
+
 
 
 

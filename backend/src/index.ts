@@ -22,6 +22,7 @@ import bodyParser from 'body-parser';
 import passport from 'passport';
 import './auth/controllers/google-strategy';
 import cartRoutes from './cart/routers/cart.routes';
+import './order/queue/order-cleanup-worker'
 
 
 const port = '3000'
