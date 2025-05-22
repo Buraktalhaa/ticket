@@ -49,6 +49,7 @@ model User {
   googleToken        GoogleToken?
   GoogleAuth         GoogleAuth?
   Auth               Auth?
+  Cart               Cart?
 }
 
 model GoogleToken {
@@ -166,6 +167,7 @@ model Ticket {
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @default(now())
   order          Order[]
+  Cart           Cart[]
 }
 
 enum TicketStatus {
@@ -220,4 +222,13 @@ model Point {
   createdAt  DateTime @default(now())
 
   @@unique([userId, categoryId])
+}
+
+model Cart {
+  id       String @id @default(uuid())
+  userId   String @unique
+  user     User   @relation(fields: [userId], references: [id])
+  ticketId String
+  ticket   Ticket @relation(fields: [ticketId], references: [id])
+  count    Int
 }

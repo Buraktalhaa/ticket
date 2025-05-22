@@ -206,6 +206,31 @@ async function main() {
     }
   });
 
+  const userPermission8 = await prisma.permission.create({
+    data: {
+      url: '/get-cart'
+    }
+  });
+
+  const userPermission9 = await prisma.permission.create({
+    data: {
+      url: '/add-to-cart'
+    }
+  });
+
+  const userPermission10 = await prisma.permission.create({
+    data: {
+      url: '/update-cart'
+    }
+  });
+
+  const userPermission11 = await prisma.permission.create({
+    data: {
+      url: '/delete-cart'
+    }
+  });
+
+
 
 
 
@@ -336,6 +361,33 @@ async function main() {
     }
   })
 
+  await prisma.permit.create({
+    data: {
+      roleId: userRole.id,
+      permissionId: userPermission8.id
+    }
+  })
+
+  await prisma.permit.create({
+    data: {
+      roleId: userRole.id,
+      permissionId: userPermission9.id
+    }
+  })
+
+  await prisma.permit.create({
+    data: {
+      roleId: userRole.id,
+      permissionId: userPermission10.id
+    }
+  })
+
+  await prisma.permit.create({
+    data: {
+      roleId: userRole.id,
+      permissionId: userPermission11.id
+    }
+  })
 
 
 
