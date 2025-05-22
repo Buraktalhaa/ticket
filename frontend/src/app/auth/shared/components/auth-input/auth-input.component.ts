@@ -34,7 +34,6 @@ export class AuthInputComponent {
 
   onChange(event: Event): void {
     const value = (event.target as HTMLInputElement).value;
-    console.log("Deneme yeri", value)
     this.model = value;
     this.modelChange.emit(value);
   }

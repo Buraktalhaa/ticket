@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { ApiService } from '../../../shared/services/api.service';
-import { Email, Passwords, SignIn, SignUp } from '../types/auth.type';
+import { DecodedToken, Email, Passwords, SignIn, SignUp } from '../types/auth.type';
 import { Router } from '@angular/router';
 import { CookieService } from 'ngx-cookie-service';
 import { jwtDecode } from "jwt-decode";
@@ -28,19 +28,18 @@ export class AuthService {
     this.api
       .post('http://localhost:3000/auth/sign-in', signinData)
       .subscribe((res: HttpResponse<any>) => {
+        this.deleteCookies()
         const accessToken = res.body.accessToken
         const refreshToken = res.body.refreshToken
         
-        this.cookieService.set('accessToken', accessToken);
-        this.cookieService.set('refreshToken', refreshToken);
-        console.log(accessToken);
+        this.cookieService.set('accessToken', accessToken, undefined, '/');
+        this.cookieService.set('refreshToken', refreshToken, undefined, '/');
         
         const decoded = this.decodeJwt(accessToken);
         const role = decoded?.role;
-        console.log(role);
+        console.log(decoded);
         
-        this.cookieService.set('role', role);
-        
+        this.cookieService.set('role', role, undefined, '/');
 
         this.isThereUser.set(true)
         this.router.navigateByUrl("/main")
@@ -54,12 +53,12 @@ export class AuthService {
         const accessToken = res.body.accessToken
         const refreshToken = res.body.refreshToken
 
-        this.cookieService.set('accessToken', accessToken);
-        this.cookieService.set('refreshToken', refreshToken);
+        this.cookieService.set('accessToken', accessToken, undefined, '/');
+        this.cookieService.set('refreshToken', refreshToken, undefined, '/');        
 
         const decoded = this.decodeJwt(accessToken);
         const role = decoded?.role;
-        this.cookieService.set('role', role);
+        this.cookieService.set('role', role, undefined, '/');
 
         this.isThereUser.set(true)
         this.router.navigateByUrl("/sign-in")
@@ -73,12 +72,13 @@ export class AuthService {
         const accessToken = res.body.accessToken
         const refreshToken = res.body.refreshToken
 
-        this.cookieService.set('accessToken', accessToken);
-        this.cookieService.set('refreshToken', refreshToken);
-
+        this.cookieService.set('accessToken', accessToken, undefined, '/');
+        this.cookieService.set('refreshToken', refreshToken, undefined, '/');
+        
         const decoded = this.decodeJwt(accessToken);
+        
         const role = decoded?.role;
-        this.cookieService.set('role', role);
+        this.cookieService.set('role', role, undefined, '/');
 
         this.isThereUser.set(true)
         setTimeout(() => {
@@ -110,16 +110,18 @@ export class AuthService {
       });
   }
 
-  decodeJwt(token: string): any {
-    try {
+  decodeJwt(token: string): DecodedToken {
       return jwtDecode(token);
-    } catch (error) {
-      console.error('Invalid JWT', error);
-      return null;
-    }
   }
 
   logOut() {
+    this.deleteCookies()
+  
+    this.isThereUser.set(false);
+    this.router.navigateByUrl('/sign-in');
+  }
+
+  deleteCookies(){
     this.cookieService.delete('accessToken', '/');
     this.cookieService.delete('refreshToken', '/');
     this.cookieService.delete('role', '/');
@@ -127,8 +129,5 @@ export class AuthService {
     this.cookieService.delete('accessToken'); // fallback
     this.cookieService.delete('refreshToken');
     this.cookieService.delete('role');
-  
-    this.isThereUser.set(false);
-    this.router.navigateByUrl('/sign-in');
   }
 }

@@ -5,6 +5,7 @@ import { TicketCardComponent } from '../../../shared/components/ticket-card/tick
 import { ActivatedRoute, Router } from '@angular/router';
 import { TicketService } from '../../../ticket/services/ticket.service';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
+import { FullTicket, Ticket } from '../../../ticket/types/ticket.types';
 
 @Component({
   selector: 'app-main',
@@ -18,8 +19,8 @@ import { FooterInfoTextComponent } from '../../../shared/components/footer-info-
   styleUrl: './main.component.css'
 })
 export class MainComponent {
-  tickets: any[] = [];
-  filteredTickets: any[] = [];
+  tickets: Ticket[] = [];
+  filteredTickets: Ticket[] = [];
   selectedCategory = '';
   allowedCategories = ['flight', 'train', 'bus', 'hotel', 'movie', 'theater', 'concert'];
 
@@ -45,11 +46,10 @@ export class MainComponent {
     this.ticketService.tickets$.subscribe(data => {
       this.tickets = data;
       this.filteredTickets = [...data];
-      console.log(data);
     });
   }
 
-  goTicketDetailPage(ticket:any){
+  goTicketDetailPage(ticket:FullTicket){
     this.ticketService.setSelectedTicket(ticket);
     const category = ticket.category.name;
     this.router.navigate(['/main', category, ticket.id]);

@@ -8,7 +8,7 @@ import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/
 })
 export class TicketCardComponent {
   @Input() description: string =''
-  @Input() stock: string =''
+  @Input() stock: number =0
   @Input() buttonText: string = '';
   @Output() buttonClick = new EventEmitter<void>();
   @Input() price!: number

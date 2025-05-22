@@ -5,6 +5,7 @@ import { TicketCardComponent } from '../../../shared/components/ticket-card/tick
 import { TicketFilterComponent } from '../../../shared/components/ticket-filter/ticket-filter.component';
 import { TicketService } from '../../../ticket/services/ticket.service';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
+import { Ticket } from '../../../ticket/types/ticket.types';
 
 
 @Component({
@@ -20,8 +21,8 @@ import { FooterInfoTextComponent } from '../../../shared/components/footer-info-
   styleUrl: './status-panel.component.css'
 })
 export class StatusPanelComponent {
-  tickets: any[] = [];
-  filteredTickets: any[] = [];
+  tickets: Ticket[] = [];
+  filteredTickets: Ticket[] = [];
 
   constructor(
     private ticketService: TicketService,
@@ -36,7 +37,7 @@ export class StatusPanelComponent {
     this.ticketService.goAdminStatusPanel()
   }
 
-  goToChangeStatusPage(ticket: any) {
+  goToChangeStatusPage(ticket: Ticket) {
     this.router.navigate(['admin-dashboard/status-panel/edit'], { state: { ticket } });
   }
 

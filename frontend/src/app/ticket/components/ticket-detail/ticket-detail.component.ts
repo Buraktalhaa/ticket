@@ -5,6 +5,7 @@ import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.c
 import { TicketService } from '../../services/ticket.service';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../../cart/services/cart.service';
+import { FullTicket } from '../../types/ticket.types';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -17,7 +18,7 @@ import { CartService } from '../../../cart/services/cart.service';
   styleUrl: './ticket-detail.component.css'
 })
 export class TicketDetailComponent {
-  ticket: any;
+  ticket: FullTicket | null = null;
   ticketCount: number = 1;
 
   constructor(
@@ -28,7 +29,8 @@ export class TicketDetailComponent {
 
   ngOnInit() {
     const ticket = this.ticketService.getSelectedTicket();
-
+    console.log(ticket);
+    
     if (ticket) {
       this.ticket = ticket;
     } else {
@@ -42,18 +44,27 @@ export class TicketDetailComponent {
   }
 
   purchaseTicket() {
+    if (!this.ticket) return;
+
     const newItem = {
       ticketId: this.ticket.id,
       count: this.ticketCount
     };
-
+  
+    const stock = this.ticket.stock;
+  
+    if (newItem.count > stock) {
+      alert(`There are only ${stock} tickets in stock.`);
+      return;
+    }
+  
     this.cartService.getCurrentItem().subscribe(existing => {
       if (existing) {
         if (existing.ticket.id !== newItem.ticketId) {
           const confirmed = confirm(
             `You already have a product "${existing.ticket.title}" in your cart. Do you want to replace it?`
           );
-
+  
           if (confirmed) {
             this.cartService.clearCart().subscribe(() => {
               this.cartService.addToCart(newItem).subscribe(() => {
@@ -64,10 +75,18 @@ export class TicketDetailComponent {
             alert('No changes made.');
           }
         } else {
+          const totalCount = existing.count + newItem.count;
+  
+          if (totalCount > stock) {
+            alert(`You can’t add more than ${stock} tickets. You already have ${existing.count} in your cart.`);
+            return;
+          }
+  
           const updatedItem = {
             ticketId: existing.ticket.id,
-            count: existing.count + this.ticketCount
+            count: totalCount
           };
+  
           this.cartService.updateItem(updatedItem).subscribe(() => {
             alert(`Product count updated to ${updatedItem.count}.`);
           });
@@ -79,4 +98,5 @@ export class TicketDetailComponent {
       }
     });
   }
+  
 }

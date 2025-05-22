@@ -33,10 +33,23 @@ export class CartComponent {
   }
 
   increaseQuantity() {
-    if (!this.item) return;
-    const updatedCount = this.item.count + 1;
+    const item = this.item;
+    const ticket = item?.ticket;
+  
+    if (!item || !ticket){
+      return;
+    } 
+
+    if(ticket.stock == undefined) return
+  
+    if (item.count >= ticket.stock) {
+      alert('No more in stock.');
+      return;
+    }
+
+    const updatedCount = item.count + 1;
     this.cartService.updateItem({
-      ticketId: this.item.ticket.id,
+      ticketId: item.ticket.id,
       count: updatedCount
     }).subscribe(() => {
       this.item!.count = updatedCount;

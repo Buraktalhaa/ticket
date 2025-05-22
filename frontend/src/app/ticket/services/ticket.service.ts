@@ -3,6 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from '../../shared/services/api.service';
+import { CreateTicketDTO, FullTicket } from '../types/ticket.types';
 
 @Injectable({
   providedIn: 'root'
@@ -10,13 +11,13 @@ import { ApiService } from '../../shared/services/api.service';
 export class TicketService {
   private selectedTicket: any;
 
-  private ticketsSubject = new BehaviorSubject<any[]>([]);
+  private ticketsSubject = new BehaviorSubject<FullTicket[]>([]);
   tickets$ = this.ticketsSubject.asObservable();
 
-  private sellerTickets = new BehaviorSubject<any[]>([]);
+  private sellerTickets = new BehaviorSubject<FullTicket[]>([]);
   sellerTickets$ = this.sellerTickets.asObservable();
 
-  private adminTickets = new BehaviorSubject<any[]>([]);
+  private adminTickets = new BehaviorSubject<FullTicket[]>([]);
   adminTickets$ = this.adminTickets.asObservable();
 
   constructor(
@@ -28,6 +29,7 @@ export class TicketService {
     this.api.get('http://localhost:3000/ticket/get-tickets').subscribe({
       next: (res: HttpResponse<any>) => {
         const data = res.body?.data || [];
+        console.log(data);
         this.ticketsSubject.next(data);
         this.router.navigateByUrl('/main');
       },
@@ -77,7 +79,7 @@ export class TicketService {
     });
   }
 
-  createTicket(ticket: any) {
+  createTicket(ticket: CreateTicketDTO) {
     this.api.post('http://localhost:3000/ticket/create-ticket', ticket)
       .subscribe({
         next: () => {
@@ -88,7 +90,7 @@ export class TicketService {
       });
   }
 
-  editTicket(ticket: any) {
+  editTicket(ticket: FullTicket | null) {
     this.api.post('http://localhost:3000/ticket/edit-ticket', ticket)
       .subscribe({
         next: (res: HttpResponse<any>) => {
@@ -98,11 +100,6 @@ export class TicketService {
         error: (err) => alert('Error: ' + err.error?.message || 'Something went wrong')
       });
   }
-
-
-
-
-
 
   goAdminStatusPanel() {
     this.api.get('http://localhost:3000/ticket/admin/status-panel')
@@ -119,7 +116,7 @@ export class TicketService {
       })
   }
 
-  editStatus(ticket: any) {
+  editStatus(ticket: { id:string, status:string }) {
     this.api.post('http://localhost:3000/ticket/admin/status-panel/update-status', ticket)
       .subscribe({
         next: () => {
@@ -130,7 +127,7 @@ export class TicketService {
       });
   }
 
-  setSelectedTicket(ticket: any) {
+  setSelectedTicket(ticket: FullTicket) {
     this.selectedTicket = ticket;
   }
   
