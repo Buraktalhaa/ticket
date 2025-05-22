@@ -61,8 +61,8 @@ async function main() {
     }
   })
 
-  const accessTokenSeller = createToken(seller.id, email, 'seller', process.env.ACCESS_SECRET!, 10 * 60 * 24)
-  const refreshTokenSeller = createToken(seller.id, email, 'seller', process.env.REFRESH_SECRET!, 48 * 60 * 60)
+  const accessTokenSeller = createToken(seller.id, email, 'seller', process.env.ACCESS_SECRET!, 100 * 60 * 24)
+  const refreshTokenSeller = createToken(seller.id, email, 'seller', process.env.REFRESH_SECRET!, 4800 * 60 * 24)
 
   await prisma.token.create({
     data: {
@@ -523,10 +523,11 @@ await prisma.ticket.create({
     pointRate: 0.1,
     companyId: company.id,
     day: new Date('2025-06-01'),
-    stock: 500,
+    stock: 1,
     sold: false,
     images: [],
-    status: 'approve'
+    status: 'approve',
+    discount:10
   },
 });
 
@@ -545,10 +546,11 @@ await prisma.ticket.create({
     pointRate: 0.05,
     companyId: company.id,
     day: new Date('2025-06-03'),
-    stock: 300,
+    stock: 2,
     sold: false,
     images: ['https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4'],
-    status: 'approve'
+    status: 'approve',
+    discount: 25
   },
 });
 
@@ -571,7 +573,8 @@ await prisma.ticket.create({
     stock: 200,
     sold: false,
     images: [],
-    status: 'approve'
+    status: 'approve',
+    discount: 50
   },
 });
 
@@ -593,7 +596,8 @@ await prisma.ticket.create({
     stock: 250,
     sold: false,
     images: [],
-    status: 'approve'
+    status: 'approve',
+    discount: 0
   },
 });
 
@@ -616,7 +620,8 @@ await prisma.ticket.create({
     stock: 1000,
     sold: false,
     images: ['https://atthemovies.uk/cdn/shop/products/LORthetwotowers2002dsAdv27x40in150.jpg?v=1621381412&width=1400'],
-    status: 'approve'
+    status: 'approve',
+    discount: 20
   },
 });
 
@@ -638,7 +643,8 @@ await prisma.ticket.create({
     stock: 700,
     sold: false,
     images: [],
-    status: 'approve'
+    status: 'approve',
+    discount: 12
   },
 });
 
@@ -660,7 +666,8 @@ await prisma.ticket.create({
     stock: 700,
     sold: false,
     images: [],
-    status: 'approve'
+    status: 'approve',
+    discount: 10
   },
 });
 
