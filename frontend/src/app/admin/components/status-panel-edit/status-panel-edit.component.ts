@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
 import { TicketService } from '../../../ticket/services/ticket.service';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
+import { AdminService } from '../../services/admin.service';
+import { AdminNavigationService } from '../../services/admin-navigation.service';
 
 @Component({
   selector: 'app-status-panel-edit',
@@ -23,7 +25,8 @@ export class StatusPanelEditComponent {
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private ticketService: TicketService
+    private adminService: AdminService,
+    private adminNavigationService: AdminNavigationService,
   ) {}
 
   ngOnInit() {
@@ -48,8 +51,18 @@ export class StatusPanelEditComponent {
   updateStatus(){
     if (this.ticketForm.valid) {
       const { id, status } = this.ticketForm.value;
-      const updatedTicket = {id, status} 
-      this.ticketService.editStatus(updatedTicket)
+      const updatedTicket = { id, status };
+  
+      this.adminService.editStatus(updatedTicket).subscribe({
+        next: () => {
+          alert('Ticket edited successfully');
+          this.adminNavigationService.goToAdminStatusPanel()
+        },
+        error: (err) => {
+          alert('Error: ' + err.error?.message || 'Something went wrong');
+        }
+      });
     }
   }
+  
 }

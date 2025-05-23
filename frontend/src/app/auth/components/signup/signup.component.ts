@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthService } from '../../services/auth.service';
 import { SignButtonComponent } from '../../shared/components/sign-button/sign-button.component';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { TextLinkComponent } from '../../shared/components/text-link/text-link.component';
 import { AuthInputComponent } from '../../shared/components/auth-input/auth-input.component';
-
-
 
 @Component({
   selector: 'app-signup',
@@ -29,7 +27,9 @@ export class SignupComponent {
   password: string = '';
   confirmPassword: string = '';
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService
+  ) { }
 
   signUp() {
     if (!this.email || !this.firstName || !this.password || !this.confirmPassword) {
@@ -39,7 +39,7 @@ export class SignupComponent {
     }
 
     if (this.password !== this.confirmPassword) {
-      console.log("Şifreler uyuşmuyor");
+      console.log("Passwords are not the same");
       return;
     }
 
@@ -56,7 +56,7 @@ export class SignupComponent {
   }
 
   signUpWithGoogle() {
-    console.log("google ile giris yapma ekrani");
+    console.log("Google login screen");
     this.authService.signInGoogle();
   }
 }

@@ -14,4 +14,8 @@ export class OrderService {
   getMyOrders(): Observable<any> {
     return this.apiService.get(`http://localhost:3000/order/get-orders`);
   }
+
+  buy(data: any): Observable<any> {
+    return this.apiService.post('http://localhost:3000/order/create-order', data);
+  }
 }

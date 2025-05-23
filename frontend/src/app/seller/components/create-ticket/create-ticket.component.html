@@ -9,12 +9,17 @@
     >
       <option value="" disabled selected>Select a category</option>
       @for (category of categoryOptions; track $index) {
-        <option [value]="category">{{ category }}</option>
+      <option [value]="category">{{ category }}</option>
       }
     </select>
   </div>
 
-  <!-- Other Label Inputs -->
+  <app-labels
+    label="Title"
+    placeholder="Enter title"
+    [(model)]="ticket.title"
+  ></app-labels>
+
   <app-labels
     label="Description"
     placeholder="Enter description"
@@ -22,16 +27,24 @@
   ></app-labels>
 
   <app-labels
+    label="City"
+    placeholder="Enter city"
+    [(model)]="ticket.city"
+  ></app-labels>
+
+  <app-labels
+    label="Location"
+    placeholder="Enter location"
+    [(model)]="ticket.location"
+  ></app-labels>
+
+  <app-labels label="Date" type="date" [(model)]="ticket.day"></app-labels>
+
+  <app-labels
     label="Hour"
     type="number"
     placeholder="Enter number of hours"
     [(model)]="ticket.hour"
-  ></app-labels>
-
-  <app-labels
-    label="Date"
-    type="date"
-    [(model)]="ticket.day"
   ></app-labels>
 
   <app-labels
@@ -68,7 +81,6 @@
     [(model)]="ticket.discount"
   ></app-labels>
 
-  <!-- Submit Button -->
   <button
     (click)="createTicket()"
     class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 mt-4 rounded"
@@ -77,4 +89,3 @@
   </button>
 </div>
 <app-footer-info-text> </app-footer-info-text>
-

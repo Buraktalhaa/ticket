@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TicketCardComponent } from '../../../shared/components/ticket-card/ticket-card.component';
 import { TicketFilterComponent } from '../../../shared/components/ticket-filter/ticket-filter.component';
-import { TicketService } from '../../../ticket/services/ticket.service';
 import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
-
+import { SellerService } from '../../services/seller.service';
+import { Ticket } from '../../../ticket/types/ticket.types';
 
 @Component({
   selector: 'app-seller-tickets',
@@ -17,22 +17,21 @@ import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.c
   styleUrl: './seller-tickets.component.css'
 })
 export class SellerTicketsComponent {
-  tickets: any[] = [];
-  filteredTickets: any[] = [];
+  tickets: Ticket[] = [];
+  filteredTickets: Ticket[] = [];
 
   constructor(
-    private ticketService: TicketService,
-    private router: Router
+    private router: Router,
+    private sellerService: SellerService,
+
   ) {}
 
   ngOnInit() {
-    this.ticketService.sellerTickets$.subscribe(data => {
+    this.sellerService.sellerTickets$.subscribe(data => {
       this.tickets = data;
       this.filteredTickets = [...data];
-      console.log(data)
     });
-
-    this.ticketService.getMyTickets();
+    this.sellerService.getMyTickets();
   }
 
   goToEditPage(ticket: any) {

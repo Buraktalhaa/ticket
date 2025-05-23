@@ -4,6 +4,7 @@ import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.c
 import { CartService } from '../../services/cart.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { OrderService } from '../../../order/services/order.service';
 
 @Component({
   selector: 'app-cart',
@@ -19,7 +20,8 @@ export class CartComponent {
 
   constructor(
     private cartService: CartService,
-    private router: Router
+    private router: Router,
+    private orderService:OrderService
   ) { }
 
   ngOnInit() {
@@ -84,16 +86,16 @@ export class CartComponent {
       usePoints: true
     };
   
-    this.cartService.buy(data).subscribe(response => {
+    this.orderService.buy(data).subscribe(response => {
       const paymentLink = response.body.paymentLink;
       if (paymentLink) {
         // redirect
         window.location.href = paymentLink;
       } else {
-        alert('Ödeme linki oluşturulamadı, lütfen tekrar deneyin.');
+        alert('Payment link could not be generated, please try again.');
       }
     }, error => {
-      alert('Sipariş oluşturulurken bir hata oluştu.');
+      alert('An error occurred while creating an order.');
     });
   }
 }

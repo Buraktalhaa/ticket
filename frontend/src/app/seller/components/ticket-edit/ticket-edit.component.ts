@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
 import { TicketService } from '../../../ticket/services/ticket.service';
+import { SellerService } from '../../services/seller.service';
 
 @Component({
   selector: 'app-ticket-edit',
@@ -19,7 +20,7 @@ export class TicketEditComponent {
 
   constructor(
     private fb: FormBuilder,
-    private ticketService: TicketService) {}
+    private sellerService: SellerService) {}
 
   ngOnInit() {
     const ticket = history.state.ticket;
@@ -45,7 +46,7 @@ export class TicketEditComponent {
     if (this.ticketForm.valid) {
       const updatedTicket = this.ticketForm.value;
       console.log('Updated ticket:', updatedTicket);
-      this.ticketService.editTicket(updatedTicket)
+      this.sellerService.editTicket(updatedTicket)
     }
   }
 }

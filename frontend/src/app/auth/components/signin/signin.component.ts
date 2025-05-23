@@ -6,7 +6,7 @@ import { AuthInputComponent } from '../../shared/components/auth-input/auth-inpu
 import { TextLinkComponent } from '../../shared/components/text-link/text-link.component';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { SignButtonComponent } from '../../shared/components/sign-button/sign-button.component';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-signin',

@@ -6,6 +6,8 @@ import { TicketFilterComponent } from '../../../shared/components/ticket-filter/
 import { TicketService } from '../../../ticket/services/ticket.service';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { Ticket } from '../../../ticket/types/ticket.types';
+import { AdminService } from '../../services/admin.service';
+import { AdminNavigationService } from '../../services/admin-navigation.service';
 
 
 @Component({
@@ -25,20 +27,23 @@ export class StatusPanelComponent {
   filteredTickets: Ticket[] = [];
 
   constructor(
-    private ticketService: TicketService,
-    private router: Router
+    private adminService: AdminService,
+    private adminNavigationService: AdminNavigationService
   ) {}
 
   ngOnInit() {
-    this.ticketService.adminTickets$.subscribe(data => {
-      this.tickets = data;
-      this.filteredTickets = [...data];
+    this.adminService.getAdminStatusPanel().subscribe({
+      next: (res) => {
+        const data = res.body?.data || [];
+        this.tickets = data;
+        this.filteredTickets = [...data];
+      },
+      error: (err) => console.error('Error:', err)
     });
-    this.ticketService.goAdminStatusPanel()
   }
 
   goToChangeStatusPage(ticket: Ticket) {
-    this.router.navigate(['admin-dashboard/status-panel/edit'], { state: { ticket } });
+    this.adminNavigationService.goToStatusEditPage(ticket);
   }
 
   onFilter(filter: { sortBy: string; keyword: string }) {

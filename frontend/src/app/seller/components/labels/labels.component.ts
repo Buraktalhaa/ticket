@@ -9,7 +9,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class LabelsComponent {
   @Input() label!: string;
   @Input() placeholder: string = '';
-  @Input() type: string = 'text'; // input tipi
+  @Input() type: string = 'text';
   @Input() model: any;
   @Output() modelChange = new EventEmitter<any>();
 

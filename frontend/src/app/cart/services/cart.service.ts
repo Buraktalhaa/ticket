@@ -33,9 +33,4 @@ export class CartService {
   clearCart(): Observable<any> {
     return this.apiService.delete('http://localhost:3000/cart/delete-cart');
   }
-
-  buy(data: any): Observable<any> {
-    return this.apiService.post('http://localhost:3000/order/create-order', data);
-  }
-  
 }

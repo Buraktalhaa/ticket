@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
 import { TicketService } from '../../../ticket/services/ticket.service';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
+import { AdminService } from '../../services/admin.service';
+import { AdminNavigationService } from '../../services/admin-navigation.service';
 
 
 @Component({
@@ -15,9 +17,16 @@ import { FooterInfoTextComponent } from '../../../shared/components/footer-info-
 })
 export class AdminDashboardComponent {
   constructor(
-    private ticketService: TicketService,
+    private adminService: AdminService,
+    private adminNavigationService: AdminNavigationService
   ){}
-  goToAdminStatusPanel(){
-    this.ticketService.goAdminStatusPanel()
+
+  goToAdminStatusPanel() {
+    this.adminService.getAdminStatusPanel().subscribe({
+      next: (res) => {
+        this.adminNavigationService.goToAdminStatusPanel();
+      },
+      error: (err) => console.error('Error:', err)
+    });
   }
 }

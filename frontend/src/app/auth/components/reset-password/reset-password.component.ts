@@ -5,7 +5,8 @@ import { FormsModule } from '@angular/forms';
 import { AuthInputComponent } from '../../shared/components/auth-input/auth-input.component';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { SignButtonComponent } from '../../shared/components/sign-button/sign-button.component';
-import { AuthService } from '../../shared/services/auth.service';
+import { AuthService } from '../../services/auth.service';
+import { PasswordService } from '../../services/password.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -24,7 +25,10 @@ export class ResetPasswordComponent {
   confirmPassword:string =''
   token: string | null = null;
 
-  constructor(private route: ActivatedRoute, private authService: AuthService) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private passswordService: PasswordService
+  ) {}
 
   ngOnInit(): void {
     this.token = this.route.snapshot.paramMap.get('token');
@@ -40,6 +44,6 @@ export class ResetPasswordComponent {
     }
     console.log(this.token);
     
-    this.authService.sendNewPassword(newPassword)
+    this.passswordService.sendNewPassword(newPassword)
   }
 }
