@@ -476,31 +476,31 @@ async function main() {
 
   // Category
   const category1 = await prisma.category.create({
-    data: { name: 'flight' },
+    data: { name: 'Flight' },
   });
 
   const category2 = await prisma.category.create({
-    data: { name: 'train' },
+    data: { name: 'Train' },
   });
 
   const category3 = await prisma.category.create({
-    data: { name: 'bus' },
+    data: { name: 'Bus' },
   });
 
   const category4 = await prisma.category.create({
-    data: { name: 'hotel' },
+    data: { name: 'Hotel' },
   });
 
   const category5 = await prisma.category.create({
-    data: { name: 'movie' },
+    data: { name: 'Movie' },
   });
 
   const category6 = await prisma.category.create({
-    data: { name: 'theater' },
+    data: { name: 'Theater' },
   });
 
   const category7 = await prisma.category.create({
-    data: { name: 'concert' },
+    data: { name: 'Concert' },
   });
 
 

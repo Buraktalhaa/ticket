@@ -3,7 +3,6 @@ import prisma from '../../common/utils/prisma';
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { handleError } from "../../common/error-handling/handle-error";
 
-
 export async function changeOrderStatus(req: Request, res: Response) {
     const id = req.body
     const status = req.body
@@ -57,9 +56,4 @@ export async function changeOrderStatus(req: Request, res: Response) {
 
     })
     return;
-
-
-
-
-
 }
