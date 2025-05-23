@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { ForgotPasswordComponent } from './auth/components/forgot-password/forgot-password.component';
 import { MailSentComponent } from './auth/components/mail-sent/mail-sent.component';
-import { MyProfileComponent } from './profile/my-profile/my-profile.component';
+import { MyProfileComponent } from './profile/components/my-profile/my-profile.component';
 import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
 import { canActiveteGuard } from './guard/can-activete.guard';
 import { SignupComponent } from './auth/components/signup/signup.component';
