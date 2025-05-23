@@ -3,7 +3,6 @@ import { ForgotPasswordComponent } from './auth/components/forgot-password/forgo
 import { MailSentComponent } from './auth/components/mail-sent/mail-sent.component';
 import { MyProfileComponent } from './profile/components/my-profile/my-profile.component';
 import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
-import { canActiveteGuard } from './guard/can-activete.guard';
 import { SignupComponent } from './auth/components/signup/signup.component';
 import { SigninComponent } from './auth/components/signin/signin.component';
 import { ResetPasswordComponent } from './auth/components/reset-password/reset-password.component';
@@ -19,6 +18,7 @@ import { SellerTicketsComponent } from './seller/components/seller-tickets/selle
 import { TicketEditComponent } from './seller/components/ticket-edit/ticket-edit.component';
 import { TicketDetailComponent } from './ticket/components/ticket-detail/ticket-detail.component';
 import { MyOrdersComponent } from './order/components/my-orders/my-orders.component';
+import { roleGuard } from './guard/role.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/main', pathMatch: 'full' },
@@ -26,10 +26,10 @@ export const routes: Routes = [
     { path: 'main/:category', component: MainComponent},
     { path: 'main/:category/:ticket', component: TicketDetailComponent },
 
-    { path: 'my-profile', component: MyProfileComponent, canActivate:[canActiveteGuard],data:{roles:['user']}},
-    { path: 'my-profile/cart', component: CartComponent, canActivate:[canActiveteGuard],data:{roles:['user']}},
+    { path: 'my-profile', component: MyProfileComponent, canActivate:[roleGuard],data:{roles:['user']}},
+    { path: 'my-profile/cart', component: CartComponent, canActivate:[roleGuard],data:{roles:['user']}},
 
-    { path: 'order/my-orders', component: MyOrdersComponent, canActivate:[canActiveteGuard],data:{roles:['user']}},
+    { path: 'order/my-orders', component: MyOrdersComponent, canActivate:[roleGuard],data:{roles:['user']}},
 
     { path: 'sign-up', component: SignupComponent },
     { path: 'sign-in', component: SigninComponent },
@@ -38,14 +38,14 @@ export const routes: Routes = [
     { path: 'reset-password/:token', component: ResetPasswordComponent },
     { path: 'unauthorized', component: UnauthorizedComponent },
 
-    { path: 'seller-dashboard', component: SellerDashboardComponent, canActivate:[canActiveteGuard],data:{roles:['seller']} },
-    { path: 'seller-dashboard/create-ticket', component: CreateTicketComponent, canActivate:[canActiveteGuard],data:{roles:['seller']} },
-    { path: 'seller-dashboard/my-tickets', component:  SellerTicketsComponent, canActivate:[canActiveteGuard],data:{roles:['seller']}},
-    { path: 'seller-dashboard/my-tickets/edit', component: TicketEditComponent, canActivate:[canActiveteGuard],data:{roles:['seller']}},
+    { path: 'seller-dashboard', component: SellerDashboardComponent, canActivate:[roleGuard],data:{roles:['seller']} },
+    { path: 'seller-dashboard/create-ticket', component: CreateTicketComponent, canActivate:[roleGuard],data:{roles:['seller']} },
+    { path: 'seller-dashboard/my-tickets', component:  SellerTicketsComponent, canActivate:[roleGuard],data:{roles:['seller']}},
+    { path: 'seller-dashboard/my-tickets/edit', component: TicketEditComponent, canActivate:[roleGuard],data:{roles:['seller']}},
     
-    { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate:[canActiveteGuard],data:{roles:['admin']}},
-    { path: 'admin-dashboard/status-panel', component: StatusPanelComponent, canActivate:[canActiveteGuard],data:{roles:['admin']}},
-    { path: 'admin-dashboard/status-panel/edit', component: StatusPanelEditComponent, canActivate:[canActiveteGuard],data:{roles:['admin']}},
+    { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate:[roleGuard],data:{roles:['admin']}},
+    { path: 'admin-dashboard/status-panel', component: StatusPanelComponent, canActivate:[roleGuard],data:{roles:['admin']}},
+    { path: 'admin-dashboard/status-panel/edit', component: StatusPanelEditComponent, canActivate:[roleGuard],data:{roles:['admin']}},
 
     { path: '**', redirectTo: '/main'}
 ];

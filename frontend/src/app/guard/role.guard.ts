@@ -1,9 +1,9 @@
 import { ActivatedRouteSnapshot, CanActivateFn, Router } from '@angular/router';
+import { AuthService } from '../auth/services/auth.service';
 import { inject } from '@angular/core';
-import { AuthService } from '../auth/shared/services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 
-export const canActiveteGuard: CanActivateFn = (route: ActivatedRouteSnapshot) => {
+export const roleGuard: CanActivateFn = (route:ActivatedRouteSnapshot, state) => {
   const router = inject(Router);
   const authService = inject(AuthService);
   const cookieService = inject(CookieService)
