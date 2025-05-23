@@ -5,7 +5,7 @@ import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.c
 import { TicketService } from '../../services/ticket.service';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../../cart/services/cart.service';
-import { FullTicket } from '../../types/ticket.types';
+import { Ticket } from '../../types/ticket.types';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -18,7 +18,7 @@ import { FullTicket } from '../../types/ticket.types';
   styleUrl: './ticket-detail.component.css'
 })
 export class TicketDetailComponent {
-  ticket: FullTicket | null = null;
+  ticket: Ticket | null = null;
   ticketCount: number = 1;
 
   constructor(
@@ -27,7 +27,7 @@ export class TicketDetailComponent {
     private cartService: CartService
   ) {}
 
-  ngOnInit() {
+  ngOnInit(): void {
     const ticket = this.ticketService.getSelectedTicket();
     console.log(ticket);
     
@@ -40,7 +40,7 @@ export class TicketDetailComponent {
       this.ticketService.getTicketById(id).subscribe((res: any) => {
         this.ticket = res.body?.data;
       });
-    }    
+    } 
   }
 
   purchaseTicket() {

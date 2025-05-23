@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ProfileService } from '../../profile/shared/services/profile.service';
 import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({

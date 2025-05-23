@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthButtonsComponent } from '../auth-buttons/auth-buttons.component';
-import { ProfileService } from '../../../../profile/shared/services/profile.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../auth/shared/services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
 import { TicketService } from '../../../../ticket/services/ticket.service';
+import { ProfileService } from '../../../../profile/services/profile.service';
 
 @Component({
   selector: 'app-navbar',

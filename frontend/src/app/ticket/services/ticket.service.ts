@@ -3,7 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from '../../shared/services/api.service';
-import { CreateTicketDTO, FullTicket } from '../types/ticket.types';
+import { CreateTicketDTO, Ticket } from '../types/ticket.types';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +11,13 @@ import { CreateTicketDTO, FullTicket } from '../types/ticket.types';
 export class TicketService {
   private selectedTicket: any;
 
-  private ticketsSubject = new BehaviorSubject<FullTicket[]>([]);
+  private ticketsSubject = new BehaviorSubject<Ticket[]>([]);
   tickets$ = this.ticketsSubject.asObservable();
 
-  private sellerTickets = new BehaviorSubject<FullTicket[]>([]);
+  private sellerTickets = new BehaviorSubject<Ticket[]>([]);
   sellerTickets$ = this.sellerTickets.asObservable();
 
-  private adminTickets = new BehaviorSubject<FullTicket[]>([]);
+  private adminTickets = new BehaviorSubject<Ticket[]>([]);
   adminTickets$ = this.adminTickets.asObservable();
 
   constructor(
@@ -90,7 +90,7 @@ export class TicketService {
       });
   }
 
-  editTicket(ticket: FullTicket | null) {
+  editTicket(ticket: Ticket | null) {
     this.api.post('http://localhost:3000/ticket/edit-ticket', ticket)
       .subscribe({
         next: (res: HttpResponse<any>) => {
@@ -127,7 +127,7 @@ export class TicketService {
       });
   }
 
-  setSelectedTicket(ticket: FullTicket) {
+  setSelectedTicket(ticket: Ticket) {
     this.selectedTicket = ticket;
   }
   

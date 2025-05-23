@@ -5,7 +5,7 @@ import { TicketCardComponent } from '../../../shared/components/ticket-card/tick
 import { ActivatedRoute, Router } from '@angular/router';
 import { TicketService } from '../../../ticket/services/ticket.service';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
-import { FullTicket, Ticket } from '../../../ticket/types/ticket.types';
+import { Ticket } from '../../../ticket/types/ticket.types';
 
 @Component({
   selector: 'app-main',
@@ -49,7 +49,7 @@ export class MainComponent {
     });
   }
 
-  goTicketDetailPage(ticket:FullTicket){
+  goTicketDetailPage(ticket:Ticket){
     this.ticketService.setSelectedTicket(ticket);
     const category = ticket.category.name;
     this.router.navigate(['/main', category, ticket.id]);
