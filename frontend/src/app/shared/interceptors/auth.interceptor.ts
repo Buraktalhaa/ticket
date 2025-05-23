@@ -4,11 +4,13 @@ import { ApiService } from '../services/api.service';
 import { inject } from '@angular/core';
 import { catchError, switchMap, throwError } from 'rxjs';
 import { NotificationService } from '../services/notification.service';
+import { CookieService } from 'ngx-cookie-service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const notificationService = inject(NotificationService);
   const router = inject(Router);
   const apiService = inject(ApiService);
+  const cookieService = inject(CookieService);
 
   if (req.url.includes('/auth/refresh')) {
     return next(req);
@@ -18,10 +20,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     catchError((error: HttpErrorResponse) => {
       const status = error?.status;
       if (status === 401) {
-        const refreshToken = localStorage.getItem('refreshToken');
+        const refreshToken = cookieService.get('refreshToken');
         if (!refreshToken) {
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
+          cookieService.delete('accessToken');
+          cookieService.delete('refreshToken');
           notificationService.showNotification('error', 'Please log in again.');
           router.navigateByUrl('/sign-in');
           return throwError(() => error);
@@ -29,26 +31,27 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
         return apiService.post('http://localhost:3000/auth/refresh', { refreshToken }).pipe(
           switchMap((res: any) => {
-            if (res.accessToken) {
-              localStorage.setItem('accessToken', res.accessToken);
+            const accessToken = res.body?.accessToken; // observe: 'response' ise body üzerinden al
+            if (accessToken) {
+              cookieService.set('accessToken', accessToken);
               notificationService.showNotification('success', 'Session renewed successfully.');
 
               // Orijinal isteği yeni token ile tekrar et
               const clonedReq = req.clone({
-                headers: req.headers.set('Authorization', `Bearer ${res.accessToken}`),
+                headers: req.headers.set('Authorization', `Bearer ${accessToken}`),
               });
               return next(clonedReq);
             } else {
-              localStorage.removeItem('accessToken');
-              localStorage.removeItem('refreshToken');
+              cookieService.delete('accessToken');
+              cookieService.delete('refreshToken');
               notificationService.showNotification('error', 'Session expired. Please log in again.');
               router.navigateByUrl('/sign-in');
               return throwError(() => error);
             }
           }),
           catchError(() => {
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
+            cookieService.delete('accessToken');
+            cookieService.delete('refreshToken');
             notificationService.showNotification('error', 'Session expired. Please log in again.');
             router.navigateByUrl('/sign-in');
             return throwError(() => error);
@@ -57,7 +60,5 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       }
       return throwError(() => error);
     })
-  )
-
-
+  );
 };
