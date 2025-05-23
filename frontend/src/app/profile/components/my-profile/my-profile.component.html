@@ -1,0 +1,50 @@
+<app-navbar></app-navbar>
+
+<div class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">
+    👤 My Profile
+  </h1>
+
+  @if (user) {
+  <div class="grid grid-cols-2 gap-6">
+    <div>
+      <h2 class="text-lg font-semibold text-gray-700">👤 First Name</h2>
+      <p class="text-gray-900">{{ user.firstName }}</p>
+    </div>
+
+    <div>
+      <h2 class="text-lg font-semibold text-gray-700">👤 Last Name</h2>
+      <p class="text-gray-900">{{ user.lastName }}</p>
+    </div>
+
+    <div>
+      <h2 class="text-lg font-semibold text-gray-700">📧 Email</h2>
+      <p class="text-gray-900">{{ user.email }}</p>
+    </div>
+
+    <div>
+      <h2 class="text-lg font-semibold text-gray-700">🎂 Birthday</h2>
+      <p class="text-gray-900">{{ user.birthday | date : "longDate" }}</p>
+    </div>
+
+    <div>
+      <h2 class="text-lg font-semibold text-gray-700">📅 Registered At</h2>
+      <p class="text-gray-900">{{ user.createdAt | date : "longDate" }}</p>
+    </div>
+
+    @if (user.photoName) {
+    <div>
+      <h2 class="text-lg font-semibold text-gray-700">🖼️ Photo</h2>
+      <img
+        [src]="'/assets/profile-photos/' + user.photoName"
+        alt="Profile Photo"
+        class="w-32 h-32 object-cover rounded-full border shadow"
+      />
+    </div>
+
+    }
+  </div>
+  } @else {
+  <div class="text-center text-gray-500">Loading profile...</div>
+  }
+</div>

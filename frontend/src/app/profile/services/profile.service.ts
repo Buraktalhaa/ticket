@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { ApiService } from '../../../shared/services/api.service';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
+import { ApiService } from '../../shared/services/api.service';
+import { Profile } from '../types/profile.type';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProfileService {
-  // kullanici subscribe olabilsin diye
-  private profileDataSubject = new BehaviorSubject(null);
+  private profileDataSubject = new BehaviorSubject<Profile | null>(null);
   profileData$ = this.profileDataSubject.asObservable();
 
   constructor(
@@ -21,7 +21,7 @@ export class ProfileService {
   myProfile() {
     this.api.get('http://localhost:3000/profile/my-profile').subscribe({
       next: (res: HttpResponse<any>) => {
-        const data = res.body?.data || [];
+        const data: Profile = res.body?.data.user;
         this.profileDataSubject.next(data);
         this.router.navigateByUrl('/my-profile');
       },
@@ -29,6 +29,6 @@ export class ProfileService {
         console.error('profile error:', err);
       }
     });
-
   }
+  
 }
