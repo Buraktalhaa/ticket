@@ -23,9 +23,8 @@ export class TicketService {
     this.api.get('http://localhost:3000/ticket/get-tickets').subscribe({
       next: (res: HttpResponse<any>) => {
         const data = res.body?.data || [];
-        console.log(data);
+        console.log(res.body);
         this.ticketsSubject.next(data);
-        this.router.navigateByUrl('/main');
       },
       error: (err) => {
         console.error('ticket error:', err);
@@ -37,8 +36,9 @@ export class TicketService {
     this.api.get(`http://localhost:3000/ticket/get-tickets/by-category/${category}`).subscribe({
       next: (res: HttpResponse<any>) => {
         const data = res.body?.data || [];
+        console.log(res.body);
+        
         this.ticketsSubject.next(data);
-        this.router.navigateByUrl(`/main/${category}`);
       },
       error: (err) => {
         console.error('ticket category error:', err);

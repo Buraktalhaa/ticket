@@ -42,11 +42,7 @@ export class AuthService {
     this.api
       .post('http://localhost:3000/auth/sign-up', signupData)
       .subscribe((res: HttpResponse<any>) => {
-        const accessToken = res.body.accessToken;
-        const refreshToken = res.body.refreshToken;
-        const role = this.tokenService.decodeJwt(accessToken)?.role;
 
-        this.tokenService.setTokens(accessToken, refreshToken, role);
         this.isThereUser.set(true)
         this.router.navigateByUrl("/sign-in")
       });

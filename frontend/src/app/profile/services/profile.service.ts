@@ -23,7 +23,6 @@ export class ProfileService {
       next: (res: HttpResponse<any>) => {
         const data: Profile = res.body?.data.user;
         this.profileDataSubject.next(data);
-        this.router.navigateByUrl('/my-profile');
       },
       error: (err) => {
         console.error('profile error:', err);
