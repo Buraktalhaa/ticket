@@ -1,87 +1,102 @@
-<header class="bg-gray-900">
+<header class="bg-gray-900 shadow">
   <nav
-    class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
+    class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between"
     aria-label="Global"
   >
-    <div class="flex lg:flex-1 items-center space-x-6">
-      <a href="#">
-        <span class="sr-only">Your Company</span>
+    <!-- Sol Logo ve Rol Butonları -->
+    <div class="flex items-center space-x-6">
+      <a href="#" class="flex items-center space-x-2">
         <img class="h-12 w-auto" src="BTMlogo.png" alt="logo" />
+        <span class="text-white font-bold text-lg">BTM</span>
       </a>
 
-      @if(role === 'admin') {
-      <a
+      @if (role === 'admin') {
+      <button
         (click)="goToAdminDashboard()"
-        class="text-sm font-semibold cursor-pointer text-white hover:text-indigo-400"
-        >Admin Dashboard</a
+        class="flex items-center px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-indigo-500 transition cursor-pointer"
       >
-      } @else if(role === 'seller') {
-      <a
+        Admin Dashboard
+      </button>
+      } @else if (role === 'seller') {
+      <button
         (click)="goToSellerDashboard()"
-        class="text-sm font-semibold cursor-pointer text-white hover:text-indigo-400"
-        >Seller Dashboard</a
+        class="flex items-center px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-indigo-500 transition cursor-pointer"
       >
+        Seller Dashboard
+      </button>
       }
     </div>
 
-    <div class="flex lg:hidden">
+    <div class="hidden lg:flex items-center space-x-4">
       <button
-        type="button"
-        class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white"
+        (click)="getAllTickets()"
+        class="flex items-center px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-indigo-500 transition cursor-pointer"
       >
-        <span class="sr-only">Open main menu</span>
+        Home
+      </button>
+
+      <button
+        class="flex items-center px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-indigo-500 transition cursor-pointer"
+      >
+        Support
+      </button>
+    </div>
+
+    <div class="flex items-center space-x-4">
+      @if (authService.isThereUser()) {
+      <button
+        (click)="goToCart()"
+        class="flex items-center px-4 py-2 bg-gray-800 text-white rounded-md hover:bg-indigo-500 transition cursor-pointer"
+      >
         <svg
-          class="size-6"
+          class="h-5 w-5 mr-2"
           fill="none"
           viewBox="0 0 24 24"
-          stroke-width="1.5"
           stroke="currentColor"
-          aria-hidden="true"
         >
           <path
             stroke-linecap="round"
             stroke-linejoin="round"
-            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+            stroke-width="2"
+            d="M3 3h2l.4 2M7 13h10l4-8H5l-.6-3H3"
           />
         </svg>
+        Cart
       </button>
-    </div>
-    <div class="hidden lg:flex lg:gap-x-12">
-      <a
-        (click)="getAllTickets()"
-        class="text-sm font-semibold cursor-pointer text-white hover:text-indigo-400"
-        >Home</a
-      >
-      <a
-        (click)="goToOrders()"
-        class="text-sm font-semibold cursor-pointer text-white hover:text-indigo-400"
-        >Orders</a
-      >
-      <a
-        (click)="goToCart()"
-        class="text-sm font-semibold cursor-pointer text-white hover:text-indigo-400"
-        >Cart</a
-      >
-      <a
-        class="text-sm font-semibold cursor-pointer text-white hover:text-indigo-400"
-        >Support</a
-      >
-    </div>
 
-    <div class="hidden lg:flex lg:flex-1 lg:justify-end items-center space-x-6">
-      @if(authService.isThereUser()) {
-      <a
-        (click)="getMyProfile()"
-        routerLinkActive="router-link-active"
-        class="text-sm font-semibold text-white hover:text-indigo-400 cursor-pointer"
-        >Profile</a
-      >
-      <a
-        (click)="logOut()"
-        routerLinkActive="router-link-active"
-        class="text-sm font-semibold text-white hover:text-indigo-400 cursor-pointer"
-        >Logout</a
-      >
+      <div class="relative flex items-center space-x-4">
+        <!-- Profil Resmi -->
+        <img
+          (click)="toggleDropdown()"
+          class="h-10 w-10 rounded-full cursor-pointer border-2 border-white hover:ring-2 hover:ring-indigo-400"
+          [src]="userPhotoUrl ? userPhotoUrl : 'assets/default-user.png'"
+          alt="User Avatar"
+        />
+
+        @if (isDropdownOpen) {
+        <div
+          class="absolute right-0 top-12 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50"
+        >
+          <div class="py-1 text-black">
+            <a
+              (click)="getMyProfile(); toggleDropdown()"
+              class="block px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+              >My Profile</a
+            >
+            <a
+              (click)="goToOrders(); toggleDropdown()"
+              class="block px-4 py-2 text-sm hover:bg-gray-100 cursor-pointer"
+              >Orders</a
+            >
+            <a
+              (click)="logOut(); toggleDropdown()"
+              class="block px-4 py-2 text-sm hover:bg-gray-100 text-red-500 cursor-pointer"
+              >Logout</a
+            >
+          </div>
+        </div>
+        }
+      </div>
       } @else {
       <app-auth-buttons class="flex"></app-auth-buttons>
       }
@@ -92,39 +107,46 @@
 <nav class="bg-gray-800">
   <div class="mx-auto max-w-7xl flex justify-center space-x-18 py-3">
     <a
-      (click)="selectCategory('flight')"
+      (click)="selectCategory('Flight')"
       class="text-white hover:text-indigo-400 cursor-pointer"
-      >Flights</a
     >
+      Flights
+    </a>
     <a
-      (click)="selectCategory('train')"
+      (click)="selectCategory('Train')"
       class="text-white hover:text-indigo-400 cursor-pointer"
-      >Train</a
     >
+      Train
+    </a>
     <a
-      (click)="selectCategory('bus')"
+      (click)="selectCategory('Bus')"
       class="text-white hover:text-indigo-400 cursor-pointer"
-      >Bus</a
     >
+      Bus
+    </a>
     <a
-      (click)="selectCategory('hotel')"
+      (click)="selectCategory('Hotel')"
       class="text-white hover:text-indigo-400 cursor-pointer"
-      >Hotel</a
     >
+      Hotel
+    </a>
     <a
-      (click)="selectCategory('movie')"
+      (click)="selectCategory('Movie')"
       class="text-white hover:text-indigo-400 cursor-pointer"
-      >Movies</a
     >
+      Movies
+    </a>
     <a
-      (click)="selectCategory('theater')"
+      (click)="selectCategory('Theater')"
       class="text-white hover:text-indigo-400 cursor-pointer"
-      >Theater</a
     >
+      Theater
+    </a>
     <a
-      (click)="selectCategory('concert')"
+      (click)="selectCategory('Concert')"
       class="text-white hover:text-indigo-400 cursor-pointer"
-      >Concerts</a
     >
+      Concerts
+    </a>
   </div>
 </nav>
