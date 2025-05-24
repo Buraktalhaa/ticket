@@ -15,9 +15,9 @@ import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.c
 })
 export class MyOrdersComponent {
   orders: Order[] = [];
-  constructor(
-    private orderService:OrderService
-  ){}
+  
+  constructor(private orderService:OrderService){}
+
   ngOnInit(): void {
     this.orderService.getMyOrders().subscribe(res => {
       this.orders = res.body.data

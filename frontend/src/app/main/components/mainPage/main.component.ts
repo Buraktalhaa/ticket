@@ -22,7 +22,7 @@ export class MainComponent {
   tickets: Ticket[] = [];
   filteredTickets: Ticket[] = [];
   selectedCategory = '';
-  allowedCategories = ['flight', 'train', 'bus', 'hotel', 'movie', 'theater', 'concert'];
+  allowedCategories = ['Flight', 'Train', 'Bus', 'Hotel', 'Movie', 'Theater', 'Concert'];
 
 
   constructor(

@@ -19,13 +19,13 @@ export class MyProfileComponent {
   constructor(private profileService: ProfileService){}
 
   ngOnInit(): void {
-    this.profileService.profileData$.subscribe(data => {  
-      console.log(data);
-           
+    this.profileService.profileData$.subscribe(data => {
       if (data) {
         this.user = data;
+      } else {
+        this.profileService.myProfile();
       }
     });
-    this.profileService.myProfile()
   }
+  
 }

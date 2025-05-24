@@ -1,9 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Output } from '@angular/core';
 import { AuthButtonsComponent } from '../auth-buttons/auth-buttons.component';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../auth/services/auth.service';
 import { CookieService } from 'ngx-cookie-service';
-import { TicketService } from '../../../../ticket/services/ticket.service';
 import { ProfileService } from '../../../../profile/services/profile.service';
 
 @Component({
@@ -17,26 +16,32 @@ import { ProfileService } from '../../../../profile/services/profile.service';
 export class NavbarComponent {
   role: string | null = null;
   isLoggedIn: boolean = false;
+  isDropdownOpen: boolean = false;
+  userPhotoUrl: string | null = null;
 
   constructor(
     private profileService: ProfileService,
     public authService: AuthService,
     private router: Router,
-    private ticketService: TicketService,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private elementRef: ElementRef
   ) { }
 
   ngOnInit(): void {
     this.role = this.cookieService.get('role');
     this.isLoggedIn = this.cookieService.check('accessToken');
+  
+    this.profileService.profileData$.subscribe((user) => {
+      this.userPhotoUrl = user?.photoName ?? null;
+    });
   }
 
   getMyProfile() {
-    this.profileService.myProfile()
+    this.router.navigateByUrl('/my-profile');
   }
 
   getAllTickets() {
-    this.ticketService.allTickets()
+    this.router.navigateByUrl('/main');
   }
 
   goToAdminDashboard() {
@@ -52,7 +57,7 @@ export class NavbarComponent {
   }
 
   selectCategory(category: string) {
-    const allowedCategories = ['flight', 'train', 'bus', 'hotel', 'movie', 'theater', 'concert'];
+    const allowedCategories = ['Flight', 'Train', 'Bus', 'Hotel', 'Movie', 'Theater', 'Concert'];
     if (!allowedCategories.includes(category)) return;
     this.router.navigate(['/main', category]);
   }
@@ -63,5 +68,18 @@ export class NavbarComponent {
 
   goToOrders(){
     this.router.navigateByUrl('/order/my-orders');
+  }
+
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  @HostListener('document:click', ['$event'])
+  handleClickOutside(event: MouseEvent) {
+    const clickedInside = this.elementRef.nativeElement.contains(event.target);
+    if (!clickedInside) {
+      this.isDropdownOpen = false;
+    }
   }
 }
