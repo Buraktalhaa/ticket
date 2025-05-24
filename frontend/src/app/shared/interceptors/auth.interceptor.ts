@@ -22,16 +22,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       if (status === 401) {
         const refreshToken = cookieService.get('refreshToken');
         if (!refreshToken) {
-          cookieService.delete('accessToken');
-          cookieService.delete('refreshToken');
-          notificationService.showNotification('error', 'Please log in again.');
-          router.navigateByUrl('/sign-in');
+          clearSession()
           return throwError(() => error);
         }
 
         return apiService.post('http://localhost:3000/auth/refresh', { refreshToken }).pipe(
           switchMap((res: any) => {
-            const accessToken = res.body?.accessToken; // observe: 'response' ise body üzerinden al
+            const accessToken:string = res.body?.accessToken;
             if (accessToken) {
               cookieService.set('accessToken', accessToken);
               notificationService.showNotification('success', 'Session renewed successfully.');
@@ -42,18 +39,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
               });
               return next(clonedReq);
             } else {
-              cookieService.delete('accessToken');
-              cookieService.delete('refreshToken');
-              notificationService.showNotification('error', 'Session expired. Please log in again.');
-              router.navigateByUrl('/sign-in');
+              clearSession()
               return throwError(() => error);
             }
           }),
           catchError(() => {
-            cookieService.delete('accessToken');
-            cookieService.delete('refreshToken');
-            notificationService.showNotification('error', 'Session expired. Please log in again.');
-            router.navigateByUrl('/sign-in');
+            clearSession()
             return throwError(() => error);
           })
         );
@@ -61,4 +52,10 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       return throwError(() => error);
     })
   );
+  function clearSession() {
+    cookieService.delete('accessToken', '/');
+    cookieService.delete('refreshToken', '/');
+    notificationService.showNotification('error', 'Session expired. Please log in again.');
+    router.navigateByUrl('/sign-in');
+  }
 };
