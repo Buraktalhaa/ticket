@@ -1,34 +1,33 @@
 import { Request, Response } from "express";
 import prisma from "../../common/utils/prisma";
 import { ResponseStatus } from "../../common/enums/status.enum";
+import { log } from "console";
 
 export async function getTicketsByCategory(req: Request, res: Response) {
 
     const categoryName = req.params.category;
-    console.log(categoryName);
 
+    const category = await prisma.category.findUnique({
+        where:{
+            name:categoryName
+        }
+    })
+    
     try {
         const tickets = await prisma.ticket.findMany({
             where: {
-                sold: false,
-                status: "approve",
-                category: {
-                    name: categoryName, 
-                },
+              sold: false,
+              status: "approve",
+              category: {
+                name: categoryName,
+              },
             },
             include: {
-                category:true,
-                company: true,
-                user: true,
-
+              category: true,
+              company: true,
+              user: true,
             },
-            omit:{
-                categoryId:true,
-                companyId:true,
-                createdAt:true,
-                pnr:true,
-            }
-        });
+          });
 
         res.status(200).json({
             status: ResponseStatus.SUCCESS,
@@ -42,5 +41,4 @@ export async function getTicketsByCategory(req: Request, res: Response) {
             message: "An error occurred while fetching tickets.",
         });
     }
-
 }

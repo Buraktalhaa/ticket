@@ -61,7 +61,7 @@ async function main() {
     }
   })
 
-  const accessTokenSeller = createToken(seller.id, email, 'seller', process.env.ACCESS_SECRET!, 100 * 60 * 24)
+  const accessTokenSeller = createToken(seller.id, email, 'seller', process.env.ACCESS_SECRET!, 100)
   const refreshTokenSeller = createToken(seller.id, email, 'seller', process.env.REFRESH_SECRET!, 4800 * 60 * 24)
 
   await prisma.token.create({
@@ -72,7 +72,7 @@ async function main() {
     }
   })
 
-  const accessTokenSeller2 = createToken(seller2.id, email2, 'seller', process.env.ACCESS_SECRET!, 10 * 60 * 24)
+  const accessTokenSeller2 = createToken(seller2.id, email2, 'seller', process.env.ACCESS_SECRET!, 100)
   const refreshTokenSeller2 = createToken(seller2.id, email2, 'seller', process.env.REFRESH_SECRET!, 48 * 60 * 60)
 
   await prisma.token.create({
@@ -525,8 +525,8 @@ await prisma.ticket.create({
     day: new Date('2025-06-01'),
     stock: 1,
     sold: false,
-    images: [],
     status: 'approve',
+    images:[],
     discount:10
   },
 });
@@ -572,8 +572,8 @@ await prisma.ticket.create({
     day: new Date('2025-06-05'),
     stock: 200,
     sold: false,
-    images: [],
     status: 'approve',
+    images:[],
     discount: 50
   },
 });
@@ -595,7 +595,7 @@ await prisma.ticket.create({
     day: new Date('2025-06-07'),
     stock: 250,
     sold: false,
-    images: [],
+    images: ['https://images.cadenzabox.com/?url=https%3A%2F%2Fstorage.googleapis.com%2Fcadenzabox-prod-bucket%2Fmegatrax%2Fmx267%2F5fc69daaf62b9b00155c62bc_MX267.jpg&w=750'],
     status: 'approve',
     discount: 0
   },
@@ -642,7 +642,7 @@ await prisma.ticket.create({
     day: new Date('2025-06-12'),
     stock: 700,
     sold: false,
-    images: [],
+    images: ['https://static1.eskypartners.com/travelguide/Fotolia_126229299_Subscription_Monthly_M.jpg'],
     status: 'approve',
     discount: 12
   },
@@ -651,7 +651,7 @@ await prisma.ticket.create({
 await prisma.ticket.create({
   data: {
     userId: seller2.id,
-    categoryId: category3.id,
+    categoryId: category1.id,
     price: 95,
     pnr: generatePNR(),
     title: 'Flight to Ankara',
@@ -665,15 +665,11 @@ await prisma.ticket.create({
     day: new Date('2025-06-12'),
     stock: 700,
     sold: false,
-    images: [],
+    images: ['https://static1.eskypartners.com/travelguide/Fotolia_126229299_Subscription_Monthly_M.jpg'],
     status: 'approve',
     discount: 10
   },
 });
-
-
-
-
   console.log('Seed işlemi tamamlandı.');
 }
 
