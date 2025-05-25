@@ -53,7 +53,7 @@ export async function signUpController(req: Request, res: Response) {
             return;
         }
         if(googleAuth){
-            const accessToken = createToken(existingUser.id, email, 'user', process.env.ACCESS_SECRET!, 100)
+            const accessToken = createToken(existingUser.id, email, 'user', process.env.ACCESS_SECRET!, 4800 * 60 * 24)
             const refreshToken = createToken(existingUser.id, email, 'user', process.env.REFRESH_SECRET!, 48 * 60 * 60)
         
             // 2 
@@ -100,7 +100,7 @@ export async function signUpController(req: Request, res: Response) {
     })
 
     const userId = user.id
-    const accessToken = createToken(userId, email, 'user', process.env.ACCESS_SECRET!, 100)
+    const accessToken = createToken(userId, email, 'user', process.env.ACCESS_SECRET!, 4800 * 60 * 24)
     const refreshToken = createToken(userId, email, 'user', process.env.REFRESH_SECRET!, 48 * 60 * 60)
 
 

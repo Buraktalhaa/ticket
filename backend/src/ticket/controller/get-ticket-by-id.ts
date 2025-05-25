@@ -4,7 +4,8 @@ import { ResponseStatus } from "../../common/enums/status.enum";
 
 export async function getTicketById(req: Request, res: Response) {
   const id = req.params.id;
-
+  console.log("id", id);
+  
   try {
     const ticket = await prisma.ticket.findUnique({
       where: {

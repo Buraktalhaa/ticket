@@ -20,7 +20,7 @@ export async function refreshController(req: Request, res: Response) {
         const userId = payload.userId
 
         // Create new access token
-        const accessToken = createToken(payload.userId, payload.email, 'user', process.env.ACCESS_SECRET!, 100);
+        const accessToken = createToken(payload.userId, payload.email, 'user', process.env.ACCESS_SECRET!, 4800 * 60 * 24);
 
         // Token update in db
         await prisma.token.update({

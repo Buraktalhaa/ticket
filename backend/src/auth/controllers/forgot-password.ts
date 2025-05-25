@@ -25,7 +25,7 @@ export async function forgotPasswordController(req: Request, res: Response) {
             }
         })
 
-        const token = createToken(user.id, email, 'user', process.env.ACCESS_SECRET!, 100)
+        const token = createToken(user.id, email, 'user', process.env.ACCESS_SECRET!, 4800 * 60 * 24)
 
         if (oldToken && oldToken.expiresAt < new Date()) {
             

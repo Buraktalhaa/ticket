@@ -19,7 +19,7 @@ router.post('/edit-ticket', authenticateToken, permissionControl, companyMiddlew
 router.post('/create-ticket', authenticateToken, permissionControl, createTicket)
 router.post('/delete-ticket', authenticateToken, permissionControl, companyMiddleware, deleteTicket)
 router.get('/get-tickets', getTickets)
-router.get('/get-tickets/by-id/:id', authenticateToken, permissionControl, getTicketById)
+router.get('/get-tickets/by-id/:id', getTicketById)
 router.get('/get-tickets/by-category/:category', getTicketsByCategory)
 
 router.get('/is-seller', authenticateToken, permissionControl, isSeller)

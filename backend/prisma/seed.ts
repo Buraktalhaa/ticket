@@ -61,7 +61,7 @@ async function main() {
     }
   })
 
-  const accessTokenSeller = createToken(seller.id, email, 'seller', process.env.ACCESS_SECRET!, 100)
+  const accessTokenSeller = createToken(seller.id, email, 'seller', process.env.ACCESS_SECRET!, 4800 * 60 * 24)
   const refreshTokenSeller = createToken(seller.id, email, 'seller', process.env.REFRESH_SECRET!, 4800 * 60 * 24)
 
   await prisma.token.create({
@@ -72,7 +72,7 @@ async function main() {
     }
   })
 
-  const accessTokenSeller2 = createToken(seller2.id, email2, 'seller', process.env.ACCESS_SECRET!, 100)
+  const accessTokenSeller2 = createToken(seller2.id, email2, 'seller', process.env.ACCESS_SECRET!, 4800 * 60 * 24)
   const refreshTokenSeller2 = createToken(seller2.id, email2, 'seller', process.env.REFRESH_SECRET!, 48 * 60 * 60)
 
   await prisma.token.create({
@@ -172,7 +172,7 @@ async function main() {
 
   const userPermission2 = await prisma.permission.create({
     data: {
-      url: '/my-profile/update'
+      url: '/my-profile/edit'
     }
   });
 
@@ -570,7 +570,7 @@ await prisma.ticket.create({
     pointRate: 0.08,
     companyId: company.id,
     day: new Date('2025-06-05'),
-    stock: 200,
+    stock: 1,
     sold: false,
     status: 'approve',
     images:[],

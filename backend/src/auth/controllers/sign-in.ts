@@ -66,7 +66,7 @@ export async function signInController(req: Request, res: Response) {
         return
     }
 
-    const accessToken = createToken(user.id, email, role, process.env.ACCESS_SECRET!, 100)
+    const accessToken = createToken(user.id, email, role, process.env.ACCESS_SECRET!, 4800 * 60 * 24)
     const refreshToken = createToken(user.id, email, role, process.env.REFRESH_SECRET!, 24 * 60 * 60)
 
     await prisma.token.update({
