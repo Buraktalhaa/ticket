@@ -2,10 +2,9 @@ import { Request, Response } from "express";
 import prisma from '../../common/utils/prisma';
 import { ResponseStatus } from "../../common/enums/status.enum";
 import fs from "fs"
-import { setToRedis } from "../../common/utils/redisGetSet";
 import { DecodedUser } from "../../common/type/request.type";
 
-export async function updateProfile(req: Request, res: Response) {
+export async function editProfile(req: Request, res: Response) {
         const { userId } = req.user as DecodedUser;
 
         const findOldPhoto = await prisma.user.findUnique({
@@ -14,19 +13,24 @@ export async function updateProfile(req: Request, res: Response) {
             }
         })  
 
-        const oldPhoto = findOldPhoto?.photoName
+        const oldPhoto = findOldPhoto?.photoName;
+        const newPhoto = req.file?.filename;
 
-        const filePath = `/Users/burak/Desktop/projeler/ticket/backend/src/uploadPhotos/${oldPhoto}` //FIXME:
 
-        if (fs.existsSync(filePath)) {
-            fs.unlink(filePath, (err: NodeJS.ErrnoException | null) => {
-                if (err) {
-                    console.error(err);
-                } else {
-                    console.log('Old photo deleted succesfully');
-                }
-            });
-        }
+        if (newPhoto) {
+            if (oldPhoto) {
+              const filePath = `/Users/burak/Desktop/projeler/ticket/backend/src/uploadPhotos/${oldPhoto}`;
+              if (fs.existsSync(filePath)) {
+                fs.unlink(filePath, (err) => {
+                  if (err) {
+                    console.error('Old photo deletion error:', err);
+                  } else {
+                    console.log('Old photo deleted successfully');
+                  }
+                });
+              }
+            }
+          }
 
         const updatedUser = await prisma.user.update({
             where: {
@@ -34,11 +38,10 @@ export async function updateProfile(req: Request, res: Response) {
             },
             data: {
                 ...req.body,
-                photoName: req.file?.filename
+                photoName: newPhoto || oldPhoto
+
             }
         })
-
-        setToRedis(`user:profile:${userId}`, JSON.stringify(updatedUser), 600)
 
         res.status(200).json({
             status: ResponseStatus.SUCCESS,
