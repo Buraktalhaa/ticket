@@ -18,16 +18,16 @@ import { SellerTicketsComponent } from './seller/components/seller-tickets/selle
 import { TicketEditComponent } from './seller/components/ticket-edit/ticket-edit.component';
 import { TicketDetailComponent } from './ticket/components/ticket-detail/ticket-detail.component';
 import { MyOrdersComponent } from './order/components/my-orders/my-orders.component';
-import { roleGuard } from './guard/role.guard';
+import { roleGuard } from './shared/guard/role.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/main', pathMatch: 'full' },
     { path: 'main', component: MainComponent },
     { path: 'main/:category', component: MainComponent},
-    { path: 'main/:category/:ticket', component: TicketDetailComponent },
+    { path: 'main/:category/:id', component: TicketDetailComponent },
 
     { path: 'my-profile', component: MyProfileComponent, canActivate:[roleGuard],data:{roles:['user']}},
-    { path: 'my-profile/cart', component: CartComponent, canActivate:[roleGuard],data:{roles:['user']}},
+    { path: 'my-profile/cart', component: CartComponent, canActivate:[roleGuard, roleGuard],data:{roles:['user']}},
 
     { path: 'order/my-orders', component: MyOrdersComponent, canActivate:[roleGuard],data:{roles:['user']}},
 
