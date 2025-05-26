@@ -5,6 +5,7 @@ import { CartService } from '../../services/cart.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { OrderService } from '../../../order/services/order.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-cart',
@@ -21,7 +22,8 @@ export class CartComponent {
   constructor(
     private cartService: CartService,
     private router: Router,
-    private orderService:OrderService
+    private orderService:OrderService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
@@ -86,16 +88,23 @@ export class CartComponent {
       usePoints: true
     };
   
-    this.orderService.buy(data).subscribe(response => {
-      const paymentLink = response.body.paymentLink;
-      if (paymentLink) {
-        // redirect
-        window.location.href = paymentLink;
-      } else {
-        alert('Payment link could not be generated, please try again.');
+    this.orderService.buy(data).subscribe({
+      next: (response) => {
+        const paymentLink = response.body?.paymentLink;
+  
+        if (paymentLink && paymentLink.startsWith('http')) {
+          // geçerli bir bağlantı varsa yönlendir
+          window.location.href = paymentLink;
+        } else {
+          this.notificationService.showNotification('error', 'Payment link could not be generated, please try again.');
+        }
+      },
+      error: (error) => {
+        const message = error?.error?.message || 'An error occurred while creating an order.';
+        this.notificationService.showNotification('error', message);
       }
-    }, error => {
-      alert('An error occurred while creating an order.');
     });
   }
+  
+  
 }

@@ -9,23 +9,28 @@
     class="cursor-pointer w-24 h-24 object-cover rounded"
     (click)="goToTicketDetail(item.ticket.id, item.ticket.category?.name ?? '')"
   />
-  <!-- TODO:category neden undefined oluyor bak -->
 
   <div class="flex-1">
     <h3 class="text-xl font-semibold">{{ item.ticket.title }}</h3>
-    <p class="text-green-600 font-bold text-lg">{{ item.ticket.price }} ₺</p>
+    @if (item.ticket.discount) {
+      <p class="text-green-600 font-bold text-lg">{{ item.ticket.price * (1 - item.ticket.discount / 100) }} ₺</p>
+    }
+    @else{
+      <p class="text-green-600 font-bold text-lg">{{ item.ticket.price }} ₺</p>
+
+    }
 
     <div class="flex items-center gap-2 mt-2">
       <button
         (click)="decreaseQuantity()"
-        class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+        class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer"
       >
         -
       </button>
       <span class="min-w-[24px] text-center">{{ item.count }}</span>
       <button
         (click)="increaseQuantity()"
-        class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+        class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer" 
       >
         +
       </button>
@@ -34,7 +39,7 @@
     <div class="mt-4 flex justify-end gap-3">
       <button
         (click)="removeItem()"
-        class="px-4 py-2 bg-red-500 text-white rounded shadow hover:bg-red-600 transition duration-200"
+        class="px-4 py-2 bg-red-500 text-white rounded shadow hover:bg-red-600 transition duration-200 cursor-pointer"
         title="Remove item"
       >
         Delete
@@ -42,7 +47,7 @@
 
       <button
       (click)="buyTicket()"
-        class="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition duration-200"
+        class="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition duration-200 cursor-pointer"
         title="Buy now"
       >
         Buy
