@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
 import { TicketService } from '../../services/ticket.service';
 import { CommonModule } from '@angular/common';
 import { CartService } from '../../../cart/services/cart.service';
 import { Ticket } from '../../types/ticket.types';
+import { AuthService } from '../../../auth/services/auth.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -24,7 +26,10 @@ export class TicketDetailComponent {
   constructor(
     private ticketService: TicketService,
     private route: ActivatedRoute,
-    private cartService: CartService
+    private cartService: CartService,
+    public authService: AuthService,
+    private router: Router,
+
   ) {}
 
   ngOnInit(): void {
@@ -34,13 +39,24 @@ export class TicketDetailComponent {
     if (ticket) {
       this.ticket = ticket;
     } else {
-      const id = this.route.snapshot.paramMap.get('ticket');
+      const id = this.route.snapshot.paramMap.get('id');
       if (id == null) return;
     
-      this.ticketService.getTicketById(id).subscribe((res: any) => {
+      this.ticketService.getTicketById(id).subscribe((res: HttpResponse<any>) => {
+        console.log('Ticket API response:', res.body);
         this.ticket = res.body?.data;
+        console.log(this.ticket);
+        
       });
     } 
+  }
+
+  goToSignIn() {
+    const currentUrl = this.router.url;
+    console.log('Navigating to sign-in from URL:', currentUrl);
+    this.router.navigate(['/sign-in'], {
+      queryParams: { returnUrl: currentUrl }
+    });
   }
 
   purchaseTicket() {
