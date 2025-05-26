@@ -4,6 +4,7 @@ import { ApiService } from '../../shared/services/api.service';
 import { SignIn, SignUp } from '../types/auth.type';
 import { Router } from '@angular/router';
 import { TokenService } from './token.service';
+import { Observable, tap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,22 +22,23 @@ export class AuthService {
     this.isThereUser.set(hasTokens);
   }
   
-  signIn(signinData: SignIn) {
-    this.api
-      .post('http://localhost:3000/auth/sign-in', signinData)
-      .subscribe((res: HttpResponse<any>) => {
-        this.tokenService.deleteTokens();
-
-        const accessToken = res.body.accessToken;
-        const refreshToken = res.body.refreshToken;
-
-        const role = this.tokenService.decodeJwt(accessToken)?.role;
-        this.tokenService.setTokens(accessToken, refreshToken, role);
-
-        this.isThereUser.set(true);
-        this.router.navigateByUrl('/main');
-      });
+  signIn(signinData: SignIn): Observable<any> {
+    return this.api
+      .post('http://localhost:3000/auth/sign-in', signinData).pipe(
+        tap((res: HttpResponse<any>) => {
+          this.tokenService.deleteTokens();
+  
+          const accessToken = res.body.accessToken;
+          const refreshToken = res.body.refreshToken;
+  
+          const role = this.tokenService.decodeJwt(accessToken)?.role;
+          this.tokenService.setTokens(accessToken, refreshToken, role);
+  
+          this.isThereUser.set(true);
+        })
+      );
   }
+  
 
   signUp(signupData: SignUp) {
     this.api

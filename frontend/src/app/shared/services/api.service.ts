@@ -31,8 +31,8 @@ export class ApiService {
     });
   }
 
-  put<T>(url: string, data: T) {
-    return this.httpClient.put(url, data, {
+  put<T>(url: string, data: Partial<T>) {
+    return this.httpClient.put<T>(url, data, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.cookieService.get('accessToken'),
@@ -40,6 +40,7 @@ export class ApiService {
       observe: 'response',
     });
   }
+  
 
   patch<T>(url: string, data: T) {
     return this.httpClient.patch(url, data, {

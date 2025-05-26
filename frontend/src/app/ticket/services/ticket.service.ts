@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from '../../shared/services/api.service';
 import { Ticket } from '../types/ticket.types';
@@ -16,7 +15,6 @@ export class TicketService {
 
   constructor(
     private api: ApiService,
-    private router: Router
   ) { }
 
   allTickets() {
@@ -51,6 +49,7 @@ export class TicketService {
   }
   
   getSelectedTicket() {
+    console.log('Returning selectedTicket:', this.selectedTicket);
     return this.selectedTicket;
   }
 

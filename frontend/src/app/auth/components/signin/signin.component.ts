@@ -1,7 +1,7 @@
 import { Component, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthInputComponent } from '../../shared/components/auth-input/auth-input.component';
 import { TextLinkComponent } from '../../shared/components/text-link/text-link.component';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
@@ -25,11 +25,22 @@ import { AuthService } from '../../services/auth.service';
 export class SigninComponent {
   email: string = '';
   password: string = '';
+  private returnUrl: string = '/main';
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private route: ActivatedRoute
+
+  ) { }
+
   ngOnInit(): void {
-    this.authService.logOut()
-  } 
+    this.authService.logOut();
+
+    const url = this.route.snapshot.queryParamMap.get('returnUrl');
+    console.log('Return URL on sign-in:', url);
+    if (url) this.returnUrl = url;
+  }
 
   signIn() {
     if (!this.email || !this.password) {
@@ -42,6 +53,16 @@ export class SigninComponent {
       password: this.password,
     };
 
-    this.authService.signIn(signInData)
+    this.authService.signIn(signInData).subscribe({
+      next: () => {
+        console.log('Navigating after sign-in to:', this.returnUrl);
+        this.router.navigateByUrl(this.returnUrl);
+      },
+      error: (err) => {
+        console.error('Sign in failed', err);
+        alert('Sign in failed.');
+      }
+    });
   }
+  
 }
