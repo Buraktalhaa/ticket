@@ -2,9 +2,12 @@ import { HttpErrorResponse, HttpInterceptorFn, HttpResponse } from '@angular/com
 import { inject } from '@angular/core';
 import { catchError, tap, throwError } from 'rxjs';
 import { NotificationService } from '../services/notification.service';
+import { Router } from '@angular/router';
 
 export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
   const notificationService = inject(NotificationService);
+  const router = inject(Router);
+
 
   return next(req).pipe(
     tap((event) => {
@@ -27,6 +30,12 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
       if (message) {
         notificationService.showNotification('error', message);
       }
+      if (error.status === 401 || error.status === 403) {
+        console.log("yetkisiz");
+        
+        router.navigate(['/unauthorized']);
+      }
+
       return throwError(() => error);
     })
   );
