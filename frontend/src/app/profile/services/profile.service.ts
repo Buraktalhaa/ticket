@@ -30,4 +30,7 @@ export class ProfileService {
     });
   }
   
+  updateProfile(data: Partial<Profile>) {
+    return this.api.put<Profile>('http://localhost:3000/profile/my-profile/edit', data);
+  }
 }
