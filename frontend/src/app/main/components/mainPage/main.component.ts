@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '../../shared/components/navbar/navbar.component';
 import { TicketFilterComponent } from '../../../shared/components/ticket-filter/ticket-filter.component';
-import { TicketCardComponent } from '../../../shared/components/ticket-card/ticket-card.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TicketService } from '../../../ticket/services/ticket.service';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { Ticket } from '../../../ticket/types/ticket.types';
+import { TicketCardComponent } from '../../../shared/components/ticket-card/ticket-card.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-main',
@@ -13,7 +14,8 @@ import { Ticket } from '../../../ticket/types/ticket.types';
     NavbarComponent,
     TicketCardComponent,
     TicketFilterComponent,
-    FooterInfoTextComponent
+    FooterInfoTextComponent,
+    CommonModule
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.css'
@@ -23,6 +25,7 @@ export class MainComponent {
   filteredTickets: Ticket[] = [];
   selectedCategory = '';
   allowedCategories = ['Flight', 'Train', 'Bus', 'Hotel', 'Movie', 'Theater', 'Concert'];
+  hoveredCardIndex: number | null = null;
 
 
   constructor(
