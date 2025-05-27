@@ -30,8 +30,8 @@ model GoogleAuth {
 model User {
   id                 String              @id @default(uuid())
   firstName          String
-  lastName           String
-  birthday           String
+  lastName           String?
+  birthday           String?
   active             Boolean             @default(true)
   photoName          String?
   email              String              @unique
