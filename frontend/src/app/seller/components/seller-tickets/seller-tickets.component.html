@@ -1,17 +1,34 @@
-<app-navbar></app-navbar>
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-  <app-ticket-filter (filterChanged)="onFilter($event)"></app-ticket-filter>
+<div class="min-h-screen flex flex-col">
+  <app-navbar></app-navbar>
+  <main class="flex-grow">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <app-ticket-filter (filterChanged)="onFilter($event)"></app-ticket-filter>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-    @for (item of filteredTickets; track $index) {
-    <app-ticket-card
-      [description]="item.title"
-      [stock]="item.stock"
-      [price]="item.price"
-      [discount]="item.discount"
-      [buttonText]="'Edit'"
-      (buttonClick)="goToEditPage(item)"
-    ></app-ticket-card>
-    }
-  </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (item of filteredTickets; track item.id; let i = $index) {
+          <div
+            (mouseenter)="hoveredCardIndex = i"
+            (mouseleave)="hoveredCardIndex = null"
+            [ngClass]="{
+              'scale-105 z-10': hoveredCardIndex === i,
+              'scale-90': hoveredCardIndex !== null && hoveredCardIndex !== i
+            }"
+            class="transition-all duration-300 ease-in-out transform"
+          >
+            <app-ticket-card
+              [description]="item.title"
+              [stock]="item.stock"
+              [price]="item.price"
+              [discount]="item.discount"
+              [imageUrl]="item.images[0] ? item.images[0] : 'defaultImage.webp'"
+              [buttonText]="'View Details'"
+              (buttonClick)="goToEditPage(item)"
+            ></app-ticket-card>
+          </div>
+        }
+      </div>
+    </div>
+  </main>
+
+  <app-footer-info-text></app-footer-info-text>
 </div>

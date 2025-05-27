@@ -5,13 +5,17 @@ import { TicketFilterComponent } from '../../../shared/components/ticket-filter/
 import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
 import { SellerService } from '../../services/seller.service';
 import { Ticket } from '../../../ticket/types/ticket.types';
+import { CommonModule } from '@angular/common';
+import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 
 @Component({
   selector: 'app-seller-tickets',
   imports: [
     NavbarComponent,
     TicketCardComponent,
-    TicketFilterComponent
+    TicketFilterComponent,
+    CommonModule,
+    FooterInfoTextComponent
   ],
   templateUrl: './seller-tickets.component.html',
   styleUrl: './seller-tickets.component.css'
@@ -19,11 +23,11 @@ import { Ticket } from '../../../ticket/types/ticket.types';
 export class SellerTicketsComponent {
   tickets: Ticket[] = [];
   filteredTickets: Ticket[] = [];
+  hoveredCardIndex: number | null = null
 
   constructor(
     private router: Router,
     private sellerService: SellerService,
-
   ) {}
 
   ngOnInit() {
