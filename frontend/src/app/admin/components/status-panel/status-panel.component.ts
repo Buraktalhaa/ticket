@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
 import { TicketCardComponent } from '../../../shared/components/ticket-card/ticket-card.component';
 import { TicketFilterComponent } from '../../../shared/components/ticket-filter/ticket-filter.component';
-import { TicketService } from '../../../ticket/services/ticket.service';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { Ticket } from '../../../ticket/types/ticket.types';
 import { AdminService } from '../../services/admin.service';
 import { AdminNavigationService } from '../../services/admin-navigation.service';
+import { CommonModule } from '@angular/common';
 
 
 @Component({
@@ -17,7 +16,8 @@ import { AdminNavigationService } from '../../services/admin-navigation.service'
     NavbarComponent,
     TicketCardComponent,
     TicketFilterComponent,
-    FooterInfoTextComponent
+    FooterInfoTextComponent,
+    CommonModule
   ],
   templateUrl: './status-panel.component.html',
   styleUrl: './status-panel.component.css'
@@ -25,6 +25,7 @@ import { AdminNavigationService } from '../../services/admin-navigation.service'
 export class StatusPanelComponent {
   tickets: Ticket[] = [];
   filteredTickets: Ticket[] = [];
+  hoveredCardIndex: number | null = null
 
   constructor(
     private adminService: AdminService,
