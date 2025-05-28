@@ -155,10 +155,9 @@ model Ticket {
   city           String
   location       String
   pointRate      Float
-  hour           Int
+  dateTime       DateTime 
   price          Int
   pointExpiresAt DateTime
-  day            DateTime
   stock          Int
   sold           Boolean      @default(false)
   images         String[]
@@ -193,7 +192,6 @@ model Order {
   ticket      Ticket      @relation(fields: [ticketId], references: [id])
   quantity    Int
   orderDay    DateTime    @default(now())
-  orderHour   Int
   status      OrderStatus @default(pending)
   pointsUsed  Float       @default(0)
   usePoints   Boolean     @default(false)
