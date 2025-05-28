@@ -47,7 +47,7 @@ export class CartComponent {
     if(ticket.stock == undefined) return
   
     if (item.count >= ticket.stock) {
-      alert('No more in stock.');
+      this.notificationService.showNotification("error", "No more in stock.");
       return;
     }
 
@@ -93,7 +93,7 @@ export class CartComponent {
         const paymentLink = response.body?.paymentLink;
   
         if (paymentLink && paymentLink.startsWith('http')) {
-          // geçerli bir bağlantı varsa yönlendir
+          // payment page
           window.location.href = paymentLink;
         } else {
           this.notificationService.showNotification('error', 'Payment link could not be generated, please try again.');

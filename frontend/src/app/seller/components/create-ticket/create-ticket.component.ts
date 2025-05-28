@@ -6,6 +6,7 @@ import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.c
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { SellerService } from '../../services/seller.service';
 import { Router } from '@angular/router';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-create-ticket',
@@ -37,8 +38,9 @@ export class CreateTicketComponent {
 
   constructor(private http: HttpClient,
     private sellerService: SellerService,
-    private router: Router
-) { }
+    private router: Router,
+    private notificationService: NotificationService
+  ) { }
 
   categoryOptions = ['Concert', 'Hotel', 'Event', 'Train', 'Bus'];
 
@@ -51,16 +53,18 @@ export class CreateTicketComponent {
       discount: Number(this.ticket.discount),
       stock: Number(this.ticket.stock),
       pointExpiresAt: new Date(this.ticket.pointExpiresAt).toISOString(),
-      day: new Date(this.ticket.day).toISOString(), 
+      day: new Date(this.ticket.day).toISOString(),
     };
-  
+
     this.sellerService.createTicket(payload).subscribe({
-      next: (res) => {
-        alert('Ticket created successfully');
-        this.router.navigateByUrl('seller-dashboard/my-tickets');
+      next: () => {
+        this.notificationService.showNotification("success", "Ticket created successfully");
+        setTimeout(() => {
+          this.router.navigateByUrl('seller-dashboard/my-tickets');
+        }, 500);
       },
-      error: (err) => {
-        alert('Error creating ticket: ' + (err.error?.message || err.message || 'Something went wrong'));
+      error: () => {
+        this.notificationService.showNotification("error", "Something went wrong");
       }
     });
   }

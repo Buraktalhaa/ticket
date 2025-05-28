@@ -6,6 +6,7 @@ import { SignButtonComponent } from '../../shared/components/sign-button/sign-bu
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { TextLinkComponent } from '../../shared/components/text-link/text-link.component';
 import { AuthInputComponent } from '../../shared/components/auth-input/auth-input.component';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-signup',
@@ -28,18 +29,19 @@ export class SignupComponent {
   confirmPassword: string = '';
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) { }
 
   signUp() {
     if (!this.email || !this.firstName || !this.password || !this.confirmPassword) {
-      console.log("Missing information");
+      this.notificationService.showNotification("warning", "Missing information");
       console.log(this.email, this.firstName, this.password, this.confirmPassword)
       return;
     }
 
     if (this.password !== this.confirmPassword) {
-      console.log("Passwords are not the same");
+      this.notificationService.showNotification("warning", "Passwords are not the same");
       return;
     }
 

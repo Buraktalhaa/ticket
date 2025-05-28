@@ -7,6 +7,7 @@ import { TextLinkComponent } from '../../shared/components/text-link/text-link.c
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { SignButtonComponent } from '../../shared/components/sign-button/sign-button.component';
 import { AuthService } from '../../services/auth.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-signin',
@@ -30,8 +31,8 @@ export class SigninComponent {
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
-
+    private route: ActivatedRoute,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit(): void {
@@ -44,7 +45,7 @@ export class SigninComponent {
 
   signIn() {
     if (!this.email || !this.password) {
-      console.log("Missing information");
+      this.notificationService.showNotification("warning", "Missing information");
       return;
     }
 
@@ -59,10 +60,8 @@ export class SigninComponent {
         this.router.navigateByUrl(this.returnUrl);
       },
       error: (err) => {
-        console.error('Sign in failed', err);
-        alert('Sign in failed.');
+        this.notificationService.showNotification("error", "Sign in failed");
       }
     });
   }
-  
 }

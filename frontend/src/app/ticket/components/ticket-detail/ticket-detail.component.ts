@@ -8,6 +8,7 @@ import { CartService } from '../../../cart/services/cart.service';
 import { Ticket } from '../../types/ticket.types';
 import { AuthService } from '../../../auth/services/auth.service';
 import { HttpResponse } from '@angular/common/http';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -29,26 +30,26 @@ export class TicketDetailComponent {
     private cartService: CartService,
     public authService: AuthService,
     private router: Router,
-
-  ) {}
+    private notificationService: NotificationService
+  ) { }
 
   ngOnInit(): void {
     const ticket = this.ticketService.getSelectedTicket();
     console.log(ticket);
-    
+
     if (ticket) {
       this.ticket = ticket;
     } else {
       const id = this.route.snapshot.paramMap.get('id');
       if (id == null) return;
-    
+
       this.ticketService.getTicketById(id).subscribe((res: HttpResponse<any>) => {
         console.log('Ticket API response:', res.body);
         this.ticket = res.body?.data;
         console.log(this.ticket);
-        
+
       });
-    } 
+    }
   }
 
   goToSignIn() {
@@ -66,53 +67,52 @@ export class TicketDetailComponent {
       ticketId: this.ticket.id,
       count: this.ticketCount
     };
-  
+
     const stock = this.ticket.stock;
-  
+
     if (newItem.count > stock) {
-      alert(`There are only ${stock} tickets in stock.`);
+      this.notificationService.showNotification("warning", `There are only ${stock} tickets available in stock.`);
       return;
     }
-  
+
     this.cartService.getCurrentItem().subscribe(existing => {
       if (existing) {
         if (existing.ticket.id !== newItem.ticketId) {
-          const confirmed = confirm(
-            `You already have a product "${existing.ticket.title}" in your cart. Do you want to replace it?`
-          );
-  
+          const confirmed = confirm(`You already have "${existing.ticket.title}" in your cart. Do you want to replace it?`);
+
           if (confirmed) {
             this.cartService.clearCart().subscribe(() => {
               this.cartService.addToCart(newItem).subscribe(() => {
-                alert('New item added, old item removed.');
+                this.notificationService.showNotification("info", `Previous item removed. "${this.ticket?.title}" added to your cart.`);
               });
             });
           } else {
-            alert('No changes made.');
+            this.notificationService.showNotification("info", "Cart remains unchanged.");
           }
         } else {
           const totalCount = existing.count + newItem.count;
-  
+
           if (totalCount > stock) {
-            alert(`You can’t add more than ${stock} tickets. You already have ${existing.count} in your cart.`);
+            this.notificationService.showNotification("warning", `You already have ${existing.count} tickets. You can’t add more than ${stock} in total.`);
             return;
           }
-  
+
           const updatedItem = {
             ticketId: existing.ticket.id,
             count: totalCount
           };
-  
+
           this.cartService.updateItem(updatedItem).subscribe(() => {
-            alert(`Product count updated to ${updatedItem.count}.`);
+            this.notificationService.showNotification("success", `Cart updated. You now have ${updatedItem.count} tickets.`
+            );
           });
         }
       } else {
         this.cartService.addToCart(newItem).subscribe(() => {
-          alert('Product added to the cart.');
+          this.notificationService.showNotification("success", `"${this.ticket?.title}" added to your cart.`
+          );
         });
       }
     });
   }
-  
 }

@@ -3,8 +3,8 @@ import { ForgotPasswordComponent } from './auth/components/forgot-password/forgo
 import { MailSentComponent } from './auth/components/mail-sent/mail-sent.component';
 import { MyProfileComponent } from './profile/components/my-profile/my-profile.component';
 import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
-import { SignupComponent } from './auth/components/signup/signup.component';
-import { SigninComponent } from './auth/components/signin/signin.component';
+import { SignupComponent } from './auth/components/sign-up/signup.component';
+import { SigninComponent } from './auth/components/sign-in/signin.component';
 import { ResetPasswordComponent } from './auth/components/reset-password/reset-password.component';
 import { MainComponent } from './main/components/mainPage/main.component';
 

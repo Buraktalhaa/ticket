@@ -3,10 +3,10 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
-import { TicketService } from '../../../ticket/services/ticket.service';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { AdminService } from '../../services/admin.service';
 import { AdminNavigationService } from '../../services/admin-navigation.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-status-panel-edit',
@@ -27,13 +27,14 @@ export class StatusPanelEditComponent {
     private router: Router,
     private adminService: AdminService,
     private adminNavigationService: AdminNavigationService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
     const ticket = history.state.ticket;
 
     if (!ticket) {
-      console.error('No ticket found in state.');
+      this.notificationService.showNotification("error", "No ticket found in state");
       this.router.navigate(['/admin-dashboard/status-panel']);
       return;
     }
@@ -55,11 +56,11 @@ export class StatusPanelEditComponent {
   
       this.adminService.editStatus(updatedTicket).subscribe({
         next: () => {
-          alert('Ticket edited successfully');
+          this.notificationService.showNotification("success", "Ticket edited successfully");
           this.adminNavigationService.goToAdminStatusPanel()
         },
-        error: (err) => {
-          alert('Error: ' + err.error?.message || 'Something went wrong');
+        error: () => {
+          this.notificationService.showNotification("error", "Something went wrong");
         }
       });
     }

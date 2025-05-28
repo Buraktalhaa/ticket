@@ -4,6 +4,7 @@ import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.c
 import { ProfileService } from '../../services/profile.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-my-profile',
@@ -22,8 +23,9 @@ export class MyProfileComponent {
 
   constructor(
     private profileService: ProfileService,
-    private fb: FormBuilder
-  ){}
+    private fb: FormBuilder,
+    private notificationService: NotificationService
+  ) { }
 
   ngOnInit(): void {
     this.profileService.profileData$.subscribe(data => {
@@ -51,11 +53,15 @@ export class MyProfileComponent {
   }
 
   saveProfile() {
-    if (!this.profileForm.valid) return;
-  
+    if (!this.profileForm.valid) {
+      this.notificationService.showNotification("error", "Form is not valid.");
+      return;
+    }
+
     const updatedData = this.profileForm.value;
     this.profileService.updateProfile(updatedData).subscribe({
       next: (response) => {
+        this.notificationService.showNotification("success", "Profile updated succesfully.");
         const updatedUser = response.body;
         if (updatedUser) {
           this.user = updatedUser;
@@ -63,9 +69,9 @@ export class MyProfileComponent {
         }
       },
       error: () => {
-        alert('Profile update failed.');
+        this.notificationService.showNotification("error", "Profile update failed.");
       }
     });
   }
-  
+
 }

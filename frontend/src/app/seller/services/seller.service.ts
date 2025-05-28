@@ -4,6 +4,7 @@ import { ApiService } from '../../shared/services/api.service';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { CreateTicketDTO, Ticket } from '../../ticket/types/ticket.types';
+import { NotificationService } from '../../shared/services/notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,8 @@ export class SellerService {
 
   constructor(
     private api: ApiService,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService
   ) { }
 
   getMyTickets() {
@@ -25,20 +27,20 @@ export class SellerService {
           this.sellerTickets.next(data);
           this.router.navigateByUrl('seller-dashboard/my-tickets')
         },
-        error: (err) => {
-          console.error('ticket error:', err);
+        error: () => {
+          this.notificationService.showNotification("error", "Failed to fetch your tickets.");
         }
       });
   }
 
   isSeller() {
-    this.api.get('http://localhost:3000/ticket/is-seller').subscribe({    //Seller dashbooard yapacaksin hem back hem front
+    this.api.get('http://localhost:3000/ticket/is-seller').subscribe({ 
       next: (res: HttpResponse<any>) => {
         const data = res.body?.data;
         this.router.navigateByUrl('seller-dashboard/create-ticket')
       },
       error: (err) => {
-        console.error('ticket error:', err);
+        this.notificationService.showNotification("warning", "You are not authorized as a seller.");
       }
     });
   }
@@ -51,10 +53,12 @@ export class SellerService {
     this.api.post('http://localhost:3000/ticket/edit-ticket', ticket)
       .subscribe({
         next: (res: HttpResponse<any>) => {
-          alert('Ticket edited successfully')
+          this.notificationService.showNotification("success", "Ticket updated successfully");
           this.router.navigateByUrl('seller-dashboard/my-tickets')
         },
-        error: (err) => alert('Error: ' + err.error?.message || 'Something went wrong')
+        error: () =>{
+          this.notificationService.showNotification("error", "Failed to update the ticket.");
+        }
       });
   }
 }

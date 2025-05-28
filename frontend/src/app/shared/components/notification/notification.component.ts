@@ -23,7 +23,7 @@ export class NotificationComponent implements OnInit {
         this.notification = data;
 
         clearTimeout(this.timeoutId);
-        this.timeoutId = setTimeout(() => this.close(), 1000);
+        this.timeoutId = setTimeout(() => this.close(), 3000);
       }
     });
   }
@@ -36,6 +36,6 @@ export class NotificationComponent implements OnInit {
       this.notificationService.clearNotification();
       this.isFadingOut = false;
       this.notification = null;
-    }, 300);
+    }, 600);
   }
 }
