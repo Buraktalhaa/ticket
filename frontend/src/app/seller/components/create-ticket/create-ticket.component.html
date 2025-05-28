@@ -38,13 +38,10 @@
     [(model)]="ticket.location"
   ></app-labels>
 
-  <app-labels label="Date" type="date" [(model)]="ticket.day"></app-labels>
-
   <app-labels
-    label="Hour"
-    type="number"
-    placeholder="Enter number of hours"
-    [(model)]="ticket.hour"
+    label="Date and Time"
+    type="datetime-local"
+    [(model)]="ticket.dateTime"
   ></app-labels>
 
   <app-labels
