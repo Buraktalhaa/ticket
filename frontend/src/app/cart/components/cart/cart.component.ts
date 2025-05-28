@@ -18,6 +18,8 @@ import { NotificationService } from '../../../shared/services/notification.servi
 })
 export class CartComponent {
   item: CartItem | null = null;
+  discountedPrice = 0
+  hasDiscount = false;
 
   constructor(
     private cartService: CartService,
@@ -27,14 +29,16 @@ export class CartComponent {
   ) { }
 
   ngOnInit() {
-    this.loadCart();
-  }
-
-  loadCart() {
     this.cartService.getCurrentItem().subscribe(cartItem => {
       this.item = cartItem;
+      if (this.item) {
+        const discount = this.item.ticket.discount;
+        this.hasDiscount = discount > 0;
+        this.discountedPrice = this.item.ticket.price * (1 - discount / 100);
+      }
     });
   }
+  
 
   increaseQuantity() {
     const item = this.item;
@@ -105,6 +109,4 @@ export class CartComponent {
       }
     });
   }
-  
-  
 }
