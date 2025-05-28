@@ -68,9 +68,11 @@
         <!-- Profil Resmi -->
         <img
           (click)="toggleDropdown()"
-          class="h-10 w-10 rounded-full cursor-pointer border-2 border-white hover:ring-2 hover:ring-indigo-400"
-          [src]="userPhotoUrl ? userPhotoUrl : 'assets/default-user.png'"
+          class="h-10 w-10 rounded-full cursor-pointer border border-white hover:ring-2 hover:ring-indigo-400"
+          [src]="userPhotoUrl ? userPhotoUrl : '/default-user.jpg'"
           alt="User Avatar"
+          width="40"
+          height="40"
         />
 
         @if (isDropdownOpen) {
