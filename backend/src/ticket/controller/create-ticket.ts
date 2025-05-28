@@ -7,7 +7,7 @@ import { generatePNR } from "../../common/utils/generatePnr";
 
 export async function createTicket(req:Request, res:Response){
     const {userId} = req.user as DecodedUser;
-    const {categoryName, title, location, city, description, hour, day, stock, price, pointRate, pointExpiresAt, discount} = req.body
+    const {categoryName, title, location, city, description, dateTime, stock, price, pointRate, pointExpiresAt, discount} = req.body
 
     const category = await prisma.category.findUnique({
         where:{
@@ -50,9 +50,8 @@ export async function createTicket(req:Request, res:Response){
             pointRate:Number(pointRate),
             price: Number(price),          
             pointExpiresAt: new Date(pointExpiresAt),
-            hour: Number(hour),            
-            discount: Number(discount),        
-            day: new Date("2025-05-18T00:00:00.000Z"),
+            discount: Number(discount),  
+            dateTime: new Date(dateTime),      
             stock: Number(stock),  
             images: [],
         }

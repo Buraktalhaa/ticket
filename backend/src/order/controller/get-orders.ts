@@ -14,7 +14,6 @@ export async function getOrders(req: Request, res: Response) {
             id: true,
             createdAt: true,
             orderDay: true,
-            orderHour: true,
             quantity: true,
             totalAmount: true,
             status: true,

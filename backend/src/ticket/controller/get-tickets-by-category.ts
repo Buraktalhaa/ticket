@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../../common/utils/prisma";
 import { ResponseStatus } from "../../common/enums/status.enum";
-import { log } from "console";
 
 export async function getTicketsByCategory(req: Request, res: Response) {
 
