@@ -1,50 +1,73 @@
 <app-navbar></app-navbar>
-
-<div class="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg">
-  <h1 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">
-    🎫 Ticket Detail
-  </h1>
-
+<div
+  class="max-w-6xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg flex flex-col md:flex-row gap-10"
+>
   @if(ticket){
-  <div class="space-y-4">
-    <div class="grid grid-cols-2 gap-6">
-      <div>
-        <h2 class="text-lg font-semibold text-gray-700">🎟️ Title</h2>
-        <p class="text-gray-900">{{ ticket.title }}</p>
-      </div>
+  <div
+    class="md:w-1/2 rounded-lg overflow-hidden shadow-md flex flex-row gap-6 relative"
+  >
+    <img
+      [src]="
+        ticket.images && ticket.images.length
+          ? ticket.images[currentImageIndex]
+          : 'defaultImage.webp'
+      "
+      alt="{{ ticket.title }}"
+      class="w-full h-128 object-cover rounded-lg"
+    />
 
-      <div>
-        <h2 class="text-lg font-semibold text-gray-700">📆 Date</h2>
-        <p class="text-gray-900">{{ ticket.day | date: 'longDate' }}</p>
-      </div>
+    @if(ticket.images && ticket.images.length > 1){
+    <div class="absolute right-4 bottom-4 flex flex-col gap-3">
+      @for (image of ticket.images; track image; let i = $index) {
+      <button
+        (click)="changeImage(i)"
+        class="w-9 h-9 flex items-center justify-center rounded-full border border-gray-300 text-sm font-bold transition-all duration-300 ease-in-out"
+        [ngClass]="{
+          'bg-blue-600 text-white shadow-md scale-110': currentImageIndex === i,
+          'bg-white text-gray-800 hover:bg-gray-100': currentImageIndex !== i
+        }"
+      >
+        {{ i + 1 }}
+      </button>
+      }
+    </div>
+    }
+  </div>
 
-      <div>
-        <h2 class="text-lg font-semibold text-gray-700">⏰ Time</h2>
-        <p class="text-gray-900">{{ ticket.hour }}:00</p>
-      </div>
+  <div class="md:w-1/2 flex flex-col justify-between">
+    <div>
+      <h1 class="text-4xl font-bold text-gray-800 mb-4">{{ ticket.title }}</h1>
 
-      <div>
-        <h2 class="text-lg font-semibold text-gray-700">💰 Price</h2>
-        <p class="text-green-600 font-bold text-xl">{{ ticket.price * (1 - ticket.discount / 100) }} ₺</p>
-      </div>
+      <p class="text-gray-600 mb-2">
+        <strong>📆 Date:</strong>
+        {{ ticket.dateTime | date : "medium" }}
+      </p>
 
-      <div>
-        <h2 class="text-lg font-semibold text-gray-700">📂 Category</h2>
-        <p class="text-gray-900 capitalize">
-          {{ ticket.category.name }}
-        </p>
-      </div>
+      <p class="text-green-700 text-3xl font-extrabold mb-4">
+        @if(ticket.discount > 0){
+          <span class="line-through text-gray-500 dark:text-gray-400">
+            {{ ticket.price | number: '1.2-2' }} ₺
+          </span>
+        }
+        <span
+          class="text-2xl font-bold text-gray-900 dark:text-dark ml-2"
+          [ngClass]="{ 'ml-0': ticket.discount === 0 }"
+        >
+          {{ ticket.price * (1 - ticket.discount / 100) | number: '1.2-2' }} ₺
+        </span>
+      </p>
 
-      <div>
-        <h2 class="text-lg font-semibold text-gray-700">📝 Description</h2>
-        <p class="text-gray-800 whitespace-pre-wrap">
-          {{ ticket.description }}
-        </p>
-      </div>
+      <p class="text-gray-700 mb-4 capitalize">
+        <strong>Category:</strong> {{ ticket.category.name }}
+      </p>
+
+      <p class="text-gray-800 whitespace-pre-wrap mb-8">
+        {{ ticket.description }}
+      </p>
     </div>
 
-    <div class="flex items-center gap-4 mt-6">
-      <label class="text-gray-700 font-medium">🎟️ Ticket count:</label>
+    <div class="flex items-center gap-4">
+      <label class="font-semibold text-gray-700">🎟️ Ticket count:</label>
       <input
         type="number"
         min="1"
@@ -52,27 +75,24 @@
         class="w-20 px-3 py-1 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
       />
 
-      @if (authService.isThereUser()) {
-        <button
-        class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow cursor-pointer"
+      @if(authService.isThereUser()){
+      <button
+        class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow cursor-pointer"
         (click)="purchaseTicket()"
       >
         Add to cart
       </button>
-      }
-      @else () {
-        <button
-        class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow cursor-pointer"
+      } @else {
+      <button
+        class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow cursor-pointer"
         (click)="goToSignIn()"
       >
         SignIn
       </button>
       }
-
-
     </div>
   </div>
   } @else {
-  <div class="text-center text-gray-500">Loading...</div>
+  <div class="text-center text-gray-500 w-full">Loading...</div>
   }
 </div>

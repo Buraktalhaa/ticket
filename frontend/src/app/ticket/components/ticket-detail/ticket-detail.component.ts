@@ -23,22 +23,24 @@ import { NotificationService } from '../../../shared/services/notification.servi
 export class TicketDetailComponent {
   ticket: Ticket | null = null;
   ticketCount: number = 1;
+  currentImageIndex = 0;
+  discountedPrice = 0
 
   constructor(
     private ticketService: TicketService,
     private route: ActivatedRoute,
     private cartService: CartService,
-    public authService: AuthService,
     private router: Router,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    public authService: AuthService,
   ) { }
 
   ngOnInit(): void {
     const ticket = this.ticketService.getSelectedTicket();
-    console.log(ticket);
 
     if (ticket) {
       this.ticket = ticket;
+      this.discountedPrice = ticket.price * (1 - ticket.discount / 100);
     } else {
       const id = this.route.snapshot.paramMap.get('id');
       if (id == null) return;
@@ -47,9 +49,13 @@ export class TicketDetailComponent {
         console.log('Ticket API response:', res.body);
         this.ticket = res.body?.data;
         console.log(this.ticket);
-
+        this.discountedPrice = ticket.price * (1 - ticket.discount / 100);
       });
     }
+  }
+
+  changeImage(index: number): void {
+    this.currentImageIndex = index;
   }
 
   goToSignIn() {
