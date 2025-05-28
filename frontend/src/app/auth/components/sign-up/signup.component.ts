@@ -36,17 +36,24 @@ export class SignupComponent {
   signUp() {
     if (!this.email || !this.firstName || !this.password || !this.confirmPassword) {
       this.notificationService.showNotification("warning", "Missing information");
-      console.log(this.email, this.firstName, this.password, this.confirmPassword)
       return;
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.email)) {
+      this.notificationService.showNotification("warning", "Invalid email format");
+      return;
+    }
+    
     if (this.password !== this.confirmPassword) {
       this.notificationService.showNotification("warning", "Passwords are not the same");
       return;
     }
 
-    // Mail kontrol TODO:
-    // Sifre uzunluk kontrol TODO:
+    if (this.password.length < 8) {
+      this.notificationService.showNotification("warning", "Password must be at least 8 characters long");
+      return;
+    }
 
     const signUpData = {
       email: this.email,
