@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
-import { TicketService } from '../../../ticket/services/ticket.service';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { SellerService } from '../../services/seller.service';
 

@@ -4,7 +4,6 @@ export interface Order {
   ticketId: string;
   quantity: number;
   orderDay: string;
-  orderHour: number;
   paymentId: string;
   pointsUsed: number;
   usePoints: boolean;

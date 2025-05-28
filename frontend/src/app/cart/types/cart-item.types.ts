@@ -4,7 +4,7 @@ export interface Ticket {
     description?: string;
     price: number;
     stock?: number;
-    discount?: number;
+    discount: number;
     images?: string[];
     day?: string | Date;
     hour?: number;

@@ -11,10 +11,9 @@ export interface Ticket {
   city: string;
   location: string;
   pointRate: number;
-  hour: number;
+  dateTime: string;
   price: number;
   pointExpiresAt: string;
-  day: string;
   stock: number;
   sold: boolean;
   images: string[];
@@ -28,13 +27,10 @@ export interface Ticket {
 export interface CreateTicketDTO {
   categoryName: string;
   description: string;
-  hour: number;
-  day: string;
+  dateTime: string;
   stock: number;
   price: number;
   pointRate: number;
   pointExpiresAt: string;
   discount: number;
 }
-
-
