@@ -26,17 +26,16 @@
       @if(discount !== 0){
       <div>
         <span class="line-through text-gray-500 dark:text-gray-400"
-          >${{ price }}</span
+          >₺{{ price }}</span
         >
         <span class="text-2xl font-bold text-gray-900 dark:text-white ml-2"
-          >${{ discountedPrice.toFixed(2) }}</span
+          >₺{{ discountedPrice.toFixed(2) }}</span
         >
       </div>
       } @else {
       <span class="text-2xl font-bold text-gray-900 dark:text-white ml-2"
-        >${{ price }}</span
+        >₺{{ price }}</span
       >
-
       }
       <a
         (click)="onButtonClick()"
