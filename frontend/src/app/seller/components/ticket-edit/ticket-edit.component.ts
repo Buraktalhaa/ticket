@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
-import { TicketService } from '../../../ticket/services/ticket.service';
 import { SellerService } from '../../services/seller.service';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-ticket-edit',

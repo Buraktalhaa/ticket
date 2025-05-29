@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { TicketCardComponent } from '../../../shared/components/ticket-card/ticket-card.component';
 import { TicketFilterComponent } from '../../../shared/components/ticket-filter/ticket-filter.component';
-import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
 import { SellerService } from '../../services/seller.service';
-import { Ticket } from '../../../ticket/types/ticket.types';
 import { CommonModule } from '@angular/common';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
+import { Ticket } from '../../../pages/ticket/types/ticket.types';
 
 @Component({
   selector: 'app-seller-tickets',

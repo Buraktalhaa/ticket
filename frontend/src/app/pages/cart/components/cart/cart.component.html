@@ -1,0 +1,67 @@
+<app-navbar></app-navbar>
+@if(item){
+<div
+  class="max-w-md mx-auto bg-white rounded-lg shadow-md p-4 flex gap-4 items-start"
+>
+  <img
+    [src]="item.ticket.images?.[0] ? item.ticket.images?.[0] : 'defaultImage.webp'"
+    alt="{{ item.ticket.title }}"
+    class="cursor-pointer w-24 h-24 object-cover rounded"
+    (click)="goToTicketDetail(item.ticket.id, item.ticket.category?.name ?? '')"
+  />
+
+  <div class="flex-1">
+    <h3 class="text-xl font-semibold">{{ item.ticket.title }}</h3>
+    @if (hasDiscount) {
+      <div class="flex items-center gap-2">
+        <p class="line-through text-gray-500">
+          {{ item.ticket.price | number: '1.2-2' }} ₺
+        </p>
+        <p class="text-green-600 font-bold text-lg">
+          {{ discountedPrice | number: '1.2-2' }} ₺
+        </p>
+      </div>
+    } @else {
+      <p class="text-green-600 font-bold text-lg">
+        {{ item.ticket.price | number: '1.2-2' }} ₺
+      </p>
+    }
+    
+    <div class="flex items-center gap-2 mt-2">
+      <button
+        (click)="decreaseQuantity()"
+        class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer"
+      >
+        -
+      </button>
+      <span class="min-w-[24px] text-center">{{ item.count }}</span>
+      <button
+        (click)="increaseQuantity()"
+        class="px-2 py-1 bg-gray-200 rounded hover:bg-gray-300 cursor-pointer" 
+      >
+        +
+      </button>
+    </div>
+
+    <div class="mt-4 flex justify-end gap-3">
+      <button
+        (click)="removeItem()"
+        class="px-4 py-2 bg-red-500 text-white rounded shadow hover:bg-red-600 transition duration-200 cursor-pointer"
+        title="Remove item"
+      >
+        Delete
+      </button>
+
+      <button
+      (click)="buyTicket()"
+        class="px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-700 transition duration-200 cursor-pointer"
+        title="Buy now"
+      >
+        Buy
+      </button>
+    </div>
+  </div>
+</div>
+} @else{
+<h1 class="text-center mt-10 text-xl font-medium">Your bag is empty.</h1>
+}

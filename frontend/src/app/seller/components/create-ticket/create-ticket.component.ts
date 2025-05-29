@@ -2,12 +2,12 @@ import { Component } from '@angular/core'
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { LabelsComponent } from '../labels/labels.component';
-import { NavbarComponent } from '../../../main/shared/components/navbar/navbar.component';
 import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { SellerService } from '../../services/seller.service';
 import { Router } from '@angular/router';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { Ticket } from '../../types/create-ticket.type';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-create-ticket',

@@ -1,14 +1,6 @@
 import { Routes } from '@angular/router';
-import { ForgotPasswordComponent } from './auth/components/forgot-password/forgot-password.component';
-import { MailSentComponent } from './auth/components/mail-sent/mail-sent.component';
-import { MyProfileComponent } from './profile/components/my-profile/my-profile.component';
 import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
-import { SignupComponent } from './auth/components/sign-up/signup.component';
-import { SigninComponent } from './auth/components/sign-in/signin.component';
-import { ResetPasswordComponent } from './auth/components/reset-password/reset-password.component';
-import { MainComponent } from './main/components/mainPage/main.component';
-
-import { CartComponent } from './cart/components/cart/cart.component';
+import { CartComponent } from './pages/cart/components/cart/cart.component';
 import { AdminDashboardComponent } from './admin/components/admin-dashboard/admin-dashboard.component';
 import { StatusPanelComponent } from './admin/components/status-panel/status-panel.component';
 import { StatusPanelEditComponent } from './admin/components/status-panel-edit/status-panel-edit.component';
@@ -16,9 +8,16 @@ import { SellerDashboardComponent } from './seller/components/seller-dashboard/s
 import { CreateTicketComponent } from './seller/components/create-ticket/create-ticket.component';
 import { SellerTicketsComponent } from './seller/components/seller-tickets/seller-tickets.component';
 import { TicketEditComponent } from './seller/components/ticket-edit/ticket-edit.component';
-import { TicketDetailComponent } from './ticket/components/ticket-detail/ticket-detail.component';
-import { MyOrdersComponent } from './order/components/my-orders/my-orders.component';
 import { roleGuard } from './shared/guard/role.guard';
+import { MainComponent } from './pages/main/components/mainPage/main.component';
+import { TicketDetailComponent } from './pages/ticket/components/ticket-detail/ticket-detail.component';
+import { MyProfileComponent } from './pages/profile/components/my-profile/my-profile.component';
+import { MyOrdersComponent } from './pages/order/components/my-orders/my-orders.component';
+import { SignupComponent } from './pages/auth/components/sign-up/signup.component';
+import { SigninComponent } from './pages/auth/components/sign-in/signin.component';
+import { ForgotPasswordComponent } from './pages/auth/components/forgot-password/forgot-password.component';
+import { MailSentComponent } from './pages/auth/components/mail-sent/mail-sent.component';
+import { ResetPasswordComponent } from './pages/auth/components/reset-password/reset-password.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/main', pathMatch: 'full' },

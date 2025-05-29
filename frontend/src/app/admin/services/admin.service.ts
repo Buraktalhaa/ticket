@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../../shared/services/api.service';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { Ticket } from '../../ticket/types/ticket.types';
 import { AdminNavigationService } from './admin-navigation.service';
+import { Ticket } from '../../pages/ticket/types/ticket.types';
 
 @Injectable({
   providedIn: 'root'
