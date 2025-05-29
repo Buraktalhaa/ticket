@@ -3,6 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { Ticket } from '../types/ticket.types';
 import { ApiService } from '../../../shared/services/api.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class TicketService {
 
   constructor(
     private api: ApiService,
+    private notificationService: NotificationService
   ) { }
 
   allTickets() {
@@ -26,6 +28,7 @@ export class TicketService {
       },
       error: (err) => {
         console.error('ticket error:', err);
+        this.notificationService.showNotification('error', 'Tickets could not be loaded. Please try again later.');
       }
     });
   }
@@ -40,6 +43,7 @@ export class TicketService {
       },
       error: (err) => {
         console.error('ticket category error:', err);
+        this.notificationService.showNotification('error', `Tickets for category "${category}" could not be loaded.`);
       }
     });
   }
