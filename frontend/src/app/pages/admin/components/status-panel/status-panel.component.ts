@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { TicketCardComponent } from '../../../shared/components/ticket-card/ticket-card.component';
-import { TicketFilterComponent } from '../../../shared/components/ticket-filter/ticket-filter.component';
-import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { AdminService } from '../../services/admin.service';
 import { AdminNavigationService } from '../../services/admin-navigation.service';
 import { CommonModule } from '@angular/common';
-import { Ticket } from '../../../pages/ticket/types/ticket.types';
-import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
-
+import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { TicketCardComponent } from '../../../../shared/components/ticket-card/ticket-card.component';
+import { TicketFilterComponent } from '../../../../shared/components/ticket-filter/ticket-filter.component';
+import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
+import { Ticket } from '../../../ticket/types/ticket.types';
 
 @Component({
   selector: 'app-status-panel',

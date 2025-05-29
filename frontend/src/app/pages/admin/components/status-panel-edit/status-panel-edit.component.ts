@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { AdminService } from '../../services/admin.service';
 import { AdminNavigationService } from '../../services/admin-navigation.service';
-import { NotificationService } from '../../../shared/services/notification.service';
-import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
+import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
+import { NotificationService } from '../../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-status-panel-edit',

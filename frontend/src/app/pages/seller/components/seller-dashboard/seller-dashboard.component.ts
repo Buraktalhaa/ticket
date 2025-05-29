@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { SellerService } from '../../services/seller.service';
-import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
+import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
+import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 
 @Component({
   selector: 'app-seller-dashboard',

@@ -1,13 +1,6 @@
 import { Routes } from '@angular/router';
 import { UnauthorizedComponent } from './shared/components/unauthorized/unauthorized.component';
 import { CartComponent } from './pages/cart/components/cart/cart.component';
-import { AdminDashboardComponent } from './admin/components/admin-dashboard/admin-dashboard.component';
-import { StatusPanelComponent } from './admin/components/status-panel/status-panel.component';
-import { StatusPanelEditComponent } from './admin/components/status-panel-edit/status-panel-edit.component';
-import { SellerDashboardComponent } from './seller/components/seller-dashboard/seller-dashboard.component';
-import { CreateTicketComponent } from './seller/components/create-ticket/create-ticket.component';
-import { SellerTicketsComponent } from './seller/components/seller-tickets/seller-tickets.component';
-import { TicketEditComponent } from './seller/components/ticket-edit/ticket-edit.component';
 import { roleGuard } from './shared/guard/role.guard';
 import { MainComponent } from './pages/main/components/mainPage/main.component';
 import { TicketDetailComponent } from './pages/ticket/components/ticket-detail/ticket-detail.component';
@@ -18,6 +11,13 @@ import { SigninComponent } from './pages/auth/components/sign-in/signin.componen
 import { ForgotPasswordComponent } from './pages/auth/components/forgot-password/forgot-password.component';
 import { MailSentComponent } from './pages/auth/components/mail-sent/mail-sent.component';
 import { ResetPasswordComponent } from './pages/auth/components/reset-password/reset-password.component';
+import { SellerDashboardComponent } from './pages/seller/components/seller-dashboard/seller-dashboard.component';
+import { CreateTicketComponent } from './pages/seller/components/create-ticket/create-ticket.component';
+import { SellerTicketsComponent } from './pages/seller/components/seller-tickets/seller-tickets.component';
+import { TicketEditComponent } from './pages/seller/components/ticket-edit/ticket-edit.component';
+import { AdminDashboardComponent } from './pages/admin/components/admin-dashboard/admin-dashboard.component';
+import { StatusPanelComponent } from './pages/admin/components/status-panel/status-panel.component';
+import { StatusPanelEditComponent } from './pages/admin/components/status-panel-edit/status-panel-edit.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/main', pathMatch: 'full' },

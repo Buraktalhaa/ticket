@@ -1,10 +1,10 @@
 import { HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ApiService } from '../../shared/services/api.service';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { NotificationService } from '../../shared/services/notification.service';
-import { CreateTicketDTO, Ticket } from '../../pages/ticket/types/ticket.types';
+import { CreateTicketDTO, Ticket } from '../../ticket/types/ticket.types';
+import { NotificationService } from '../../../shared/services/notification.service';
+import { ApiService } from '../../../shared/services/api.service';
 
 @Injectable({
   providedIn: 'root'

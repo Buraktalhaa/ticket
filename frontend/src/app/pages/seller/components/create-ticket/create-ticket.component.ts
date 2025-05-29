@@ -2,12 +2,12 @@ import { Component } from '@angular/core'
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { LabelsComponent } from '../labels/labels.component';
-import { FooterInfoTextComponent } from '../../../shared/components/footer-info-text/footer-info-text.component';
 import { SellerService } from '../../services/seller.service';
 import { Router } from '@angular/router';
-import { NotificationService } from '../../../shared/services/notification.service';
 import { Ticket } from '../../types/create-ticket.type';
-import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
+import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
+import { NotificationService } from '../../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-create-ticket',
@@ -21,7 +21,7 @@ import { NavbarComponent } from '../../../shared/components/navbar/navbar.compon
   styleUrl: './create-ticket.component.css'
 })
 export class CreateTicketComponent {
-  ticket:Ticket = {
+  ticket: Ticket = {
     categoryName: '',
     title: '',
     description: '',
@@ -59,7 +59,6 @@ export class CreateTicketComponent {
     if (this.ticket.pointExpiresAt && isNaN(Date.parse(this.ticket.pointExpiresAt))) {
       return 'Point expiry date is invalid';
     }
-
     return null;
   }
 
