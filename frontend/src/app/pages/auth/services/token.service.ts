@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
-import { DecodedToken } from '../types/auth.type';
+import { DecodedToken } from '../types/auth.types';
 import { jwtDecode } from 'jwt-decode';
 
 @Injectable({

@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
-import { SignIn, SignUp } from '../types/auth.type';
+import { SignIn, SignUp } from '../types/auth.types';
 import { Router } from '@angular/router';
 import { TokenService } from './token.service';
 import { Observable, tap } from 'rxjs';

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Profile } from '../../types/profile.type';
+import { Profile } from '../../types/profile.types';
 import { ProfileService } from '../../services/profile.service';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
@@ -73,5 +73,4 @@ export class MyProfileComponent {
       }
     });
   }
-
 }

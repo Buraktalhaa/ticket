@@ -18,6 +18,7 @@ import { TicketEditComponent } from './pages/seller/components/ticket-edit/ticke
 import { AdminDashboardComponent } from './pages/admin/components/admin-dashboard/admin-dashboard.component';
 import { StatusPanelComponent } from './pages/admin/components/status-panel/status-panel.component';
 import { StatusPanelEditComponent } from './pages/admin/components/status-panel-edit/status-panel-edit.component';
+import { authGuard } from './shared/guard/auth.guard';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/main', pathMatch: 'full' },
@@ -26,7 +27,7 @@ export const routes: Routes = [
     { path: 'main/:category/:id', component: TicketDetailComponent },
 
     { path: 'my-profile', component: MyProfileComponent, canActivate:[roleGuard],data:{roles:['user']}},
-    { path: 'my-profile/cart', component: CartComponent, canActivate:[roleGuard, roleGuard],data:{roles:['user']}},
+    { path: 'my-profile/cart', component: CartComponent, canActivate:[roleGuard, authGuard],data:{roles:['user']}},
 
     { path: 'order/my-orders', component: MyOrdersComponent, canActivate:[roleGuard],data:{roles:['user']}},
 

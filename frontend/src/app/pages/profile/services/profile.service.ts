@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
-import { Profile } from '../types/profile.type';
+import { Profile } from '../types/profile.types';
 import { ApiService } from '../../../shared/services/api.service';
 
 @Injectable({

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { Email, Passwords } from '../types/auth.type';
+import { Email, Passwords } from '../types/auth.types';
 import { ApiService } from '../../../shared/services/api.service';
 
 @Injectable({
