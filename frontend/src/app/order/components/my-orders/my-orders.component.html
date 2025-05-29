@@ -11,10 +11,10 @@
             <strong>Order Title:</strong> {{ order.ticket.title}}
           </div>
           <div class="mb-2 text-gray-700">
-            <strong>Order Date:</strong> {{ order.createdAt | date : "short" }}
+            <strong>Order Date:</strong> {{ order.createdAt | date : "medium" }}
           </div>
           <div class="mb-2 text-gray-700">
-            <strong>Ticket Date:</strong> {{ order.orderDay | date : "longDate" }} - {{ order.orderHour }}:00
+            <strong>Ticket Date:</strong> {{ order.orderDay | date : "medium" }}
           </div>
           <div class="mb-2 text-gray-700">
             <strong>Quantity:</strong> {{ order.quantity }}
