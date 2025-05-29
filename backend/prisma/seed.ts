@@ -27,7 +27,7 @@ async function main() {
     data: {
       firstName: "Burak",
       lastName: "Talha",
-      birthday: "21.02.2001",
+      birthday: new Date('2001-02-21'),
       active: true,
       photoName: "",
       email,
@@ -39,7 +39,7 @@ async function main() {
     data: {
       firstName: "Burak",
       lastName: "Talha",
-      birthday: "21.02.2001",
+      birthday: new Date('2001-02-21'),
       active: true,
       photoName: "",
       email: email2,
@@ -93,7 +93,7 @@ async function main() {
     data: {
       firstName: "Admin",
       lastName: "admin",
-      birthday: "21.02.2001",
+      birthday: new Date('2001-02-21'),
       active: true,
       photoName: "a",
       email: emailAdmin
@@ -476,31 +476,31 @@ async function main() {
 
   // Category
   const category1 = await prisma.category.create({
-    data: { name: 'Flight' },
+    data: { name: 'flight' },
   });
 
   const category2 = await prisma.category.create({
-    data: { name: 'Train' },
+    data: { name: 'train' },
   });
 
   const category3 = await prisma.category.create({
-    data: { name: 'Bus' },
+    data: { name: 'bus' },
   });
 
   const category4 = await prisma.category.create({
-    data: { name: 'Hotel' },
+    data: { name: 'hotel' },
   });
 
   const category5 = await prisma.category.create({
-    data: { name: 'Movie' },
+    data: { name: 'movie' },
   });
 
   const category6 = await prisma.category.create({
-    data: { name: 'Theater' },
+    data: { name: 'theater' },
   });
 
   const category7 = await prisma.category.create({
-    data: { name: 'Concert' },
+    data: { name: 'concert' },
   });
 
 

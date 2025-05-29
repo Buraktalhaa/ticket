@@ -78,8 +78,6 @@ export async function signInController(req: Request, res: Response) {
         }
     });
 
-
-    console.log("Sing in successfull")
     res.status(200).json({
         status: ResponseStatus.SUCCESS,
         message: "Sign in succesfull",
