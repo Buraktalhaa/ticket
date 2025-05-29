@@ -24,7 +24,7 @@ export class MainComponent {
   tickets: Ticket[] = [];
   filteredTickets: Ticket[] = [];
   selectedCategory = '';
-  allowedCategories = ['Flight', 'Train', 'Bus', 'Hotel', 'Movie', 'Theater', 'Concert'];
+  allowedCategories = ['flight', 'train', 'bus', 'hotel', 'movie', 'theater', 'concert'];
   hoveredCardIndex: number | null = null;
 
 

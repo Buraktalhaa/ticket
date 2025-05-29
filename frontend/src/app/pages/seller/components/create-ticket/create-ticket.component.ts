@@ -42,7 +42,7 @@ export class CreateTicketComponent {
     private notificationService: NotificationService
   ) { }
 
-  categoryOptions = ['Concert', 'Hotel', 'Event', 'Train', 'Bus'];
+  categoryOptions = ['concert', 'hotel', 'event', 'train', 'bus', 'theater', 'movie'];
 
   validateTicket(): string | null {
     if (!this.ticket.categoryName) return 'Category is required';

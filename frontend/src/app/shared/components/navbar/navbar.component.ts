@@ -57,7 +57,7 @@ export class NavbarComponent {
   }
 
   selectCategory(category: string) {
-    const allowedCategories = ['Flight', 'Train', 'Bus', 'Hotel', 'Movie', 'Theater', 'Concert'];
+    const allowedCategories = ['flight', 'train', 'bus', 'hotel', 'movie', 'theater', 'concert'];
     if (!allowedCategories.includes(category)) return;
     this.router.navigate(['/main', category]);
   }
