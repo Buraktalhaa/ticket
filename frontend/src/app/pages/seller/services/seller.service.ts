@@ -27,8 +27,10 @@ export class SellerService {
           this.sellerTickets.next(data);
           this.router.navigateByUrl('seller-dashboard/my-tickets')
         },
-        error: () => {
-          this.notificationService.showNotification("error", "Failed to fetch your tickets.");
+        error: (err) => {
+          console.error('Error fetching seller tickets:', err);
+          const msg = err?.error?.message || "Failed to fetch your tickets.";
+          this.notificationService.showNotification("error", msg);
         }
       });
   }
@@ -36,11 +38,12 @@ export class SellerService {
   isSeller() {
     this.api.get('http://localhost:3000/ticket/is-seller').subscribe({ 
       next: (res: HttpResponse<any>) => {
-        const data = res.body?.data;
         this.router.navigateByUrl('seller-dashboard/create-ticket')
       },
       error: (err) => {
-        this.notificationService.showNotification("warning", "You are not authorized as a seller.");
+        console.error('Authorization error (isSeller):', err);
+        const msg = err?.error?.message || "You are not authorized as a seller.";
+        this.notificationService.showNotification("warning", msg);
       }
     });
   }

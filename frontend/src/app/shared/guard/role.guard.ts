@@ -20,7 +20,7 @@ export const roleGuard: CanActivateFn = (route:ActivatedRouteSnapshot, state) =>
 
 
   if (expectedRoles && !expectedRoles.includes(role)) {
-    router.navigateByUrl('/main');    
+    router.navigateByUrl('/unauthorized');    
     return false;
   }
 
