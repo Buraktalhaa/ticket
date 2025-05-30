@@ -7,6 +7,7 @@ import { TicketCardComponent } from '../../../../shared/components/ticket-card/t
 import { TicketFilterComponent } from '../../../../shared/components/ticket-filter/ticket-filter.component';
 import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
 import { Ticket } from '../../../ticket/types/ticket.types';
+import { FilterTicketService } from '../../../../shared/services/filter-ticket.service';
 
 @Component({
   selector: 'app-status-panel',
@@ -28,7 +29,8 @@ export class StatusPanelComponent {
 
   constructor(
     private adminService: AdminService,
-    private adminNavigationService: AdminNavigationService
+    private adminNavigationService: AdminNavigationService,
+    private filterTicketService: FilterTicketService
   ) {}
 
   ngOnInit() {
@@ -47,29 +49,6 @@ export class StatusPanelComponent {
   }
 
   onFilter(filter: { sortBy: string; keyword: string }) {
-    const keyword = filter.keyword.toLowerCase();
-
-    this.filteredTickets = this.tickets
-      .filter(ticket =>
-        ticket.description?.toLowerCase().includes(keyword)
-      )
-      .sort((a, b) => {
-        switch (filter.sortBy) {
-          case 'priceAsc':
-            return a.price - b.price;
-          case 'priceDesc':
-            return b.price - a.price;
-          case 'dateNewest':
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-          case 'dateOldest':
-            return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-          case 'nameAZ':
-            return a.description.localeCompare(b.description);
-          case 'nameZA':
-            return b.description.localeCompare(a.description);
-          default:
-            return 0;
-        }
-      });
+    this.filteredTickets = this.filterTicketService.filterTickets(this.tickets, filter);
   }
 }
