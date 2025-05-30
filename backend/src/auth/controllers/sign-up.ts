@@ -5,6 +5,7 @@ import bcrypt from 'bcryptjs'
 import { createToken } from '../utils/create-token';
 import { ResponseStatus } from '../../common/enums/status.enum';
 import { handleError } from '../../common/error-handling/handle-error';
+import { Prisma } from '@prisma/client';
 
 export async function signUpController(req: Request, res: Response) {
     const { email, firstName } = req.body;
@@ -14,7 +15,7 @@ export async function signUpController(req: Request, res: Response) {
             name: 'user'
         }
     })
-
+    
     if (!findUserRole) {
         handleError(res, 'Profile type not match any type', 400)
         return

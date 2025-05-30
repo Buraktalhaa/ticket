@@ -13,5 +13,4 @@ router.post('/add-to-cart', authenticateToken, permissionControl, addToCart)
 router.post('/update-cart', authenticateToken, permissionControl, updateCart)
 router.delete('/delete-cart', authenticateToken, permissionControl, deleteCart)
 
-
 export default router;

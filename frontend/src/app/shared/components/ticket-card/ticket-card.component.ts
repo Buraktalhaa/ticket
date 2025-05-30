@@ -11,13 +11,15 @@ export class TicketCardComponent {
   @Input() description: string =''
   @Input() stock: number =0
   @Input() buttonText: string = '';
-  @Output() buttonClick = new EventEmitter<void>();
   @Input() price!: number
   @Input() discount!: number
   @Input() imageUrl: string = "/defaultImage.webp";
+  
   discountedPrice!:number 
+  
+  @Output() buttonClick = new EventEmitter<void>();
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges() {
     this.calculateDiscountedPrice();
   }
 

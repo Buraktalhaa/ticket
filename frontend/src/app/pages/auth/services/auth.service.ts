@@ -39,12 +39,10 @@ export class AuthService {
       );
   }
   
-
   signUp(signupData: SignUp) {
     this.api
       .post('http://localhost:3000/auth/sign-up', signupData)
       .subscribe((res: HttpResponse<any>) => {
-
         this.isThereUser.set(true)
         this.router.navigateByUrl("/sign-in")
       });
