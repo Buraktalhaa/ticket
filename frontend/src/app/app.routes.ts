@@ -48,4 +48,4 @@ export const routes: Routes = [
     { path: 'admin-dashboard/status-panel/edit', component: StatusPanelEditComponent, canActivate:[roleGuard],data:{roles:['admin']}},
 
     { path: '**', redirectTo: '/main'}
-];
+]

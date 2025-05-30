@@ -5,7 +5,6 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AdminNavigationService {
-
   constructor(private router: Router) {}
 
   goToAdminStatusPanel() {

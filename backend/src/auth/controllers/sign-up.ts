@@ -21,7 +21,7 @@ export async function signUpController(req: Request, res: Response) {
         return
     }
 
-    if (checkSignUp(req) === false) {
+    if (!(checkSignUp(req))) {
         handleError(res, 'Email, name and password are required', 400)
         return
     }
@@ -49,7 +49,6 @@ export async function signUpController(req: Request, res: Response) {
         })
 
         if (auth) {
-            // 1
             handleError(res, 'There is a user with this email address', 400)
             return;
         }
@@ -94,7 +93,6 @@ export async function signUpController(req: Request, res: Response) {
         data: {
             firstName,
             lastName: '',
-            birthday: '',
             active: true,
             email
         }

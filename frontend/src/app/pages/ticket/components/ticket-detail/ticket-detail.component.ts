@@ -108,7 +108,7 @@ export class TicketDetailComponent {
             count: totalCount
           };
 
-          this.cartService.updateItem(updatedItem).subscribe(() => {
+          this.cartService.updateCart(updatedItem).subscribe(() => {
             this.notificationService.showNotification("success", `Cart updated. You now have ${updatedItem.count} tickets.`
             );
           });

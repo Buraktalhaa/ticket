@@ -23,7 +23,7 @@ export class CartService {
     return this.apiService.post('http://localhost:3000/cart/add-to-cart', item);
   }
 
-  updateItem(item: CartUpdatedTo): Observable<any> {
+  updateCart(item: CartUpdatedTo): Observable<any> {
     return this.apiService.post(`http://localhost:3000/cart/update-cart`, item);
   }
 

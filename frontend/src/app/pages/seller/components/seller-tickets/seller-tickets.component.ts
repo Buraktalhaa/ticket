@@ -8,6 +8,7 @@ import { TicketFilterComponent } from '../../../../shared/components/ticket-filt
 import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
 import { Ticket } from '../../../ticket/types/ticket.types';
 import { FilterTicketService } from '../../../../shared/services/filter-ticket.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-seller-tickets',
@@ -33,7 +34,8 @@ export class SellerTicketsComponent {
   ) {}
 
   ngOnInit() {
-    this.sellerService.sellerTickets$.subscribe(data => {
+    this.sellerService.getMyTickets().subscribe((res: HttpResponse<any>) => {
+      const data = res.body?.data;
       this.tickets = data;
       this.filteredTickets = [...data];
     });

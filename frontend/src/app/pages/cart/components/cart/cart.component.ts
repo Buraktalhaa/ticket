@@ -53,7 +53,7 @@ export class CartComponent {
     }
 
     const updatedCount = item.count + 1;
-    this.cartService.updateItem({
+    this.cartService.updateCart({
       ticketId: item.ticket.id,
       count: updatedCount
     }).subscribe(() => {
@@ -64,7 +64,7 @@ export class CartComponent {
   decreaseQuantity() {
     if (!this.item || this.item.count <= 1) return;
     const updatedCount = this.item.count - 1;
-    this.cartService.updateItem({
+    this.cartService.updateCart({
       ticketId: this.item.ticket.id,
       count: updatedCount
     }).subscribe(() => {
