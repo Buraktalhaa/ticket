@@ -7,7 +7,10 @@ import { TextLinkComponent } from '../../shared/components/text-link/text-link.c
 import { AuthInputComponent } from '../../shared/components/auth-input/auth-input.component';
 import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
 import { NotificationService } from '../../../../shared/services/notification.service';
-
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { TokenService } from '../../services/token.service';
+import { validateSignUp } from '../../../../shared/helpers/auth-validation.helper';
 
 @Component({
   selector: 'app-signup',
@@ -31,28 +34,16 @@ export class SignupComponent {
 
   constructor(
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private router: Router,
+    private tokenService: TokenService
   ) { }
 
   signUp() {
-    if (!this.email || !this.firstName || !this.password || !this.confirmPassword) {
-      this.notificationService.showNotification("warning", "Missing information");
-      return;
-    }
+    const error = validateSignUp(this.email, this.firstName, this.password, this.confirmPassword)
 
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(this.email)) {
-      this.notificationService.showNotification("warning", "Invalid email format");
-      return;
-    }
-    
-    if (this.password !== this.confirmPassword) {
-      this.notificationService.showNotification("warning", "Passwords are not the same");
-      return;
-    }
-
-    if (this.password.length < 8) {
-      this.notificationService.showNotification("warning", "Password must be at least 8 characters long");
+    if (error) {
+      this.notificationService.showNotification("warning", error);
       return;
     }
 
@@ -62,11 +53,27 @@ export class SignupComponent {
       password: this.password,
     };
 
-    this.authService.signUp(signUpData)
+    this.authService.signUp(signUpData).subscribe({
+      next: () => {
+        this.authService.isThereUser.set(true);
+        this.router.navigateByUrl("/sign-in");
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Sign up error:', err);
+        this.notificationService.showNotification("error", err.message || "Sign up failed");
+      }
+    });
   }
 
   signUpWithGoogle() {
-    console.log("Google login screen");
-    this.authService.signInGoogle();
+    this.authService.signInGoogle().
+      subscribe((res: HttpResponse<any>) => {
+        this.tokenService.handleTokensFromResponse(res.body.accessToken, res.body.refreshToken);
+        this.authService.isThereUser.set(true);
+
+        setTimeout(() => {
+          this.router.navigateByUrl('/main');
+        }, 2000);
+      });
   }
 }
