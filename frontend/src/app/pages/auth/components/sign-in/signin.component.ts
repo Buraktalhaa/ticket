@@ -8,6 +8,9 @@ import { SignButtonComponent } from '../../shared/components/sign-button/sign-bu
 import { AuthService } from '../../services/auth.service';
 import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
 import { NotificationService } from '../../../../shared/services/notification.service';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { validateSignIn } from '../../../../shared/helpers/auth-validation.helper';
+import { TokenService } from '../../services/token.service';
 
 @Component({
   selector: 'app-signin',
@@ -32,7 +35,8 @@ export class SigninComponent {
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private tokenService: TokenService
   ) { }
 
   ngOnInit(): void {
@@ -44,8 +48,10 @@ export class SigninComponent {
   }
 
   signIn() {
-    if (!this.email || !this.password) {
-      this.notificationService.showNotification("warning", "Missing information");
+    const error = validateSignIn(this.email, this.password)
+
+    if (error) {
+      this.notificationService.showNotification("warning", error);
       return;
     }
 
@@ -55,12 +61,18 @@ export class SigninComponent {
     };
 
     this.authService.signIn(signInData).subscribe({
-      next: () => {
-        console.log('Navigating after sign-in to:', this.returnUrl);
+      next: (res: HttpResponse<any>) => {
+        const { accessToken, refreshToken } = res.body;
+
+        this.tokenService.handleTokensFromResponse(accessToken, refreshToken);
+        this.authService.isThereUser.set(true);
+
+        this.notificationService.showNotification('success', 'Signed in successfully');
         this.router.navigateByUrl(this.returnUrl);
       },
-      error: (err) => {
-        this.notificationService.showNotification("error", "Sign in failed");
+      error: (err: HttpErrorResponse) => {
+        console.error('Sign in error:', err);
+        this.notificationService.showNotification("error", err.message || "Sign in failed");
       }
     });
   }
