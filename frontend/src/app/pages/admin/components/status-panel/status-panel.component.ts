@@ -8,6 +8,7 @@ import { TicketFilterComponent } from '../../../../shared/components/ticket-filt
 import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
 import { Ticket } from '../../../ticket/types/ticket.types';
 import { FilterTicketService } from '../../../../shared/services/filter-ticket.service';
+import { NotificationService } from '../../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-status-panel',
@@ -30,8 +31,9 @@ export class StatusPanelComponent {
   constructor(
     private adminService: AdminService,
     private adminNavigationService: AdminNavigationService,
-    private filterTicketService: FilterTicketService
-  ) {}
+    private filterTicketService: FilterTicketService,
+    private notificationService: NotificationService
+  ) { }
 
   ngOnInit() {
     this.adminService.getAdminStatusPanel().subscribe({
@@ -40,7 +42,10 @@ export class StatusPanelComponent {
         this.tickets = data;
         this.filteredTickets = [...data];
       },
-      error: (err) => console.error('Error:', err)
+      error: (err) => {
+        console.error('Error:', err)
+        this.notificationService.showNotification("error", "Failed to load tickets. Please try again.")
+      }
     });
   }
 
