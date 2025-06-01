@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SellerService } from '../../services/seller.service';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
+import { Router } from '@angular/router';
+import { NotificationService } from '../../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-ticket-edit',
@@ -19,12 +21,15 @@ export class TicketEditComponent {
 
   constructor(
     private fb: FormBuilder,
-    private sellerService: SellerService) {}
+    private sellerService: SellerService,
+    private router: Router,
+    private notificationService: NotificationService
+  ) {}
 
   ngOnInit() {
+    // window.history
+    // router ile yonlendirme yaptigim icin var
     const ticket = history.state.ticket;
-    console.log(ticket);
-    
 
     if (!ticket) {
       console.error('No ticket provided');
@@ -41,11 +46,19 @@ export class TicketEditComponent {
     });
   }
 
-  updateTicket() {
+  editTicket() {
     if (this.ticketForm.valid) {
       const updatedTicket = this.ticketForm.value;
-      console.log('Updated ticket:', updatedTicket);
-      this.sellerService.editTicket(updatedTicket)
+
+      this.sellerService.editTicket(updatedTicket).subscribe({
+        next: () => {
+          this.notificationService.showNotification("success", "Ticket updated successfully");
+          this.router.navigateByUrl('seller-dashboard/my-tickets');
+        },
+        error: () => {
+          this.notificationService.showNotification("error", "Failed to update the ticket.");
+        }
+      });
     }
   }
 }
