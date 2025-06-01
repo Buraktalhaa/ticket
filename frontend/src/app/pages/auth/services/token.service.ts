@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { DecodedToken } from '../types/auth.types';
 import { jwtDecode } from 'jwt-decode';
+import { CookieKeys } from '../../../shared/types/token.types';
 
 @Injectable({
   providedIn: 'root'
@@ -10,15 +11,15 @@ export class TokenService {
   constructor(private cookie: CookieService) {}
 
   setTokens(accessToken: string, refreshToken: string, role: string) {
-    this.cookie.set('accessToken', accessToken, undefined, '/');
-    this.cookie.set('refreshToken', refreshToken, undefined, '/');
-    this.cookie.set('role', role, undefined, '/');
+    this.cookie.set(CookieKeys.AccessToken, accessToken, undefined, '/');
+    this.cookie.set(CookieKeys.RefreshToken, refreshToken, undefined, '/');
+    this.cookie.set(CookieKeys.Role, role, undefined, '/');
   }
 
   deleteTokens() {
-    this.cookie.delete('accessToken', '/');
-    this.cookie.delete('refreshToken', '/');
-    this.cookie.delete('role', '/');
+    this.cookie.delete(CookieKeys.AccessToken, '/');
+    this.cookie.delete(CookieKeys.RefreshToken, '/');
+    this.cookie.delete(CookieKeys.Role, '/');
   }
 
   decodeJwt(token: string): DecodedToken {
@@ -26,6 +27,12 @@ export class TokenService {
   }
 
   hasValidTokens(): boolean {
-    return this.cookie.check('accessToken') || this.cookie.check('refreshToken');
+    return this.cookie.check(CookieKeys.AccessToken) || this.cookie.check(CookieKeys.RefreshToken);
+  }
+
+  handleTokensFromResponse(accessToken: string, refreshToken: string){
+    this.deleteTokens()
+    const role = this.decodeJwt(accessToken).role
+    this.setTokens(accessToken, refreshToken, role);
   }
 }
