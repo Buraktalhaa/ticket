@@ -50,6 +50,7 @@ model User {
   GoogleAuth         GoogleAuth?
   Auth               Auth?
   Cart               Cart?
+  Favorites          Favorite[]
 }
 
 model GoogleToken {
@@ -106,6 +107,7 @@ enum RoleType {
   user
   seller
   admin
+  moderator
 }
 
 model Role {
@@ -155,7 +157,7 @@ model Ticket {
   city           String
   location       String
   pointRate      Float
-  dateTime       DateTime 
+  dateTime       DateTime
   price          Int
   pointExpiresAt DateTime
   stock          Int
@@ -167,6 +169,7 @@ model Ticket {
   updatedAt      DateTime     @default(now())
   order          Order[]
   Cart           Cart[]
+  Favorites      Favorite[]
 }
 
 enum TicketStatus {
@@ -229,4 +232,15 @@ model Cart {
   ticketId String
   ticket   Ticket @relation(fields: [ticketId], references: [id])
   count    Int
+}
+
+model Favorite {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  ticketId  String
+  ticket    Ticket   @relation(fields: [ticketId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@unique([userId, ticketId])
 }

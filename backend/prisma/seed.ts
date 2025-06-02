@@ -84,18 +84,51 @@ async function main() {
   })
 
 
-  // Default admin
+  // Default Moderator
+  const passwordModerator = 'm'
+  const emailModerator = 'm'
+  const hashedPasswordModerator = await bcrypt.hash(passwordModerator, 10);
+
+  const moderator = await prisma.user.create({
+    data: {
+      firstName: "moderator",
+      lastName: "moderator",
+      birthday: new Date('2001-02-21'),
+      active: true,
+      email: emailModerator
+    }
+  })
+
+  const authModerator = await prisma.auth.create({
+    data: {
+      email: moderator.email,
+      password: hashedPasswordModerator
+    }
+  })
+
+  const accessTokenModerator = createToken(moderator.id, emailModerator, 'moderator', process.env.ACCESS_SECRET!, 10 * 60 * 24)
+  const refreshTokenModerator = createToken(moderator.id, emailModerator, 'moderator', process.env.REFRESH_SECRET!, 48 * 60 * 60)
+
+  await prisma.token.create({
+    data: {
+      accessToken: accessTokenModerator,
+      refreshToken: refreshTokenModerator,
+      userId: moderator.id
+    }
+  })
+
+
+  // Default Admin
   const passwordAdmin = 'admin'
   const emailAdmin = 'admin'
   const hashedPasswordAdmin = await bcrypt.hash(passwordAdmin, 10);
 
   const admin = await prisma.user.create({
     data: {
-      firstName: "Admin",
-      lastName: "admin",
+      firstName: "moderator",
+      lastName: "moderator",
       birthday: new Date('2001-02-21'),
       active: true,
-      photoName: "a",
       email: emailAdmin
     }
   })
@@ -132,6 +165,12 @@ async function main() {
     }
   });
 
+  const moderatorRole = await prisma.role.create({
+    data: {
+      name: RoleType.moderator
+    }
+  });
+
   const adminRole = await prisma.role.create({
     data: {
       name: RoleType.admin
@@ -140,7 +179,7 @@ async function main() {
 
 
   // Default
-  await prisma.userRole.create({ //Sil TODO:
+  await prisma.userRole.create({
     data: {
       userId: seller.id,
       roleId: sellerRole.id
@@ -154,7 +193,14 @@ async function main() {
     }
   })
 
-  await prisma.userRole.create({ // Sil TODO:
+  await prisma.userRole.create({
+    data: {
+      userId: moderator.id,
+      roleId: moderatorRole.id
+    }
+  })
+
+  await prisma.userRole.create({
     data: {
       userId: admin.id,
       roleId: adminRole.id
@@ -230,9 +276,23 @@ async function main() {
     }
   });
 
+  const userPermission12 = await prisma.permission.create({
+    data: {
+      url: '/add-favorite'
+    }
+  });
 
+  const userPermission13 = await prisma.permission.create({
+    data: {
+      url: '/get-favorites'
+    }
+  });
 
-
+  const userPermission14 = await prisma.permission.create({
+    data: {
+      url: '/delete-favorite'
+    }
+  });
 
 
 
@@ -270,41 +330,41 @@ async function main() {
 
 
 
-  // Admin Permission 
+  // moderator Permission 
 
-  const adminPermission1 = await prisma.permission.create({
+  const moderatorPermission1 = await prisma.permission.create({
     data: {
       url: '/create-category'
     }
   });
 
-  const adminPermission2 = await prisma.permission.create({
+  const moderatorPermission2 = await prisma.permission.create({
     data: {
       url: '/delete-category'
     }
   });
 
 
-  const adminPermission3 = await prisma.permission.create({
+  const moderatorPermission3 = await prisma.permission.create({
     data: {
       url: '/edit-category'
     }
   });
 
-  const adminPermission4 = await prisma.permission.create({
+  const moderatorPermission4 = await prisma.permission.create({
     data: {
       url: '/update-status'
     }
   });
-  const adminPermission5 = await prisma.permission.create({
+  const moderatorPermission5 = await prisma.permission.create({
     data: {
-      url: '/admin/status-panel'
+      url: '/moderator/status-panel'
     }
   });
 
-  const adminPermission6 = await prisma.permission.create({
+  const moderatorPermission6 = await prisma.permission.create({
     data: {
-      url: '/admin/status-panel/update-status'
+      url: '/moderator/status-panel/update-status'
     }
   });
 
@@ -389,6 +449,27 @@ async function main() {
     }
   })
 
+  await prisma.permit.create({
+    data: {
+      roleId: userRole.id,
+      permissionId: userPermission12.id
+    }
+  })
+
+  await prisma.permit.create({
+    data: {
+      roleId: userRole.id,
+      permissionId: userPermission13.id
+    }
+  })
+
+  await prisma.permit.create({
+    data: {
+      roleId: userRole.id,
+      permissionId: userPermission14.id
+    }
+  })
+
 
 
 
@@ -429,46 +510,46 @@ async function main() {
   })
 
 
-  // Admin
+  // Moderator
   await prisma.permit.create({
     data: {
-      roleId: adminRole.id,
-      permissionId: adminPermission1.id
+      roleId: moderatorRole.id,
+      permissionId: moderatorPermission1.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: adminRole.id,
-      permissionId: adminPermission2.id
+      roleId: moderatorRole.id,
+      permissionId: moderatorPermission2.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: adminRole.id,
-      permissionId: adminPermission3.id
+      roleId: moderatorRole.id,
+      permissionId: moderatorPermission3.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: adminRole.id,
-      permissionId: adminPermission4.id
+      roleId: moderatorRole.id,
+      permissionId: moderatorPermission4.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: adminRole.id,
-      permissionId: adminPermission5.id
+      roleId: moderatorRole.id,
+      permissionId: moderatorPermission5.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: adminRole.id,
-      permissionId: adminPermission6.id
+      roleId: moderatorRole.id,
+      permissionId: moderatorPermission6.id
     }
   })
 
