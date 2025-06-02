@@ -3,7 +3,8 @@ import prisma from "../../common/utils/prisma";
 import { ResponseStatus } from "../../common/enums/status.enum";
 
 export const statusPanel = async (req: Request, res: Response) => {
-
+    console.log("calisti");
+    
     const tickets = await prisma.ticket.findMany({
         include: {
             user: {
@@ -16,7 +17,7 @@ export const statusPanel = async (req: Request, res: Response) => {
 
     res.status(200).json({
         status: ResponseStatus.SUCCESS,
-        message: 'Admin status panel',
+        message: 'Moderator status panel',
         data:tickets
     });
     return;

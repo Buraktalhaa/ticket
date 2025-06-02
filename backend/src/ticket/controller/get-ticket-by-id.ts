@@ -1,11 +1,12 @@
 import { Request, Response } from "express";
 import prisma from "../../common/utils/prisma";
+import { handleError } from "../../common/error-handling/handle-error";
 import { ResponseStatus } from "../../common/enums/status.enum";
 
 export async function getTicketById(req: Request, res: Response) {
   const id = req.params.id;
   console.log("id", id);
-  
+
   try {
     const ticket = await prisma.ticket.findUnique({
       where: {
@@ -21,10 +22,7 @@ export async function getTicketById(req: Request, res: Response) {
     });
 
     if (!ticket) {
-        res.status(404).json({
-        status: ResponseStatus.FAIL,
-        message: "Ticket not found.",
-      });
+      handleError(res, 'Ticket not found.', 400)
       return
     }
 
@@ -38,10 +36,7 @@ export async function getTicketById(req: Request, res: Response) {
     return
   } catch (error) {
     console.error("Error fetching ticket by ID:", error);
-    res.status(500).json({
-      status: ResponseStatus.FAIL,
-      message: "An error occurred while fetching the ticket.",
-    });
+    handleError(res, 'An error occurred while fetching the ticket.', 500)
     return
   }
 }
