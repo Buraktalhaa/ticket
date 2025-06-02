@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { calculateDiscountedPrice } from '../../helpers/discount.helper';
 
 @Component({
   selector: 'app-ticket-card',
@@ -20,15 +21,7 @@ export class TicketCardComponent {
   @Output() buttonClick = new EventEmitter<void>();
 
   ngOnChanges() {
-    this.calculateDiscountedPrice();
-  }
-
-  calculateDiscountedPrice() {
-    if (this.discount && this.price ) {
-      this.discountedPrice = this.price * (1 - this.discount / 100);
-    } else {
-      this.discountedPrice = this.price;
-    }
+    this.discountedPrice = calculateDiscountedPrice(this.price, this.discount);
   }
 
   onButtonClick() {

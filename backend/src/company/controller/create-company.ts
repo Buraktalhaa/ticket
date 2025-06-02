@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { DecodedUser } from '../../common/type/request.type';
 import prisma from '../../common/utils/prisma';
 import bcrypt from 'bcryptjs'
 import { randomUUID } from 'crypto';
@@ -149,9 +148,6 @@ export async function createCompany(req: Request, res: Response) {
         }
     })
 
-
-
-
     const sellersData = [
         { email: createAuthSeller1.email, password: seller1_password_plain },
         { email: createAuthSeller2.email, password: seller2_password_plain },
@@ -159,8 +155,6 @@ export async function createCompany(req: Request, res: Response) {
 
     const emailService = new Email({ email, firstName: name }, 'http://localhost:3000/company/create-company');
     await emailService.sendSellers(sellersData);
-
-
 
     res.status(200).json({
         status: ResponseStatus.SUCCESS,
