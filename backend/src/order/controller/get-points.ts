@@ -3,7 +3,6 @@ import { DecodedUser } from "../../common/type/request.type";
 import prisma from "../../common/utils/prisma";
 import { ResponseStatus } from "../../common/enums/status.enum";
 
-
 export async function getUserPoints(req: Request, res: Response) {
     const { userId } = req.user as DecodedUser;
 

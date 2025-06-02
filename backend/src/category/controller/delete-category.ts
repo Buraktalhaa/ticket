@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import prisma from "../../common/utils/prisma";
 import { handleError } from "../../common/error-handling/handle-error";
-import { DecodedUser } from "../../common/type/request.type";
 import { ResponseStatus } from "../../common/enums/status.enum";
 
 export async function deleteCategory(req:Request, res:Response){
@@ -29,5 +28,4 @@ export async function deleteCategory(req:Request, res:Response){
         message: 'Category deleted succesfully',
     });
     return;
-
 }
