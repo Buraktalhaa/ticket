@@ -8,6 +8,7 @@ import { TicketCardComponent } from '../../../../shared/components/ticket-card/t
 import { TicketFilterComponent } from '../../../../shared/components/ticket-filter/ticket-filter.component';
 import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
 import { FilterTicketService } from '../../../../shared/services/filter-ticket.service';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-main',
@@ -28,7 +29,6 @@ export class MainComponent {
   allowedCategories = ['flight', 'train', 'bus', 'hotel', 'movie', 'theater', 'concert'];
   hoveredCardIndex: number | null = null;
 
-
   constructor(
     private ticketService: TicketService,
     private route: ActivatedRoute,
@@ -41,20 +41,24 @@ export class MainComponent {
       const category = params.get('category');
       if (category && this.allowedCategories.includes(category)) {
         this.selectedCategory = category;
-        this.ticketService.categoryTickets(category);
+
+        this.ticketService.categoryTickets(category).subscribe((res: HttpResponse<any>) => {
+          const data = res.body?.data || [];
+          this.tickets = data;
+          this.filteredTickets = [...data];
+        });
       } else {
         this.selectedCategory = '';
-        this.ticketService.allTickets();
+        this.ticketService.allTickets().subscribe((res: HttpResponse<any>) => {
+          const data = res.body?.data || [];
+          this.tickets = data;
+          this.filteredTickets = [...data];
+        });;
       }
-    });
-
-    this.ticketService.tickets$.subscribe(data => {
-      this.tickets = data;
-      this.filteredTickets = [...data];
     });
   }
 
-  goTicketDetailPage(ticket:Ticket){
+  goTicketDetailPage(ticket: Ticket) {
     this.ticketService.setSelectedTicket(ticket);
     const category = ticket.category.name;
     this.router.navigate(['/main', category, ticket.id]);
