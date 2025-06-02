@@ -1,5 +1,6 @@
 <div class="min-h-screen flex flex-col">
   <app-navbar></app-navbar>
+  <h1>Moderator Status Panel</h1>
   <main class="flex-grow">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <app-ticket-filter (filterChanged)="onFilter($event)"></app-ticket-filter>
@@ -21,7 +22,7 @@
               [price]="item.price"
               [discount]="item.discount"
               [imageUrl]="item.images[0] ? item.images[0] : 'defaultImage.webp'"
-              [buttonText]="'View Details'"
+              [buttonText]="'Change Status'"
               (buttonClick)="goToChangeStatusPage(item)"
             ></app-ticket-card>
           </div>
