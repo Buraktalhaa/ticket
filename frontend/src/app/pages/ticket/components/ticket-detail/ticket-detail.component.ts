@@ -9,6 +9,7 @@ import { NavbarComponent } from '../../../../shared/components/navbar/navbar.com
 import { CartService } from '../../../cart/services/cart.service';
 import { NotificationService } from '../../../../shared/services/notification.service';
 import { AuthService } from '../../../auth/services/auth.service';
+import { calculateDiscountedPrice } from '../../../../shared/helpers/discount.helper';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -40,16 +41,18 @@ export class TicketDetailComponent {
 
     if (ticket) {
       this.ticket = ticket;
-      this.discountedPrice = ticket.price * (1 - ticket.discount / 100);
+      this.discountedPrice = calculateDiscountedPrice(ticket.price, ticket.discount);
     } else {
       const id = this.route.snapshot.paramMap.get('id');
-      if (id == null) return;
+      if (id == null){
+        return;
+      } 
 
       this.ticketService.getTicketById(id).subscribe((res: HttpResponse<any>) => {
-        console.log('Ticket API response:', res.body);
         this.ticket = res.body?.data;
-        console.log(this.ticket);
-        this.discountedPrice = ticket.price * (1 - ticket.discount / 100);
+        if (this.ticket) {
+          this.discountedPrice = calculateDiscountedPrice(this.ticket.price, this.ticket.discount);
+        }
       });
     }
   }
