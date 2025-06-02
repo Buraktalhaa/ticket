@@ -23,6 +23,7 @@ import passport from 'passport';
 import './auth/controllers/google-strategy';
 import cartRoutes from './cart/routers/cart.routes';
 import './order/queue/order-cleanup-worker'
+import favoriteRoutes from './favorite/routers/favorite.routes';
 
 const port = '3000'
 const app = express();
@@ -137,7 +138,7 @@ app.use('/company', companyRouter)
 
 app.use('/cart', cartRoutes);
 
-
+app.use('/favorite', favoriteRoutes)
 
 
 
