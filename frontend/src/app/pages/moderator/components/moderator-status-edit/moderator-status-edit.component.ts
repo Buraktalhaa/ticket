@@ -1,32 +1,32 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
-import { AdminService } from '../../services/admin.service';
-import { AdminNavigationService } from '../../services/admin-navigation.service';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
+import { CommonModule } from '@angular/common';
+import { ModeratorService } from '../../services/moderator.service';
+import { ModeratorNavigationService } from '../../services/moderator-navigation.service';
 import { NotificationService } from '../../../../shared/services/notification.service';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-status-panel-edit',
+  selector: 'app-moderator-status-edit',
   imports: [
     NavbarComponent,
+    FooterInfoTextComponent,
     CommonModule,
-    ReactiveFormsModule,
-    FooterInfoTextComponent
+    ReactiveFormsModule
   ],
-  templateUrl: './status-panel-edit.component.html',
-  styleUrl: './status-panel-edit.component.css'
+  templateUrl: './moderator-status-edit.component.html',
+  styleUrl: './moderator-status-edit.component.css'
 })
-export class StatusPanelEditComponent {
+export class ModeratorStatusEditComponent {
   ticketForm!: FormGroup;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private adminService: AdminService,
-    private adminNavigationService: AdminNavigationService,
+    private moderatorService: ModeratorService,
+    private moderatorNavigationService: ModeratorNavigationService,
     private notificationService: NotificationService
   ) {}
 
@@ -54,10 +54,10 @@ export class StatusPanelEditComponent {
       const { id, status } = this.ticketForm.value;
       const updatedTicket = { id, status };
   
-      this.adminService.editStatus(updatedTicket).subscribe({
+      this.moderatorService.editStatus(updatedTicket).subscribe({
         next: () => {
           this.notificationService.showNotification("success", "Ticket edited successfully");
-          this.adminNavigationService.goToAdminStatusPanel()
+          this.moderatorNavigationService.goToModeratorStatusPanel()
         },
         error: () => {
           this.notificationService.showNotification("error", "Something went wrong");
