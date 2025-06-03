@@ -6,6 +6,13 @@
   <div
     class="md:w-1/2 rounded-lg overflow-hidden shadow-md flex flex-row gap-6 relative"
   >
+    <app-favorite-button
+      [ticketId]="ticket.id"
+      [isFavorite]="favoritesList.includes(ticket.id)"
+      (favoriteChanged)="onToggleFavorite(ticket.id)"
+    >
+    </app-favorite-button>
+
     <img
       [src]="
         ticket.images && ticket.images.length
@@ -45,15 +52,15 @@
 
       <p class="text-green-700 text-3xl font-extrabold mb-4">
         @if(ticket.discount > 0){
-          <span class="line-through text-gray-500 dark:text-gray-400">
-            {{ ticket.price | number: '1.2-2' }} ₺
-          </span>
+        <span class="line-through text-gray-500 dark:text-gray-400">
+          {{ ticket.price | number : "1.2-2" }} ₺
+        </span>
         }
         <span
           class="text-2xl font-bold text-gray-900 dark:text-dark ml-2"
           [ngClass]="{ 'ml-0': ticket.discount === 0 }"
         >
-          {{ ticket.price * (1 - ticket.discount / 100) | number: '1.2-2' }} ₺
+          {{ ticket.price * (1 - ticket.discount / 100) | number : "1.2-2" }} ₺
         </span>
       </p>
 
