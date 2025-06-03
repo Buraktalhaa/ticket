@@ -142,7 +142,7 @@ export const orderWorker = new Worker('order-queue', async (job: Job) => {
         ticketId: ticket.id,
         quantity
     }, {
-        delay: 30 * 1000
+        delay: 300 * 1000
     });
 
 

@@ -2,7 +2,7 @@ import { Router } from "express";
 import { authenticateToken } from '../../common/middleware/token-middleware'
 import { getProfile } from "../controller/get-profile";
 import { editPassword } from "../controller/edit-password";
-import { permissionControl } from "../middleware/permission-middleware";
+import { permissionControl } from "../../common/middleware/permission-middleware";
 import fileUploadMiddleware from "../../common/middleware/file-upload";
 import { editProfile } from "../controller/edit-profile";
 

@@ -134,5 +134,6 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
         console.log(`Order ${orderId} processed successfully`);
     } catch (error) {
         console.error('Error processing successful payment:', error);
+        return
     }
 }
