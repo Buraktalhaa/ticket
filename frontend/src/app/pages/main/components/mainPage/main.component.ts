@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TicketService } from '../../../ticket/services/ticket.service';
 import { Ticket } from '../../../ticket/types/ticket.types';
@@ -9,6 +9,7 @@ import { TicketFilterComponent } from '../../../../shared/components/ticket-filt
 import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
 import { FilterTicketService } from '../../../../shared/services/filter-ticket.service';
 import { HttpResponse } from '@angular/common/http';
+import { FavoriteService } from '../../../../shared/services/favorite.service';
 
 @Component({
   selector: 'app-main',
@@ -25,6 +26,7 @@ import { HttpResponse } from '@angular/common/http';
 export class MainComponent {
   tickets: Ticket[] = [];
   filteredTickets: Ticket[] = [];
+  favorites: string[] = [];
   selectedCategory = '';
   allowedCategories = ['flight', 'train', 'bus', 'hotel', 'movie', 'theater', 'concert'];
   hoveredCardIndex: number | null = null;
@@ -33,32 +35,67 @@ export class MainComponent {
     private ticketService: TicketService,
     private route: ActivatedRoute,
     private router: Router,
-    private filterTicketService: FilterTicketService
+    private filterTicketService: FilterTicketService,
+    private favoriteService: FavoriteService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
+    // favorileri backendden cek
+    this.favoriteService.getFavorites();
+    // behavior subject e kayit ol
+    this.favoriteService.favorites$.subscribe((favorites) => {
+      this.favorites = favorites
+      console.log(this.favorites);
+      this.setFilteredTickets();
+    });
+    
+
     this.route.paramMap.subscribe(params => {
       const category = params.get('category');
+
+      // category control
       if (category && this.allowedCategories.includes(category)) {
         this.selectedCategory = category;
+        this.ticketService.categoryTickets(category)
+          .subscribe((res: HttpResponse<any>) => {
+            this.tickets = res.body?.data || [];
+            this.setFilteredTickets();
+          });
 
-        this.ticketService.categoryTickets(category).subscribe((res: HttpResponse<any>) => {
-          const data = res.body?.data || [];
-          this.tickets = data;
-          this.filteredTickets = [...data];
-        });
       } else {
         this.selectedCategory = '';
-        this.ticketService.allTickets().subscribe((res: HttpResponse<any>) => {
-          const data = res.body?.data || [];
-          this.tickets = data;
-          this.filteredTickets = [...data];
-        });;
+        this.ticketService.allTickets()
+          .subscribe((res: HttpResponse<any>) => {
+            this.tickets = res.body?.data || [];
+            this.setFilteredTickets();
+          });
       }
     });
   }
 
+  private setFilteredTickets(): void {
+    this.filteredTickets = this.tickets.map(ticket => ({
+      ...ticket,
+      isFavorite: this.favorites.includes(ticket.id)
+    }));
+    this.cdr.detectChanges();
+  }
+
+  isFavorite(ticketId: string): boolean {
+    return this.favorites.includes(ticketId);
+  }
+
+  onFavoriteChanged(ticketId: string, isFav: boolean) {
+    if (isFav) {
+      this.favoriteService.addFavorite(ticketId);
+    } else {
+      this.favoriteService.deleteFavorite(ticketId);
+    }
+  }
+
   goTicketDetailPage(ticket: Ticket) {
+    const favorite = this.isFavorite(ticket.id)
     this.ticketService.setSelectedTicket(ticket);
     const category = ticket.category.name;
     this.router.navigate(['/main', category, ticket.id]);

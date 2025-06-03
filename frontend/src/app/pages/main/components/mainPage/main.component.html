@@ -2,10 +2,10 @@
   <app-navbar></app-navbar>
 
   <main class="flex-grow">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-2 lg:px-6 py-8">
       <app-ticket-filter (filterChanged)="onFilter($event)"></app-ticket-filter>
 
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
         @for (item of filteredTickets; track item.id; let i = $index) {
         <div
           (mouseenter)="hoveredCardIndex = i"
@@ -21,9 +21,13 @@
             [stock]="item.stock"
             [price]="item.price"
             [discount]="item.discount"
+            [ticketId]="item.id"
             [imageUrl]="item.images[0] ? item.images[0] : 'defaultImage.webp'"
             [buttonText]="'View Details'"
+
             (buttonClick)="goTicketDetailPage(item)"
+            (favoriteChanged)="onFavoriteChanged(item.id, $event)"
+            [isFavorite]="favorites.includes(item.id)"
           ></app-ticket-card>
         </div>
         }
