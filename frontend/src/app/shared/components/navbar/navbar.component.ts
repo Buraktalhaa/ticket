@@ -44,8 +44,8 @@ export class NavbarComponent {
     this.router.navigateByUrl('/main');
   }
 
-  goToAdminDashboard() {
-    this.router.navigateByUrl('/admin-dashboard');
+  goToModeratorDashboard() {
+    this.router.navigateByUrl('/moderator-dashboard');
   }
 
   goToSellerDashboard() {

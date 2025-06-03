@@ -14,7 +14,7 @@ export class NotificationComponent implements OnInit {
   timeoutId: any;
   isFadingOut = false;
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.notificationService.notification$.subscribe((data) => {

@@ -6,6 +6,7 @@ import { ApiService } from '../../../shared/services/api.service';
   providedIn: 'root'
 })
 export class TicketService {
+  // ticket ve true false gonder(fav icin)
   private selectedTicket: any;
 
   constructor(
