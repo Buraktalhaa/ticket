@@ -1,4 +1,4 @@
-export interface Ticket {
+export interface SellerTicket {
     categoryName: string;
     title: string;
     description: string;

@@ -1,4 +1,4 @@
-export interface Ticket {
+export interface CartTicket {
     id: string;
     title: string;
     description?: string;
@@ -17,7 +17,7 @@ export interface Ticket {
   }
   
   export interface CartItem {
-    ticket: Ticket;
+    ticket: CartTicket;
     count: number;
   }
 
