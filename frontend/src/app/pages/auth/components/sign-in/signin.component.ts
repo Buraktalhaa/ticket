@@ -1,4 +1,4 @@
-import { Component, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
@@ -48,12 +48,12 @@ export class SigninComponent {
   }
 
   signIn() {
-    const error = validateSignIn(this.email, this.password)
+    // const error = validateSignIn(this.email, this.password)
 
-    if (error) {
-      this.notificationService.showNotification("warning", error);
-      return;
-    }
+    // if (error) {
+    //   this.notificationService.showNotification("warning", error);
+    //   return;
+    // }
 
     const signInData = {
       email: this.email,

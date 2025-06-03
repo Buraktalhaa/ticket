@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { LabelsComponent } from '../labels/labels.component';
 import { SellerService } from '../../services/seller.service';
 import { Router } from '@angular/router';
-import { Ticket } from '../../types/create-ticket.type';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
 import { NotificationService } from '../../../../shared/services/notification.service';
+import { SellerTicket } from '../../types/create-ticket.type';
 
 @Component({
   selector: 'app-create-ticket',
@@ -21,7 +21,7 @@ import { NotificationService } from '../../../../shared/services/notification.se
   styleUrl: './create-ticket.component.css'
 })
 export class CreateTicketComponent {
-  ticket: Ticket = {
+  ticket: SellerTicket = {
     categoryName: '',
     title: '',
     description: '',
