@@ -12,8 +12,10 @@ export async function getFavorites(req: Request, res: Response) {
             where: {
                 userId
             },
-            include: {
-                ticket: true,
+            omit: {
+                userId:true,
+                createdAt:true,
+                id:true
             }
         });
 
