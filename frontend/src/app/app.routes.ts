@@ -15,10 +15,10 @@ import { SellerDashboardComponent } from './pages/seller/components/seller-dashb
 import { CreateTicketComponent } from './pages/seller/components/create-ticket/create-ticket.component';
 import { SellerTicketsComponent } from './pages/seller/components/seller-tickets/seller-tickets.component';
 import { TicketEditComponent } from './pages/seller/components/ticket-edit/ticket-edit.component';
-import { AdminDashboardComponent } from './pages/admin/components/admin-dashboard/admin-dashboard.component';
-import { StatusPanelComponent } from './pages/admin/components/status-panel/status-panel.component';
-import { StatusPanelEditComponent } from './pages/admin/components/status-panel-edit/status-panel-edit.component';
 import { authGuard } from './shared/guard/auth.guard';
+import { ModeratorDashboardComponent } from './pages/moderator/components/moderator-dashboard/moderator-dashboard.component';
+import { ModeratorStatusPanelComponent } from './pages/moderator/components/moderator-status-panel/moderator-status-panel.component';
+import { ModeratorStatusEditComponent } from './pages/moderator/components/moderator-status-edit/moderator-status-edit.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/main', pathMatch: 'full' },
@@ -43,9 +43,9 @@ export const routes: Routes = [
     { path: 'seller-dashboard/my-tickets', component:  SellerTicketsComponent, canActivate:[roleGuard],data:{roles:['seller']}},
     { path: 'seller-dashboard/my-tickets/edit', component: TicketEditComponent, canActivate:[roleGuard],data:{roles:['seller']}},
     
-    { path: 'admin-dashboard', component: AdminDashboardComponent, canActivate:[roleGuard],data:{roles:['admin']}},
-    { path: 'admin-dashboard/status-panel', component: StatusPanelComponent, canActivate:[roleGuard],data:{roles:['admin']}},
-    { path: 'admin-dashboard/status-panel/edit', component: StatusPanelEditComponent, canActivate:[roleGuard],data:{roles:['admin']}},
+    { path: 'moderator-dashboard', component: ModeratorDashboardComponent, canActivate:[roleGuard],data:{roles:['moderator']}},
+    { path: 'moderator-dashboard/status-panel', component: ModeratorStatusPanelComponent, canActivate:[roleGuard],data:{roles:['moderator']}},
+    { path: 'moderator-dashboard/status-panel/edit', component: ModeratorStatusEditComponent, canActivate:[roleGuard],data:{roles:['moderator']}},
 
     { path: '**', redirectTo: '/main'}
 ]

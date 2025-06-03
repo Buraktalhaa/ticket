@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authenticateToken } from "../../common/middleware/token-middleware";
-import { permissionControl } from "../../profile/middleware/permission-middleware";
+import { permissionControl } from "../../common/middleware/permission-middleware";
 import { createTicket } from "../controller/create-ticket";
 import { deleteTicket } from "../controller/delete-ticket";
 import { editTicket } from "../controller/edit-ticket";
@@ -25,7 +25,7 @@ router.get('/get-tickets/by-category/:category', getTicketsByCategory)
 router.get('/is-seller', authenticateToken, permissionControl, isSeller)
 router.get('/seller/seller-tickets', authenticateToken, permissionControl, sellerTickets)
 
-router.get('/admin/status-panel', authenticateToken, permissionControl, statusPanel)
-router.post('/admin/status-panel/update-status', authenticateToken, permissionControl, updateTicketStatus)
+router.get('/moderator/status-panel', authenticateToken, permissionControl, statusPanel)
+router.post('/moderator/status-panel/update-status', authenticateToken, permissionControl, updateTicketStatus)
 
 export default router;
