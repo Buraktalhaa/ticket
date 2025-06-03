@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
-import prisma from "../../common/utils/prisma";
-import { handleError } from "../../common/error-handling/handle-error";
-import { DecodedUser } from '../../common/type/request.type';
+import prisma from "../utils/prisma";
+import { handleError } from "../error-handling/handle-error";
+import { DecodedUser } from '../type/request.type';
 
 export async function permissionControl(req: Request, res: Response, next: NextFunction) {
     const {userId , email} = req.user as DecodedUser;

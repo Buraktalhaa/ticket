@@ -4,7 +4,7 @@ import { getCart } from "../controller/get-cart";
 import { updateCart } from "../controller/update-cart";
 import { addToCart } from "../controller/add-to-cart";
 import { authenticateToken } from "../../common/middleware/token-middleware";
-import { permissionControl } from "../../profile/middleware/permission-middleware";
+import { permissionControl } from "../../common/middleware/permission-middleware";
 
 const router = Router();
 

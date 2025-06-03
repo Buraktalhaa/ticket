@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authenticateToken } from "../../common/middleware/token-middleware";
-import { permissionControl } from "../../profile/middleware/permission-middleware";
+import { permissionControl } from "../../common/middleware/permission-middleware";
 import { addFavorite } from "../controller/add-favorite";
 import { getFavorites } from "../controller/get-favorites";
 import { deleteFavorite } from "../controller/delete-favorite";

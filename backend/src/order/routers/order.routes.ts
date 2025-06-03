@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authenticateToken } from "../../common/middleware/token-middleware";
-import { permissionControl } from "../../profile/middleware/permission-middleware";
+import { permissionControl } from "../../common/middleware/permission-middleware";
 import { createOrder } from "../controller/create-order";
 import { cancelOrder } from "../controller/cancel-order";
 import { getOrders } from "../controller/get-orders";

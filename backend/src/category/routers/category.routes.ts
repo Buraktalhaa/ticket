@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authenticateToken } from "../../common/middleware/token-middleware";
-import { permissionControl } from "../../profile/middleware/permission-middleware";
+import { permissionControl } from "../../common/middleware/permission-middleware";
 import { createCategory } from "../controller/create-category";
 import { deleteCategory } from "../controller/delete-category";
 import { editCategory } from "../controller/edit-category";
