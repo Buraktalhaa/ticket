@@ -5,7 +5,7 @@ import { DecodedUser } from '../type/request.type';
 
 export async function permissionControl(req: Request, res: Response, next: NextFunction) {
     const {userId , email} = req.user as DecodedUser;
-
+    
     const userRole = await prisma.userRole.findUnique({
         where: {
             userId

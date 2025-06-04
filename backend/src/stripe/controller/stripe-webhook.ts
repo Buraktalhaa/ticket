@@ -105,7 +105,7 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
         const emailService = new Email({ 
             email: updatedOrder.user.email, 
             firstName: updatedOrder.user.firstName 
-        }, 'http://localhost:3000/create-order');
+        }, `${process.env.BASE_URL}/create-order`);
         
         await emailService.sendPnr(updatedOrder.ticket.pnr);
         

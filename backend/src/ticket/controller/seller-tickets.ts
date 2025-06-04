@@ -6,7 +6,6 @@ import { DecodedUser } from "../../common/type/request.type";
 export async function sellerTickets(req: Request, res: Response) {
     const { userId } = req.user as DecodedUser;
 
-
     const allSellerTickets = await prisma.ticket.findMany({
         where: {
             userId,

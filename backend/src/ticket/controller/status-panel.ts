@@ -2,9 +2,7 @@ import { Request, Response } from "express";
 import prisma from "../../common/utils/prisma";
 import { ResponseStatus } from "../../common/enums/status.enum";
 
-export const statusPanel = async (req: Request, res: Response) => {
-    console.log("calisti");
-    
+export const statusPanel = async (req: Request, res: Response) => {    
     const tickets = await prisma.ticket.findMany({
         include: {
             user: {

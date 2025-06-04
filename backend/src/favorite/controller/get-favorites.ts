@@ -12,13 +12,13 @@ export async function getFavorites(req: Request, res: Response) {
             where: {
                 userId
             },
-            omit: {
-                userId:true,
-                createdAt:true,
-                id:true
+            select:{
+                ticket:true
             }
         });
 
+        console.log(favorites);
+        
         res.status(200).json({
             status: ResponseStatus.SUCCESS,
             data: favorites

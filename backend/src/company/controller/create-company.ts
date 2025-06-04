@@ -153,7 +153,7 @@ export async function createCompany(req: Request, res: Response) {
         { email: createAuthSeller2.email, password: seller2_password_plain },
     ];
 
-    const emailService = new Email({ email, firstName: name }, 'http://localhost:3000/company/create-company');
+    const emailService = new Email({ email, firstName: name }, `${process.env.BASE_URL}/company/create-company`);
     await emailService.sendSellers(sellersData);
 
     res.status(200).json({
