@@ -21,6 +21,7 @@ export interface Ticket {
   status: 'processing' | 'approve' | 'deleted' | 'cancelling' | 'awaiting';
   category: Category;
   createdAt: string;
+  isFavorite:boolean;
 }
 
 
