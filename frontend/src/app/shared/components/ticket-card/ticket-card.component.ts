@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
 import { calculateDiscountedPrice } from '../../helpers/discount.helper';
 import { FavoriteButtonComponent } from '../favorite-button/favorite-button.component';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-ticket-card',
@@ -13,6 +14,7 @@ import { FavoriteButtonComponent } from '../favorite-button/favorite-button.comp
   styleUrl: './ticket-card.component.css'
 })
 export class TicketCardComponent {
+  role: string | null = null;
   @Input() description: string = ''
   @Input() stock: number = 0
   @Input() buttonText: string = '';
@@ -20,13 +22,21 @@ export class TicketCardComponent {
   @Input() discount!: number
   @Input() imageUrl: string = "/defaultImage.webp";
   @Input() ticketId!: string;
-  
+
   @Output() buttonClick = new EventEmitter<void>();
 
   @Input() isFavorite: boolean = false;
   @Output() favoriteChanged = new EventEmitter<boolean>();
 
   discountedPrice!: number
+
+  constructor(
+    private cookieService: CookieService,
+  ) { }
+
+  ngOnInit(): void {
+    this.role = this.cookieService.get('role');
+  }
 
   ngOnChanges() {
     this.discountedPrice = calculateDiscountedPrice(this.price, this.discount);
@@ -36,6 +46,7 @@ export class TicketCardComponent {
   }
 
   onFavoriteChanged(newValue: boolean) {
+    // parent a yolla
     this.favoriteChanged.emit(newValue);
   }
 }

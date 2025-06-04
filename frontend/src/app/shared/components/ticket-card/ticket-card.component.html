@@ -8,12 +8,13 @@
       (click)="onButtonClick()"
       alt="product image"
     />
-
-    <app-favorite-button
-    [ticketId]="ticketId"
-    [isFavorite]="isFavorite"
-    (favoriteChanged)="onFavoriteChanged($event)"
-  ></app-favorite-button>
+    @if (role == 'user') {
+      <app-favorite-button
+      [ticketId]="ticketId"
+      [isFavorite]="isFavorite"
+      (favoriteChange)="onFavoriteChanged($event)"
+    ></app-favorite-button>
+    }
   </div>
 
   <div class="px-5 pb-5">
