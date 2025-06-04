@@ -9,7 +9,7 @@ export async function authenticateToken(req: Request, res: Response, next: NextF
     if (!token) {
         handleError(res, 'Access token is missing', 401)
         return
-    }
+    }    
 
     try {
         const { exp, iat, ...rest } = jwt.verify(token, process.env.ACCESS_SECRET!) as any;
@@ -25,4 +25,3 @@ export async function authenticateToken(req: Request, res: Response, next: NextF
         return;
     }
 };
-
