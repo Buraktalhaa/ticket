@@ -25,9 +25,10 @@
             [imageUrl]="item.images[0] ? item.images[0] : 'defaultImage.webp'"
             [buttonText]="'View Details'"
 
+            [isFavorite]="item.isFavorite"
+
             (buttonClick)="goTicketDetailPage(item)"
             (favoriteChanged)="onFavoriteChanged(item.id, $event)"
-            [isFavorite]="favorites.includes(item.id)"
           ></app-ticket-card>
         </div>
         }

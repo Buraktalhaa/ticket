@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TicketService } from '../../../ticket/services/ticket.service';
 import { Ticket } from '../../../ticket/types/ticket.types';
@@ -8,8 +8,8 @@ import { TicketCardComponent } from '../../../../shared/components/ticket-card/t
 import { TicketFilterComponent } from '../../../../shared/components/ticket-filter/ticket-filter.component';
 import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
 import { FilterTicketService } from '../../../../shared/services/filter-ticket.service';
-import { HttpResponse } from '@angular/common/http';
 import { FavoriteService } from '../../../../shared/services/favorite.service';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-main',
@@ -26,7 +26,6 @@ import { FavoriteService } from '../../../../shared/services/favorite.service';
 export class MainComponent {
   tickets: Ticket[] = [];
   filteredTickets: Ticket[] = [];
-  favorites: string[] = [];
   selectedCategory = '';
   allowedCategories = ['flight', 'train', 'bus', 'hotel', 'movie', 'theater', 'concert'];
   hoveredCardIndex: number | null = null;
@@ -37,20 +36,9 @@ export class MainComponent {
     private router: Router,
     private filterTicketService: FilterTicketService,
     private favoriteService: FavoriteService,
-    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    // favorileri backendden cek
-    this.favoriteService.getFavorites();
-    // behavior subject e kayit ol
-    this.favoriteService.favorites$.subscribe((favorites) => {
-      this.favorites = favorites
-      console.log(this.favorites);
-      this.setFilteredTickets();
-    });
-    
-
     this.route.paramMap.subscribe(params => {
       const category = params.get('category');
 
@@ -60,42 +48,43 @@ export class MainComponent {
         this.ticketService.categoryTickets(category)
           .subscribe((res: HttpResponse<any>) => {
             this.tickets = res.body?.data || [];
-            this.setFilteredTickets();
+            this.filteredTickets = [...this.tickets];
           });
-
       } else {
         this.selectedCategory = '';
         this.ticketService.allTickets()
           .subscribe((res: HttpResponse<any>) => {
             this.tickets = res.body?.data || [];
-            this.setFilteredTickets();
+            this.filteredTickets = [...this.tickets];
           });
       }
     });
   }
 
-  private setFilteredTickets(): void {
-    this.filteredTickets = this.tickets.map(ticket => ({
-      ...ticket,
-      isFavorite: this.favorites.includes(ticket.id)
-    }));
-    this.cdr.detectChanges();
-  }
-
-  isFavorite(ticketId: string): boolean {
-    return this.favorites.includes(ticketId);
-  }
 
   onFavoriteChanged(ticketId: string, isFav: boolean) {
     if (isFav) {
-      this.favoriteService.addFavorite(ticketId);
+      this.favoriteService.addFavorite(ticketId).subscribe({
+        next: () => console.log('Added from favorites'),
+        error: (err: HttpErrorResponse) => console.error('Error:', err)
+      });
+
     } else {
-      this.favoriteService.deleteFavorite(ticketId);
+      this.favoriteService.deleteFavorite(ticketId).subscribe({
+        next: () => console.log('Removed from favorites'),
+        error: (err: HttpErrorResponse) => console.error('Error:', err)
+      });
     }
+
+    this.filteredTickets = this.filteredTickets.map(item => {
+      if (item.id === ticketId) {
+        return { ...item, isFavorite: isFav };
+      }
+      return item;
+    });
   }
 
   goTicketDetailPage(ticket: Ticket) {
-    const favorite = this.isFavorite(ticket.id)
     this.ticketService.setSelectedTicket(ticket);
     const category = ticket.category.name;
     this.router.navigate(['/main', category, ticket.id]);
