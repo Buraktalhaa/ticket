@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { TokenService } from './token.service';
 import { Observable, tap } from 'rxjs';
 import { ApiService } from '../../../shared/services/api.service';
+import { environment } from '../../../shared/helpers/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -22,15 +23,15 @@ export class AuthService {
   }
 
   signIn(signinData: SignIn): Observable<HttpResponse<any>> {
-    return this.api.post('http://localhost:3000/auth/sign-in', signinData);
+    return this.api.post(`${environment.apiUrl}/auth/sign-in`, signinData);
   }
   
   signUp(signupData: SignUp) {
-    return this.api.post('http://localhost:3000/auth/sign-up', signupData)
+    return this.api.post(`${environment.apiUrl}/auth/sign-up`, signupData)
   }
 
   signInGoogle() {
-    return this.api.get('http://localhost:3000/auth/google')
+    return this.api.get(`${environment.apiUrl}/auth/google`)
   }
 
   logOut() {
