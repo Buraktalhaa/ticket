@@ -81,4 +81,8 @@ export class NavbarComponent {
       this.isDropdownOpen = false;
     }
   }
+
+  goToFavorites(){
+    this.router.navigateByUrl('/favorites');
+  }
 }
