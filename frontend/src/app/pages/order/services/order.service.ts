@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiService } from '../../../shared/services/api.service';
+import { environment } from '../../../shared/helpers/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,10 +13,10 @@ export class OrderService {
   ) { }
 
   getMyOrders(): Observable<any> {
-    return this.apiService.get(`http://localhost:3000/order/get-orders`);
+    return this.apiService.get(`${environment.apiUrl}/order/get-orders`);
   }
 
   createOrder(data: any): Observable<any> {
-    return this.apiService.post('http://localhost:3000/order/create-order', data);
+    return this.apiService.post(`${environment.apiUrl}/order/create-order`, data);
   }
 }

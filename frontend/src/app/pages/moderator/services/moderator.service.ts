@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Ticket } from '../../ticket/types/ticket.types';
 import { HttpResponse } from '@angular/common/http';
 import { ApiService } from '../../../shared/services/api.service';
+import { environment } from '../../../shared/helpers/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +17,10 @@ export class ModeratorService {
   ) { }
 
   getModeratorStatusPanel(): Observable<HttpResponse<any>> {
-    return this.api.get('http://localhost:3000/ticket/moderator/status-panel');
+    return this.api.get(`${environment.apiUrl}/ticket/moderator/status-panel`);
   }
 
   editStatus(ticket: { id: string, status: string }) {
-    return this.api.post('http://localhost:3000/ticket/moderator/status-panel/update-status', ticket);
+    return this.api.post(`${environment.apiUrl}/ticket/moderator/status-panel/update-status`, ticket);
   }
 }

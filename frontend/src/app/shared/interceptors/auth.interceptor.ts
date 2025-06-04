@@ -5,6 +5,7 @@ import { inject } from '@angular/core';
 import { catchError, switchMap, throwError } from 'rxjs';
 import { NotificationService } from '../services/notification.service';
 import { CookieService } from 'ngx-cookie-service';
+import { environment } from '../helpers/environment';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const notificationService = inject(NotificationService);
@@ -26,7 +27,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
           return throwError(() => error);
         }
 
-        return apiService.post('http://localhost:3000/auth/refresh', { refreshToken }).pipe(
+        return apiService.post(`${environment.apiUrl}/auth/refresh`, { refreshToken }).pipe(
           switchMap((res: any) => {
             const accessToken:string = res.body?.accessToken;
             if (accessToken) {
