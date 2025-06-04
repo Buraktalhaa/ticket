@@ -12,15 +12,17 @@ import { sellerTickets } from "../controller/seller-tickets";
 import { statusPanel } from "../controller/status-panel";
 import { getTicketsByCategory } from "../controller/get-tickets-by-category";
 import { getTicketById } from "../controller/get-ticket-by-id";
+import { authenticateOptionalJWT } from "../../common/middleware/optional-jwt-middleware.ts";
 
 const router = Router()
+
+router.get('/get-tickets', authenticateOptionalJWT, getTickets)
+router.get('/get-tickets/by-id/:id', authenticateOptionalJWT, getTicketById)
+router.get('/get-tickets/by-category/:category', authenticateOptionalJWT, getTicketsByCategory)
 
 router.post('/edit-ticket', authenticateToken, permissionControl, companyMiddleware, editTicket) 
 router.post('/create-ticket', authenticateToken, permissionControl, createTicket)
 router.post('/delete-ticket', authenticateToken, permissionControl, companyMiddleware, deleteTicket)
-router.get('/get-tickets', getTickets)
-router.get('/get-tickets/by-id/:id', getTicketById)
-router.get('/get-tickets/by-category/:category', getTicketsByCategory)
 
 router.get('/is-seller', authenticateToken, permissionControl, isSeller)
 router.get('/seller/seller-tickets', authenticateToken, permissionControl, sellerTickets)
