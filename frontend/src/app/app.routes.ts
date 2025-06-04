@@ -19,6 +19,7 @@ import { authGuard } from './shared/guard/auth.guard';
 import { ModeratorDashboardComponent } from './pages/moderator/components/moderator-dashboard/moderator-dashboard.component';
 import { ModeratorStatusPanelComponent } from './pages/moderator/components/moderator-status-panel/moderator-status-panel.component';
 import { ModeratorStatusEditComponent } from './pages/moderator/components/moderator-status-edit/moderator-status-edit.component';
+import { FavoritesComponent } from './pages/favorite/components/favorites/favorites.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/main', pathMatch: 'full' },
@@ -28,6 +29,8 @@ export const routes: Routes = [
 
     { path: 'my-profile', component: MyProfileComponent, canActivate:[roleGuard],data:{roles:['user']}},
     { path: 'my-profile/cart', component: CartComponent, canActivate:[roleGuard, authGuard],data:{roles:['user']}},
+
+    { path: 'favorites', component: FavoritesComponent, canActivate:[roleGuard],data:{roles:['user']}},
 
     { path: 'order/my-orders', component: MyOrdersComponent, canActivate:[roleGuard],data:{roles:['user']}},
 

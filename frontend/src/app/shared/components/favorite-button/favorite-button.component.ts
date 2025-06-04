@@ -9,10 +9,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class FavoriteButtonComponent {
   @Input() ticketId!: string;
   @Input() isFavorite: boolean = false;
-  @Output() favoriteChanged = new EventEmitter<boolean>();
+  @Output() favoriteChange = new EventEmitter<boolean>();
 
   toggleFavorite(event: Event): void {
     event.stopPropagation();
-    this.favoriteChanged.emit(!this.isFavorite);
+    this.favoriteChange.emit(!this.isFavorite);
   }
 }
