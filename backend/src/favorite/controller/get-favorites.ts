@@ -16,9 +16,7 @@ export async function getFavorites(req: Request, res: Response) {
                 ticket:true
             }
         });
-
-        console.log(favorites);
-        
+                
         res.status(200).json({
             status: ResponseStatus.SUCCESS,
             data: favorites

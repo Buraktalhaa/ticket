@@ -8,7 +8,6 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
   const notificationService = inject(NotificationService);
   const router = inject(Router);
 
-
   return next(req).pipe(
     tap((event) => {
       if (event instanceof HttpResponse) {
@@ -27,14 +26,14 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
     }),
     catchError((error: HttpErrorResponse) => {
       const message = error?.error?.message;
-      if (message) {
+
+      if (typeof message === 'string') {
         notificationService.showNotification('error', message);
       }
+    
       if (error.status === 401 || error.status === 403) {
-        console.log("yetkisiz");
-        
         router.navigate(['/unauthorized']);
-      }
+      }  
 
       return throwError(() => error);
     })
