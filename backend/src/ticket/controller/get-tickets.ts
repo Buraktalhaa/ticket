@@ -8,18 +8,18 @@ export async function getTickets(req: Request, res: Response) {
   
   const allTickets = await prisma.ticket.findMany({
     where: {
-      sold: {
-        not: true
-      },
-      status: {
-        equals: "approve"
-      }
+      sold: { not: true },
+      status: { equals: "approve" }
     },
     include: {
+      Favorites: userId
+        ? {
+            where: { userId: userId },
+            select: { id: true  }
+          }
+        : false,
       category: {
-        omit: {
-          id: true
-        }
+        select: { name: true }
       }
     },
     omit: {
@@ -29,24 +29,10 @@ export async function getTickets(req: Request, res: Response) {
     }
   })
 
-  let favoriteTicketIds: string[] = [];
-  if (userId) {
-    const favorites = await prisma.favorite.findMany({
-      where: { 
-        userId: userId 
-      },
-      select: { 
-        ticketId: true 
-      },
-    });
-    favoriteTicketIds = favorites.map((fav) => fav.ticketId);
-  }
-
   const ticketsWithFavorite = allTickets.map((ticket) => ({
     ...ticket,
-    isFavorite: favoriteTicketIds.includes(ticket.id),
+    isFavorite: ticket.Favorites && ticket.Favorites.length > 0,
   }));
-
 
   res.status(200).json({
     status: ResponseStatus.SUCCESS,
