@@ -1,0 +1,60 @@
+import prisma from "../../../src/common/utils/prisma";
+import bcrypt from 'bcryptjs'
+import { createRoles } from "../common/create-role";
+import { createToken } from "../../../src/auth/utils/create-token";
+
+export const adminSeed = async () => {
+    const roles = await createRoles()
+
+    // const adminPermissions = await createAdminPermissions()
+
+    // Default Admin
+    const passwordAdmin = 'admin'
+    const emailAdmin = 'admin'
+    const hashedPasswordAdmin = await bcrypt.hash(passwordAdmin, 10);
+
+    const admin = await prisma.user.create({
+        data: {
+            firstName: "moderator",
+            lastName: "moderator",
+            birthday: new Date('2001-02-21'),
+            active: true,
+            email: emailAdmin
+        }
+    })
+
+    const authAdmin = await prisma.auth.create({
+        data: {
+            email: admin.email,
+            password: hashedPasswordAdmin
+        }
+    })
+
+    const accessTokenAdmin = createToken(admin.id, emailAdmin, 'admin', process.env.ACCESS_SECRET!, 10 * 60 * 24)
+    const refreshTokenAdmin = createToken(admin.id, emailAdmin, 'admin', process.env.REFRESH_SECRET!, 48 * 60 * 60)
+
+    await prisma.token.create({
+        data: {
+            accessToken: accessTokenAdmin,
+            refreshToken: refreshTokenAdmin,
+            userId: admin.id
+        }
+    })
+
+    await prisma.userRole.create({
+        data: {
+            userId: admin.id,
+            roleId: roles.adminRole.id
+        }
+    })
+}
+
+adminSeed()
+    .then(async () => {
+        await prisma.$disconnect();
+    })
+    .catch(async (e) => {
+        console.error(e);
+        await prisma.$disconnect();
+        process.exit(1);
+    });
