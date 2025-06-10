@@ -23,7 +23,7 @@ export class TicketPurchaseHelperService {
     const stock = ticket.stock;
 
     if (newItem.count > stock) {
-      this.notificationService.showNotification("warning", `There are only ${stock} tickets available in stock.`);
+      this.notificationService.warning(`There are only ${stock} tickets available in stock.`);
       return;
     }
 
@@ -35,17 +35,17 @@ export class TicketPurchaseHelperService {
           if (confirmed) {
             this.cartService.clearCart().subscribe(() => {
               this.cartService.addToCart(newItem).subscribe(() => {
-                this.notificationService.showNotification("info", `Previous item removed. "${ticket.title}" added to your cart.`);
+                this.notificationService.info(`Previous item removed. "${ticket.title}" added to your cart.`);
               });
             });
           } else {
-            this.notificationService.showNotification("info", "Cart remains unchanged.");
+            this.notificationService.info("Cart remains unchanged.");
           }
         } else {
           const totalCount = existing.count + newItem.count;
 
           if (totalCount > stock) {
-            this.notificationService.showNotification("warning", `You already have ${existing.count} tickets. You can’t add more than ${stock} in total.`);
+            this.notificationService.warning(`You already have ${existing.count} tickets. You can’t add more than ${stock} in total.`);
             return;
           }
 
@@ -55,13 +55,13 @@ export class TicketPurchaseHelperService {
           };
 
           this.cartService.updateCart(updatedItem).subscribe(() => {
-            this.notificationService.showNotification("success", `Cart updated. You now have ${updatedItem.count} tickets.`
+            this.notificationService.success(`Cart updated. You now have ${updatedItem.count} tickets.`
             );
           });
         }
       } else {
         this.cartService.addToCart(newItem).subscribe(() => {
-          this.notificationService.showNotification("success", `"${ticket.title}" added to your cart.`
+          this.notificationService.success(`"${ticket.title}" added to your cart.`
           );
         });
       }

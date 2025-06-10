@@ -67,12 +67,10 @@ export class SigninComponent {
         this.tokenService.handleTokensFromResponse(accessToken, refreshToken);
         this.authService.isThereUser.set(true);
 
-        this.notificationService.showNotification('success', 'Signed in successfully');
         this.router.navigateByUrl(this.returnUrl);
       },
       error: (err: HttpErrorResponse) => {
         console.error('Sign in error:', err);
-        this.notificationService.showNotification("error", err.message || "Sign in failed");
       }
     });
   }

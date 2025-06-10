@@ -60,7 +60,6 @@ export class SignupComponent {
       },
       error: (err: HttpErrorResponse) => {
         console.error('Sign up error:', err);
-        this.notificationService.showNotification("error", err.message || "Sign up failed");
       }
     });
   }

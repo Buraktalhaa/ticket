@@ -65,7 +65,7 @@ export class CreateTicketComponent {
   createTicket() {
     const validationError = this.validateTicket();
     if (validationError) {
-      this.notificationService.showNotification('warning', validationError);
+      this.notificationService.warning(validationError);
       return;
     }
 
@@ -81,13 +81,13 @@ export class CreateTicketComponent {
 
     this.sellerService.createTicket(payload).subscribe({
       next: () => {
-        this.notificationService.showNotification("success", "Ticket created successfully");
+        this.notificationService.success("Ticket created successfully");
         setTimeout(() => {
           this.router.navigateByUrl('seller-dashboard/my-tickets');
         }, 500);
       },
       error: () => {
-        this.notificationService.showNotification("error", "Something went wrong");
+        this.notificationService.error("Something went wrong");
       }
     });
   }

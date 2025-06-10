@@ -47,7 +47,7 @@ export class CartComponent {
     const error = canIncreaseQuantity(this.item)
 
     if (error) {
-      this.notificationService.showNotification("error", error);
+      this.notificationService.error(error);
       return;
     }
 
@@ -61,7 +61,7 @@ export class CartComponent {
   decreaseQuantity() {
     const error = canDecreaseQuantity(this.item);
     if (error) {
-      this.notificationService.showNotification("error", error);
+      this.notificationService.error(error);
       return;
     }
     const updatedCount = this.item!.count - 1;

@@ -44,13 +44,13 @@ export class ResetPasswordComponent {
     }    
     this.passswordService.sendNewPassword(newPassword).subscribe({
       next: () => {
-        this.notificationService.showNotification('success', 'Password has been reset successfully.');
+        this.notificationService.success('Password has been reset successfully.');
         this.router.navigateByUrl('/mail-sent');
       },
       error: (err) =>{
         console.error('Error resetting password:', err);
         const msg = err.error?.message || 'Failed to reset password.';
-        this.notificationService.showNotification('error', msg);
+        this.notificationService.error(msg);
       }
     })
   }

@@ -6,11 +6,11 @@ export function handlePaymentRedirect(response: any, notificationService: Notifi
   if (paymentLink && paymentLink.startsWith('http')) {
     window.location.href = paymentLink;
   } else {
-    notificationService.showNotification('error', 'Payment link could not be generated.');
+    notificationService.error('Payment link could not be generated.');
   }
 }
 
 export function handleOrderError(error: HttpErrorResponse, notificationService: NotificationService) {
   const message = error?.error?.message || 'An error occurred while creating an order.';
-  notificationService.showNotification('error', message);
+  notificationService.error(message);
 }

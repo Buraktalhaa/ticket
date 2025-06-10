@@ -34,7 +34,7 @@ export class ModeratorStatusEditComponent {
     const ticket = history.state.ticket;
 
     if (!ticket) {
-      this.notificationService.showNotification("error", "No ticket found in state");
+      this.notificationService.error("No ticket found in state");
       this.router.navigate(['/admin-dashboard/status-panel']);
       return;
     }
@@ -56,11 +56,11 @@ export class ModeratorStatusEditComponent {
   
       this.moderatorService.editStatus(updatedTicket).subscribe({
         next: () => {
-          this.notificationService.showNotification("success", "Ticket edited successfully");
+          this.notificationService.success("Ticket edited successfully");
           this.moderatorNavigationService.goToModeratorStatusPanel()
         },
         error: () => {
-          this.notificationService.showNotification("error", "Something went wrong");
+          this.notificationService.error("Something went wrong");
         }
       });
     }

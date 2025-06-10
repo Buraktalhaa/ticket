@@ -61,7 +61,6 @@ export class MainComponent {
     });
   }
 
-
   onFavoriteChanged(ticketId: string, isFav: boolean) {
     if (isFav) {
       this.favoriteService.addFavorite(ticketId).subscribe({

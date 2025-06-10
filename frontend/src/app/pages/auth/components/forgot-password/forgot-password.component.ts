@@ -36,13 +36,13 @@ export class ForgotPasswordComponent {
     }
     this.resetMail.sendResetMail(mailData).subscribe({
       next: () => {
-        this.notificationService.showNotification('success', 'Password reset mail sent successfully.');
+        this.notificationService.success('Password reset mail sent successfully.');
         this.router.navigateByUrl('/mail-sent');
       },
       error: (err) => {
         console.error('Error sending reset mail:', err);
         const msg = err.error?.message || 'Failed to send reset mail.';
-        this.notificationService.showNotification('error', msg);
+        this.notificationService.error(msg);
       }
     });
   }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output, SimpleChanges } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { calculateDiscountedPrice } from '../../helpers/discount.helper';
 import { FavoriteButtonComponent } from '../favorite-button/favorite-button.component';
 import { CookieService } from 'ngx-cookie-service';
@@ -41,6 +41,7 @@ export class TicketCardComponent {
   ngOnChanges() {
     this.discountedPrice = calculateDiscountedPrice(this.price, this.discount);
   }
+
   onButtonClick() {
     this.buttonClick.emit();
   }

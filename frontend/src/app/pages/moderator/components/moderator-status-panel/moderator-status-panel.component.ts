@@ -43,7 +43,7 @@ export class ModeratorStatusPanelComponent {
       },
       error: (err) => {
         console.error('Error:', err)
-        this.notificationService.showNotification("error", "Failed to load tickets. Please try again.")
+        this.notificationService.error("Failed to load tickets. Please try again.")
       }
     });
   }

@@ -26,7 +26,7 @@ export class ProfileService {
       },
       error: (err:any) => {
         console.error(`profile error:`, err);
-        this.notificationService.showNotification(`error`, `Failed to load profile. Please try again.`);
+        this.notificationService.error(`Failed to load profile. Please try again.`);
       }
     });
   }

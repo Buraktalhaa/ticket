@@ -52,11 +52,11 @@ export class TicketEditComponent {
 
       this.sellerService.editTicket(updatedTicket).subscribe({
         next: () => {
-          this.notificationService.showNotification("success", "Ticket updated successfully");
+          this.notificationService.success("Ticket updated successfully");
           this.router.navigateByUrl('seller-dashboard/my-tickets');
         },
         error: () => {
-          this.notificationService.showNotification("error", "Failed to update the ticket.");
+          this.notificationService.error("Failed to update the ticket.");
         }
       });
     }

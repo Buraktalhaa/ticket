@@ -54,14 +54,14 @@ export class MyProfileComponent {
 
   saveProfile() {
     if (!this.profileForm.valid) {
-      this.notificationService.showNotification("error", "Form is not valid.");
+      this.notificationService.error("Form is not valid.");
       return;
     }
 
     const updatedData = this.profileForm.value;
     this.profileService.updateProfile(updatedData).subscribe({
       next: (response:any) => {
-        this.notificationService.showNotification("success", "Profile updated succesfully.");
+        this.notificationService.success("Profile updated succesfully.");
         const updatedUser = response.body;
         if (updatedUser) {
           this.user = updatedUser;
@@ -69,7 +69,7 @@ export class MyProfileComponent {
         }
       },
       error: () => {
-        this.notificationService.showNotification("error", "Profile update failed.");
+        this.notificationService.error("Profile update failed.");
       }
     });
   }

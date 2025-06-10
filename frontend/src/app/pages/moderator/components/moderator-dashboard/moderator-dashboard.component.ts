@@ -28,7 +28,7 @@ export class ModeratorDashboardComponent {
       },
       error: (err) => {
         console.error('Error:', err)
-        this.notificationService.showNotification("error", err)
+        this.notificationService.error(err)
       }
     });
   }

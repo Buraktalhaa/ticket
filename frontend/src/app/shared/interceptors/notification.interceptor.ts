@@ -14,13 +14,13 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
         const body: any = event.body;
 
         if (body?.error) {
-          notificationService.showNotification('error', body.error.message);
+          notificationService.error(body.error.message);
           return;
         }
 
         const message = body.data?.message || body.message;
         if (message) {
-          notificationService.showNotification('success', message);
+          notificationService.success(message);
         }
       }
     }),
@@ -28,7 +28,7 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
       const message = error?.error?.message;
 
       if (typeof message === 'string') {
-        notificationService.showNotification('error', message);
+        notificationService.error(message);
       }
     
       if (error.status === 401 || error.status === 403) {
