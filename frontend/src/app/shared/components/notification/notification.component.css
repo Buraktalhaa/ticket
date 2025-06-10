@@ -1,0 +1,154 @@
+/* notification.component.css */
+
+/* Progress bar animation */
+@keyframes progress-shrink {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+/* Custom hover effects for better UX */
+.notification-hover-effect {
+  transform: translateY(0);
+  transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.notification-hover-effect:hover {
+  transform: translateY(-2px);
+}
+
+/* Custom backdrop blur fallback for older browsers */
+@supports not (backdrop-filter: blur(12px)) {
+  .notification-item {
+    background: rgba(255, 255, 255, 0.95);
+  }
+}
+
+/* Enhanced shadow effects */
+.notification-shadow {
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.1), 
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.notification-shadow:hover {
+  box-shadow: 
+    0 20px 35px -5px rgba(0, 0, 0, 0.15), 
+    0 10px 15px -5px rgba(0, 0, 0, 0.08);
+}
+
+/* Smooth transitions for all interactive elements */
+.notification-transition {
+  transition: all 0.15s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Focus states for accessibility */
+.notification-close-btn:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Custom scrollbar for mobile if notifications overflow */
+@media (max-width: 640px) {
+  .notification-container::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .notification-container {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Animation states */
+.notification-enter {
+  animation: slideInRight 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.notification-exit {
+  animation: slideOutRight 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 640px) {
+  .notification-mobile {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: none;
+  }
+  
+  .notification-content-mobile {
+    padding: 0.875rem;
+  }
+  
+  .notification-text-mobile {
+    font-size: 0.8125rem;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .notification-item {
+    border: 2px solid;
+  }
+  
+  .notification-success {
+    border-color: #059669;
+  }
+  
+  .notification-error {
+    border-color: #dc2626;
+  }
+  
+  .notification-warning {
+    border-color: #d97706;
+  }
+  
+  .notification-info {
+    border-color: #2563eb;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .notification-item,
+  .notification-close-btn,
+  .notification-progress-bar {
+    transition: none;
+    animation: none;
+  }
+  
+  @keyframes progress-shrink {
+    from {
+      width: 100%;
+    }
+    to {
+      width: 0%;
+    }
+  }
+}

@@ -32,7 +32,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
             const accessToken:string = res.body?.accessToken;
             if (accessToken) {
               cookieService.set('accessToken', accessToken);
-              notificationService.showNotification('success', 'Session renewed successfully.');
+              notificationService.success('Session renewed successfully.');
 
               // Orijinal isteği yeni token ile tekrar et
               const clonedReq = req.clone({
@@ -56,7 +56,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   function clearSession() {
     cookieService.delete('accessToken', '/');
     cookieService.delete('refreshToken', '/');
-    notificationService.showNotification('error', 'Session expired. Please log in again.');
+    notificationService.error('Session expired. Please log in again.');
     router.navigateByUrl('/sign-in');
   }
 };
