@@ -1,8 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-favorite-button',
-  imports: [],
+  imports: [
+    CommonModule
+  ],
   templateUrl: './favorite-button.component.html',
   styleUrl: './favorite-button.component.css'
 })

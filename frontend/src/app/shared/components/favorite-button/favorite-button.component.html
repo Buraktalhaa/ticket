@@ -1,7 +1,9 @@
 <button
   (click)="toggleFavorite($event)"
-  class="absolute top-4 right-4 bg-white-500 text-white rounded-full w-8 h-8 flex items-center justify-center text-xl hover:bg-blue-300 focus:outline-none cursor-pointer"
+  class="absolute top-4 right-4 bg-transparent text-2xl rounded-full w-8 h-8 flex items-center justify-center hover:scale-110 transition-transform duration-200 focus:outline-none cursor-pointer"
   [attr.aria-pressed]="isFavorite"
 >
-  {{ isFavorite ? "♥" : "♡" }}
+  <span [ngClass]="{ 'text-red-600': isFavorite, 'text-black': !isFavorite }">
+    {{ isFavorite ? '♥' : '♡' }}
+  </span>
 </button>
