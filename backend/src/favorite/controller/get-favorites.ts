@@ -16,10 +16,15 @@ export async function getFavorites(req: Request, res: Response) {
                 ticket:true
             }
         });
+
+        const ticketsWithFavorite = favorites.map((ticket) => ({
+            ...ticket,
+            isFavorite: true
+          }));
                 
         res.status(200).json({
             status: ResponseStatus.SUCCESS,
-            data: favorites
+            data: ticketsWithFavorite
         });
         return
 
