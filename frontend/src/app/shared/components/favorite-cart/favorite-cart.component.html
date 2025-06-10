@@ -1,0 +1,50 @@
+<div class="bg-white rounded-xl shadow-md overflow-hidden flex flex-col">
+  <div class="relative p-8">
+    <img
+      [src]="
+        ticket.images && ticket.images.length > 0
+          ? ticket.images[0]
+          : 'defaultImage.webp'
+      "
+      [alt]="ticket.title || 'Event image'"
+      class="h-72 w-full object-cover"
+    />
+    <app-favorite-button
+      [ticketId]="ticket.id"
+      [isFavorite]="isFavorite"
+      (favoriteChange)="onFavoriteChanged($event)"
+    ></app-favorite-button>
+  </div>
+
+  <div class="p-4 flex flex-col flex-grow">
+    <h3 class="text-xl font-semibold mb-1 text-gray-900">
+      {{ ticket.title || "Untitled Event" }}
+    </h3>
+    <p class="text-sm text-gray-600 mb-2">
+      {{ ticket.location || "Location TBD" }}
+    </p>
+    <p class="text-sm text-gray-700 mb-3 line-clamp-3">
+      {{ ticket.description || "No description available" }}
+    </p>
+    <div class="mt-auto flex items-center justify-between">
+      <div>
+        @if (ticket.discount && ticket.discount > 0) {
+        <span class="line-through text-gray-400 mr-2">
+          {{ ticket.price | number : "1.2-2" }} ₺
+        </span>
+        }
+        <span class="text-lg font-bold text-green-600">
+          {{
+            ticket.price && ticket.discount
+              ? (ticket.price * (1 - ticket.discount / 100) | number : "1.2-2")
+              : (ticket.price | number : "1.2-2")
+          }}
+          ₺
+        </span>
+      </div>
+      <div class="text-xs text-gray-500">
+        {{ ticket.dateTime | date : "mediumDate" }}
+      </div>
+    </div>
+  </div>
+</div>
