@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from 'bcryptjs'
 import prisma from "../../common/utils/prisma";
 import { handleError } from "../../common/error-handling/handle-error";
-import { DecodedUser } from "../../common/type/request.type";
+import { DecodedUser } from "../../common/types/request.type";
 
 // email ve yeni password u frontdan al
 

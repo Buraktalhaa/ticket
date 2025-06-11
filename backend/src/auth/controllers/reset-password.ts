@@ -3,7 +3,7 @@ import { handleError } from "../../common/error-handling/handle-error";
 import jwt from 'jsonwebtoken';
 import prisma from "../../common/utils/prisma";
 import bcrypt from 'bcryptjs'
-import { DecodedUser } from "../../common/type/request.type";
+import { DecodedUser } from "../../common/types/request.type";
 
 export async function resetPasswordController(req: Request, res: Response) {
     try {

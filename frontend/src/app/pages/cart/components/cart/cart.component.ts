@@ -10,6 +10,7 @@ import { canDecreaseQuantity, canIncreaseQuantity } from '../../helpers/cart-qua
 import { handleOrderError, handlePaymentRedirect } from '../../helpers/payment.helper';
 import { HttpErrorResponse } from '@angular/common/http';
 import { calculateDiscountedPrice } from '../../../../shared/helpers/discount.helper';
+import { CreateOrderDTO } from '../../../order/types/order.types';
 
 @Component({
   selector: 'app-cart',
@@ -82,8 +83,13 @@ export class CartComponent {
   }
 
   buyTicket() {
-    const data = { ticketId: this.item?.ticket.id, quantity: this.item?.count, usePoints: true };
-  
+    if (!this.item) return;
+
+    const data: CreateOrderDTO = { 
+      ticketId: this.item.ticket.id, 
+      quantity: this.item.count, 
+      usePoints: true 
+    };  
     this.orderService.createOrder(data).subscribe({
       next: (response) => handlePaymentRedirect(response, this.notificationService),
       error: (error:HttpErrorResponse) => handleOrderError(error, this.notificationService)

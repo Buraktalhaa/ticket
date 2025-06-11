@@ -5,7 +5,6 @@ import { createToken } from "../utils/create-token";
 import { ResponseStatus } from '../../common/enums/status.enum';
 import { handleError } from '../../common/error-handling/handle-error';
 
-
 export async function refreshController(req: Request, res: Response) {
     const refreshToken = req.body.refreshToken
     console.log("Refresh token in refresh", refreshToken)
@@ -16,7 +15,7 @@ export async function refreshController(req: Request, res: Response) {
     }
 
     try {
-        const payload: any = jwt.verify(refreshToken, process.env.REFRESH_SECRET!);
+        const payload = jwt.verify(refreshToken, process.env.REFRESH_SECRET!) as TokenPayload;
         const userId = payload.userId
 
         // Create new access token
@@ -38,14 +37,16 @@ export async function refreshController(req: Request, res: Response) {
             data: { userId }
         });
         return
-
-    } catch (error: any) {
-        if (error.name === 'TokenExpiredError') {
-            handleError(res, 'Refresh token has expired', 401)
-            return
-        }
-        else {
-            handleError(res, 'Invalid refresh token', 401)
+    }
+    catch (error: unknown) {
+        if (error instanceof jwt.TokenExpiredError) {
+            handleError(res, 'Refresh token has expired', 401);
+            return;
+        } else if (error instanceof jwt.JsonWebTokenError) {
+            handleError(res, 'Invalid refresh token', 401);
+            return;
+        } else {
+            handleError(res, 'Internal server error', 500);
             return;
         }
     }

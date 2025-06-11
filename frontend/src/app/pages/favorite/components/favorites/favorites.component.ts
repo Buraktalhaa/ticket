@@ -41,7 +41,6 @@ export class FavoritesComponent {
       this.filteredTickets = [...this.tickets];
     });
   }
-  
 
   onFavoriteChanged(ticketId: string, isFav: boolean): void {
     if (isFav) {

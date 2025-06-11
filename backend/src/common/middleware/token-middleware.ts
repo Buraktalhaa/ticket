@@ -9,19 +9,24 @@ export async function authenticateToken(req: Request, res: Response, next: NextF
     if (!token) {
         handleError(res, 'Access token is missing', 401)
         return
-    }    
+    }
 
     try {
-        const { exp, iat, ...rest } = jwt.verify(token, process.env.ACCESS_SECRET!) as any;
+        const { exp, iat, ...rest } = jwt.verify(token, process.env.ACCESS_SECRET!) as TokenPayload
+
         req.user = rest
         next();
 
-    } catch (err: any) {
-        if (err.name === 'TokenExpiredError') {
-            handleError(res, 'Token expired', 401)
+    } catch (error: unknown) {
+        if (error instanceof jwt.TokenExpiredError) {
+            handleError(res, 'Token expired', 401);
             return;
         }
-        handleError(res, `Invalid token: ${err.message}`, 401)
-        return;
+        if (error instanceof jwt.JsonWebTokenError) {
+            handleError(res, `Invalid token: ${error.message}`, 401);
+            return;
+        }
+        handleError(res, 'Authentication failed', 401);
+        return
     }
-};
+}

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { DecodedUser } from '../../common/type/request.type';
+import { DecodedUser } from '../../common/types/request.type';
 import { ResponseStatus } from "../../common/enums/status.enum";
 import prisma from "../../common/utils/prisma";
 import { handleError } from "../../common/error-handling/handle-error";

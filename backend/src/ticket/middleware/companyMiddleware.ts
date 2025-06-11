@@ -1,6 +1,6 @@
 import { NextFunction, Request, RequestHandler, Response } from "express";
 import { handleError } from "../../common/error-handling/handle-error";
-import { DecodedUser } from "../../common/type/request.type";
+import { DecodedUser } from "../../common/types/request.type";
 import prisma from "../../common/utils/prisma";
 
 

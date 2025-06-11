@@ -16,3 +16,9 @@ export interface Order {
     description: string;
   }
 }
+
+export interface CreateOrderDTO {
+  ticketId: string;
+  quantity: number;
+  usePoints: boolean;
+}

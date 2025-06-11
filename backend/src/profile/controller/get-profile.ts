@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import prisma from '../../common/utils/prisma';
 import { ResponseStatus } from '../../common/enums/status.enum';
 import { handleError } from '../../common/error-handling/handle-error';
-import { DecodedUser } from '../../common/type/request.type';
+import { DecodedUser } from '../../common/types/request.type';
 
 export async function getProfile(req:Request, res: Response) {
     try { 

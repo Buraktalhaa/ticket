@@ -42,7 +42,7 @@ export class SellerTicketsComponent {
     this.sellerService.getMyTickets();
   }
 
-  goToEditPage(ticket: any) {
+  goToEditPage(ticket: Ticket) {
     this.router.navigate(['seller-dashboard/my-tickets/edit'], { state: { ticket } });
   }
 

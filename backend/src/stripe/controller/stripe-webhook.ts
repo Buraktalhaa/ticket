@@ -11,25 +11,30 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
 export async function handleStripeWebhook(req: Request, res: Response) {
     const sig = req.headers['stripe-signature'] as string;
     const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET as string;
-    
+
     let event;
-    
+
     try {
         event = stripe.webhooks.constructEvent(
             req.body,
             sig,
             endpointSecret
         );
-    } catch (err: any) {
-        res.status(400).send(`Webhook Error: ${err.message}`);
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            res.status(400).send(`Webhook Error: ${err.message}`);
+        } else {
+            res.status(400).send('Webhook Error: Unknown error');
+        }
         return;
     }
-    
+
+
     if (event.type === 'checkout.session.completed') {
         const session = event.data.object as Stripe.Checkout.Session;
         await handleSuccessfulPayment(session);
     }
-    
+
     res.status(200).json({ received: true });
     return
 }
@@ -41,14 +46,14 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
         console.error('Missing order information in metadata');
         return;
     }
-    
+
     const orderId = metadata.orderId;
     const userId = metadata.userId;
     const ticketId = metadata.ticketId;
     const quantity = parseInt(metadata.quantity);
     const usedPoints = parseInt(metadata.usedPoints || '0');
     const usePoints = metadata.usePoints === 'true';
-    
+
     try {
         const order = await prisma.order.findUnique({
             where: { id: orderId },
@@ -57,14 +62,14 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
                 ticket: true,
             }
         });
-        
+
         if (!order) {
             console.error(`Order not found: ${orderId}`);
             return;
         }
-        
+
         const ticket = order.ticket;
-        
+
         if (usePoints && usedPoints > 0) {
             await prisma.point.update({
                 where: {
@@ -80,7 +85,7 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
                 }
             });
         }
-        
+
         const updatedOrder = await prisma.order.update({
             where: {
                 id: orderId
@@ -97,20 +102,20 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
 
         // Card update
         await prisma.cart.delete({
-            where:{
+            where: {
                 userId
             }
         })
-        
-        const emailService = new Email({ 
-            email: updatedOrder.user.email, 
-            firstName: updatedOrder.user.firstName 
+
+        const emailService = new Email({
+            email: updatedOrder.user.email,
+            firstName: updatedOrder.user.firstName
         }, `${process.env.BASE_URL}/create-order`);
-        
+
         await emailService.sendPnr(updatedOrder.ticket.pnr);
-        
+
         const pointsToGive = (ticket.price * (100 - ticket.discount) / 100) * ticket.pointRate;
-        
+
         await prisma.point.upsert({
             where: {
                 userId_categoryId: {
@@ -129,8 +134,8 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
                 point: pointsToGive * quantity,
             }
         });
-        
-        
+
+
         console.log(`Order ${orderId} processed successfully`);
     } catch (error) {
         console.error('Error processing successful payment:', error);

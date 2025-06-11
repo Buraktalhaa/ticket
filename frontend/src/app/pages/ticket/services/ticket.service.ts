@@ -8,7 +8,7 @@ import { environment } from '../../../shared/helpers/environment';
 })
 export class TicketService {
   // ticket ve true false gonder(fav icin)
-  private selectedTicket: any;
+  private selectedTicket: Ticket | null = null;
 
   constructor(
     private api: ApiService,

@@ -124,9 +124,13 @@ export async function createCompany(req: Request, res: Response) {
         });
         return
 
-    } catch (err: any) {
-        console.error("Company creation error:", err);
-        handleError(res, err.message || 'Internal server error', 500);
-        return
+    } catch (err: unknown) {
+        if (err instanceof Error) {
+            handleError(res, err.message || 'Internal server error', 500);
+            return
+        } else {
+            handleError(res, 'Internal server error', 500);
+            return
+        }
     }
 }
