@@ -8,19 +8,25 @@ export async function deleteCart(req: Request, res: Response) {
   const { userId } = req.user as DecodedUser;
 
   try {
-    await prisma.cart.delete({
+    const deleteResult =  await prisma.cart.delete({
       where: {
         userId
       }
     });
+
+    if (deleteResult.count === 0) {
+      handleError(res, 'Cart is already empty or not found', 404);
+      return
+    }
 
     res.status(200).json({
       status: ResponseStatus.SUCCESS,
       message: 'Cart deleted successfully'
     });
     return
+
   } catch (error) {
-    handleError(res, 'Error deleting cart', 404);
+    handleError(res, 'Error deleting cart', 500);
     return
   }
 }

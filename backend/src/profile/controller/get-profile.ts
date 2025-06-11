@@ -6,7 +6,7 @@ import { DecodedUser } from '../../common/type/request.type';
 
 export async function getProfile(req:Request, res: Response) {
     try { 
-        const {userId , email} = req.user as DecodedUser;        
+        const { userId } = req.user as DecodedUser;  
         
         // Find user in db
         const user = await prisma.user.findUnique({
@@ -22,15 +22,14 @@ export async function getProfile(req:Request, res: Response) {
     
         res.status(200).json({
             status: ResponseStatus.SUCCESS,
-            message: "Your profile",
-            email: email,
+            message: "Your profile fetched succesfully",
             data: {
                 user
             }
         })
         return;
     } catch (error) {
-        handleError(res, 'Server error', 500)
+        handleError(res, 'An error occurred while getting profile', 500)
         return;
     }
 }

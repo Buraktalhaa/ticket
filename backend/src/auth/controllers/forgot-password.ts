@@ -15,7 +15,7 @@ export async function forgotPasswordController(req: Request, res: Response) {
         })
 
         if (!user) {
-            handleError(res, 'Auth not found', 400)
+            handleError(res, 'Auth not found', 404)
             return
         }
 
@@ -42,7 +42,7 @@ export async function forgotPasswordController(req: Request, res: Response) {
         }
 
         else if (oldToken && oldToken.expiresAt >= new Date()) {
-            handleError(res, 'Clicked in 10 minutes', 400)
+            handleError(res, 'Reset email already sent. Please wait 10 minutes.', 429)
             return;
 
         } else {
@@ -59,8 +59,8 @@ export async function forgotPasswordController(req: Request, res: Response) {
         await mail.send('Subject', 'forgot Password?');
 
         res.status(200).json({
-            message: "Welcome email sent successfully",
-        });
+            message: "Password reset email sent successfully.",
+        });        
         return;
     }
     catch (error) {

@@ -10,7 +10,9 @@ export async function deleteFavorite(req: Request, res: Response) {
 
     if (!ticketId) {
         handleError(res, 'ticketId is required.', 400);
-      }
+        return
+    }
+
     try {
         const existingFavorite = await prisma.favorite.findUnique({
             where: {
@@ -23,11 +25,12 @@ export async function deleteFavorite(req: Request, res: Response) {
 
         if (!existingFavorite) {
             handleError(res, 'This ticket is not in favorites.', 400)
+            return
         }
 
         await prisma.favorite.delete({
             where: {
-              userId_ticketId: { userId, ticketId }
+                userId_ticketId: { userId, ticketId }
             }
         });
 
@@ -36,8 +39,9 @@ export async function deleteFavorite(req: Request, res: Response) {
             message: 'Ticket removed from favorites.'
         });
         return
+
     } catch (error) {
-        console.error(error);
         handleError(res, 'An error occurred while deleting favorite.', 500)
+        return
     }
 }

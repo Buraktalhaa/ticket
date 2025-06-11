@@ -5,12 +5,15 @@ import prisma from "../../common/utils/prisma";
 import { handleError } from "../../common/error-handling/handle-error";
 
 export async function addToCart(req: Request, res: Response) {
-    const { userId } = req.user as DecodedUser;
-    console.log(req.body);
-    
-    const { ticketId, count } = req.body;
-
     try {
+        const { userId } = req.user as DecodedUser;
+        const { ticketId, count } = req.body;
+
+        if (!ticketId || typeof count !== 'number' || count <= 0) {
+            handleError(res, 'Invalid ticketId or count', 400);
+            return
+        }
+
         const existing = await prisma.cart.findUnique({
             where: {
                 userId,
@@ -18,7 +21,7 @@ export async function addToCart(req: Request, res: Response) {
         });
 
         if (existing) {
-            res.status(400).json({
+            res.status(409).json({
                 status: ResponseStatus.ERROR,
                 message: 'Ticket is already in cart. Use update instead.'
             });
@@ -34,23 +37,23 @@ export async function addToCart(req: Request, res: Response) {
         });
 
         const findTitle = await prisma.ticket.findUnique({
-            where:{
-                id:ticketId
+            where: {
+                id: ticketId
             }
         })
 
         const title = findTitle?.title
-        console.log({newCartItem, title});
-        
+        console.log({ newCartItem, title });
+
 
         res.status(200).json({
             status: ResponseStatus.SUCCESS,
             message: 'Ticket added to cart successfully',
-            data: {newCartItem, title}, 
+            data: { newCartItem, title },
         });
         return
     } catch (error) {
-        handleError(res, 'When adding to cart error', 500);
+        handleError(res, 'An unexpected error occurred while adding to cart', 500);
         return
     }
 }

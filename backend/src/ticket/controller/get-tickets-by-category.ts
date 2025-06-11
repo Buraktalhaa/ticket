@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import prisma from "../../common/utils/prisma";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { DecodedUser } from "../../common/type/request.type";
+import { handleError } from "../../common/error-handling/handle-error";
 
 export async function getTicketsByCategory(req: Request, res: Response) {
   const categoryName = req.params.category;
@@ -13,10 +14,7 @@ export async function getTicketsByCategory(req: Request, res: Response) {
     });
 
     if (!category) {
-      res.status(404).json({
-        status: ResponseStatus.FAIL,
-        message: "Category not found",
-      });
+      handleError(res, "Category not found", 404)
       return
     }
 
@@ -56,12 +54,9 @@ export async function getTicketsByCategory(req: Request, res: Response) {
       data: ticketsWithFavorite,
     });
     return
+
   } catch (error) {
-    console.error("Error fetching tickets by category:", error);
-    res.status(500).json({
-      status: ResponseStatus.FAIL,
-      message: "An error occurred while fetching tickets.",
-    });
+    handleError(res, "An error occurred while fetching tickets." ,500)
     return
   }
 }

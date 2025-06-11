@@ -58,7 +58,6 @@ export async function editPassword(req: Request, res: Response) {
         });
         return
     } catch (error) {
-        console.error('Error changing password:', error)
         handleError(res, 'An error occurred while changing the password. Please try again later.', 500)
         return
     }

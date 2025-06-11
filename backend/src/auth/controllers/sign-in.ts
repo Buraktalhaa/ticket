@@ -7,85 +7,89 @@ import { ResponseStatus } from "../../common/enums/status.enum";
 import { handleError } from "../../common/error-handling/handle-error";
 
 export async function signInController(req: Request, res: Response) {
-    if (checkSignIn(req) === false) {
-        handleError(res, 'Email and password are required', 400)
-        return;
-    }
-
-    const email = req.body.email;
-    const password = req.body.password;
-
-    const auth = await prisma.auth.findUnique(
-        {
-            where: {
-                email
-            },
-    
+    try {
+        if (checkSignIn(req) === false) {
+            handleError(res, 'Email and password are required', 400)
+            return;
         }
-    )
 
-    if (!auth) {
-        handleError(res, 'Auth not found', 400)
-        return
-    }
+        const email = req.body.email;
+        const password = req.body.password;
 
-    const user = await prisma.user.findUnique(
-        {
-            where: {
-                email
+        const auth = await prisma.auth.findUnique(
+            {
+                where: {
+                    email
+                },
+
             }
+        )
+
+        if (!auth) {
+            handleError(res, 'Authentication record not found', 401)
+            return
         }
-    )
-    if (!user) {
-        handleError(res, 'User not found', 400)
-        return;
-    }
 
-    const isPasswordValid = await bcrypt.compare(password, auth.password);
-    if (!isPasswordValid) {
-        handleError(res, 'Incorrect password', 400)
-        return
-    }
-
-    if (!process.env.ACCESS_SECRET && !process.env.REFRESH_SECRET) {
-        handleError(res, "JWT_SECRET is not defined in environment variables", 400)
-        return
-    }
-
-    const userRole = await prisma.userRole.findUnique({
-        where: { userId: user.id },
-        include: {
-            role: true
+        const user = await prisma.user.findUnique(
+            {
+                where: {
+                    email
+                }
+            }
+        )
+        if (!user) {
+            handleError(res, 'User not found', 401)
+            return;
         }
-    });
 
-    const role = userRole?.role.name;
+        const isPasswordValid = await bcrypt.compare(password, auth.password);
+        if (!isPasswordValid) {
+            handleError(res, 'Incorrect password', 401)
+            return
+        }
 
-    if (!role) {
-        handleError(res, 'Role cant find', 400)
-        return
-    }
+        if (!process.env.ACCESS_SECRET && !process.env.REFRESH_SECRET) {
+            handleError(res, "JWT_SECRET is not defined in environment variables", 500)
+            return
+        }
 
-    const accessToken = createToken(user.id, email, role, process.env.ACCESS_SECRET!, 4800 * 60 * 24)
-    const refreshToken = createToken(user.id, email, role, process.env.REFRESH_SECRET!, 24 * 60 * 60)
+        const userRole = await prisma.userRole.findUnique({
+            where: { userId: user.id },
+            include: {
+                role: true
+            }
+        });
 
-    await prisma.token.update({
-        where: { userId: user.id },
-        data: {
+        const role = userRole?.role.name;
+
+        if (!role) {
+            handleError(res, 'User role not found', 500)
+            return
+        }
+
+        const accessToken = createToken(user.id, email, role, process.env.ACCESS_SECRET!, 4800 * 60 * 24)
+        const refreshToken = createToken(user.id, email, role, process.env.REFRESH_SECRET!, 24 * 60 * 60)
+
+        await prisma.token.update({
+            where: { userId: user.id },
+            data: {
+                accessToken,
+                refreshToken,
+                createdAt: new Date()
+            }
+        });
+
+        res.status(200).json({
+            status: ResponseStatus.SUCCESS,
+            message: "Sign in succesfull",
             accessToken,
             refreshToken,
-            createdAt: new Date()
-        }
-    });
-
-    res.status(200).json({
-        status: ResponseStatus.SUCCESS,
-        message: "Sign in succesfull",
-        accessToken,
-        refreshToken,
-        data: {
-            email
-        }
-    })
-    return
+            data: { email }
+        })
+        return
+    }
+    catch (error) {
+        handleError(res, "An unexpected error occurred during sign-in", 500);
+        return
+    }
 }

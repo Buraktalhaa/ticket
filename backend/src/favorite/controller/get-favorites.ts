@@ -24,12 +24,12 @@ export async function getFavorites(req: Request, res: Response) {
                 
         res.status(200).json({
             status: ResponseStatus.SUCCESS,
-            data: ticketsWithFavorite
+            data: ticketsWithFavorite,
         });
         return
 
     } catch (error) {
-        console.error(error);
         handleError(res, 'An error occurred while fetching favorites.', 500);
+        return
     }
 }

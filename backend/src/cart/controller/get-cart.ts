@@ -19,7 +19,6 @@ export async function getCart(req: Request, res: Response) {
     
         res.status(200).json({
             status: ResponseStatus.SUCCESS,
-            message: 'Cart retrieved successfully',
             data: cartItem
         });
         return;

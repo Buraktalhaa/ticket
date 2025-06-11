@@ -30,7 +30,7 @@ passport.use("google",
                         lastName: profile.name?.familyName || '',
                         email,
                         active: true,
-                        birthday: '',
+                        birthday: null,
                         photoName: profile.photos?.[0].value || ''
                     }
                 });

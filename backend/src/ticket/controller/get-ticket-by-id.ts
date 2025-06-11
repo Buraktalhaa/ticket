@@ -44,16 +44,14 @@ export async function getTicketById(req: Request, res: Response) {
 
     res.status(200).json({
       status: ResponseStatus.SUCCESS,
-      message: "Ticket fetched successfully.",
       data: {
         ...cleanedTicket,
         isFavorite,
       }
     });
-
     return
+
   } catch (error) {
-    console.error("Error fetching ticket by ID:", error);
     handleError(res, 'An error occurred while fetching the ticket.', 500)
     return
   }

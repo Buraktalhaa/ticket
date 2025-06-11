@@ -5,41 +5,45 @@ import { ResponseStatus } from "../../common/enums/status.enum";
 
 
 export async function editTicket(req: Request, res: Response) {
-    const { id, ...restData } = req.body;
+    try {
+        const { id, ...restData } = req.body;
 
-    if (!id) {
-        handleError(res, 'Ticket ID is missing', 400);
-        return
-      }
-
-    const ticket = await prisma.ticket.findUnique({
-        where: {
-            id
+        if (!id) {
+            handleError(res, 'Ticket ID is missing', 400);
+            return
         }
-    });
-
-
-    if (!ticket) {
-        handleError(res, "There is no such ticket", 400)
+    
+        const ticket = await prisma.ticket.findUnique({
+            where: {
+                id
+            }
+        });
+    
+        if (!ticket) {
+            handleError(res, "There is no such ticket", 400)
+            return;
+        }
+    
+        // filter for restData
+        const filteredData = Object.fromEntries(
+            Object.entries(restData).filter(([_, value]) => value !== undefined)
+        );
+    
+        const editedTicket = await prisma.ticket.update({
+            where: {
+                id
+            },
+            data: filteredData
+        });
+    
+        res.status(200).json({
+            status: ResponseStatus.SUCCESS,
+            message: 'Ticket edited succesfully',
+            ticket: editedTicket
+        });
         return;
+    } catch (error) {
+        handleError(res, 'Failed to edit ticket', 500);
+        return
     }
-
-    // filter for restData
-    const filteredData = Object.fromEntries(
-        Object.entries(restData).filter(([_, value]) => value !== undefined)
-    );
-
-    const editedTicket = await prisma.ticket.update({
-        where: { 
-            id
-        },
-        data: filteredData
-    });
-
-    res.status(200).json({
-        status: ResponseStatus.SUCCESS,
-        message: 'Ticket edited succesfully',
-        ticket: editedTicket
-    });
-    return;
 }

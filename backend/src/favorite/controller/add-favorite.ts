@@ -10,6 +10,7 @@ export async function addFavorite(req: Request, res: Response) {
 
     if (!ticketId) {
         handleError(res, 'ticketId is required.', 400);
+        return
     }
     try {
         const existingFavorite = await prisma.favorite.findUnique({
@@ -23,6 +24,7 @@ export async function addFavorite(req: Request, res: Response) {
 
         if (existingFavorite) {
             handleError(res, 'This ticket is already in favorites.', 400)
+            return
         }
 
         const newFavorite = await prisma.favorite.create({
@@ -34,12 +36,13 @@ export async function addFavorite(req: Request, res: Response) {
 
         res.status(201).json({
             status: ResponseStatus.SUCCESS,
-            message: '',
+            message: 'Ticket added in favorites',
             data: newFavorite
         });
         return
+
     } catch (error) {
-        console.error(error);
         handleError(res, 'An error occurred while adding favorite.', 500)
+        return
     }
 }

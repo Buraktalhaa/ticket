@@ -9,6 +9,11 @@ export async function updateCart(req: Request, res: Response) {
     const { ticketId, count } = req.body;
 
     try {
+        if (!ticketId || typeof count !== 'number') {
+            handleError(res, 'Ticket ID and count are required', 400);
+            return
+        }
+
         const updatedCart = await prisma.cart.update({
             where: {
                 userId
@@ -26,7 +31,7 @@ export async function updateCart(req: Request, res: Response) {
         });
         return
     } catch (error) {
-        handleError(res, 'Error updating cart', 404);
+        handleError(res, 'Error updating cart', 500);
         return
     }
 }
