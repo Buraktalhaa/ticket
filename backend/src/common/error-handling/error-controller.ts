@@ -6,18 +6,6 @@ const handleCastErrorDB = (err: any): AppError => {
   return new AppError(message, 400);
 };
 
-const handleDuplicateFieldsDB = (err: any): AppError => {
-  const value = err.errmsg.match(/(["'])(\\?.)*?\1/)?.[0];
-  const message = `Duplicate field value: ${value}. Please use another value!`;
-  return new AppError(message, 400);
-};
-
-const handleValidationErrorDB = (err: any): AppError => {
-  const errors = Object.values(err.errors).map((el: any) => el.message);
-  const message = `Invalid input data. ${errors.join('. ')}`;
-  return new AppError(message, 400);
-};
-
 const handleJWTError = (): AppError =>
   new AppError('Invalid token. Please log in again!', 401);
 

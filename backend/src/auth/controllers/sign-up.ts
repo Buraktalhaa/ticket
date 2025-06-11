@@ -10,11 +10,7 @@ export async function signUpController(req: Request, res: Response) {
     try {
         const { email, firstName } = req.body;
 
-        const findUserRole = await prisma.role.findUnique({
-            where: {
-                name: 'user'
-            }
-        })
+        const findUserRole = await prisma.role.findUnique({ where: {name: 'user'}})
 
         if (!findUserRole) {
             handleError(res, 'User role not found in the system', 500);
@@ -28,25 +24,12 @@ export async function signUpController(req: Request, res: Response) {
 
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-        const existingUser = await prisma.user.findUnique(
-            {
-                where: {
-                    email
-                }
-            });
+        const existingUser = await prisma.user.findUnique({ where: { email }});
 
         if (existingUser) {
-            const auth = await prisma.auth.findUnique({
-                where: {
-                    email
-                }
-            })
+            const auth = await prisma.auth.findUnique({ where: { email }})
 
-            const googleAuth = await prisma.googleAuth.findUnique({
-                where: {
-                    userId: existingUser.id
-                }
-            })
+            const googleAuth = await prisma.googleAuth.findUnique({ where: { userId: existingUser.id }})
 
             if (auth) {
                 handleError(res, 'There is a user with this email address', 409)
@@ -85,9 +68,7 @@ export async function signUpController(req: Request, res: Response) {
                     message: 'Sign up successful',
                     accessToken,
                     refreshToken,
-                    data: {
-                        email: auth.email,
-                    }
+                    data: { email: auth.email }
                 });
                 return
             }
@@ -143,9 +124,7 @@ export async function signUpController(req: Request, res: Response) {
             message: 'Sign up successful',
             accessToken,
             refreshToken,
-            data: {
-                email: newAuth.email,
-            }
+            data: { email: newAuth.email }
         });
         return
     } catch (error) {

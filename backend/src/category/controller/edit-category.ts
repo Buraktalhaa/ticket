@@ -12,12 +12,8 @@ export async function editCategory(req: Request, res: Response) {
     }
 
     try {
-
-        const category = await prisma.category.findUnique({
-            where: {
-                name: categoryName
-            }
-        })
+        // find if category exists
+        const category = await prisma.category.findUnique({ where: { name: categoryName }})
 
         if (!category) {
             handleError(res, `Category doesn't exists: ${categoryName}`, 404)

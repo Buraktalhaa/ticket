@@ -3,7 +3,7 @@ import { handleError } from "../../common/error-handling/handle-error";
 import jwt from 'jsonwebtoken';
 import prisma from "../../common/utils/prisma";
 import bcrypt from 'bcryptjs'
-import { DecodedUser } from "../../common/types/request.type";
+import { TokenPayload } from "../../common/types/token.type";
 
 export async function resetPasswordController(req: Request, res: Response) {
     try {
@@ -18,13 +18,13 @@ export async function resetPasswordController(req: Request, res: Response) {
 
         let payload;
         try {
-            payload = jwt.verify(token, process.env.ACCESS_SECRET!);
+            payload = jwt.verify(token, process.env.ACCESS_SECRET!) as TokenPayload;
         } catch (err) {
             handleError(res, "Invalid or expired token", 401);
             return;
         }
 
-        const { email, userId } = payload as DecodedUser
+        const { email, userId } = payload as TokenPayload
 
         // find token in db
         const findResetToken = await prisma.passwordResetToken.findUnique({
@@ -34,7 +34,7 @@ export async function resetPasswordController(req: Request, res: Response) {
         })
 
         if (!findResetToken || findResetToken?.used === true || findResetToken.expiresAt < new Date()) {
-            handleError(res, "Url already used.", 401);
+            handleError(res, "Link already used.", 401);
             return;
         }
 
@@ -74,6 +74,7 @@ export async function resetPasswordController(req: Request, res: Response) {
             message: "Password changed",
         });
         return;
+
     } catch (error) {
         handleError(res, "Internal server error", 500);
         return

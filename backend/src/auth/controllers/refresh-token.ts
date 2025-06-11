@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import { createToken } from "../utils/create-token";
 import { ResponseStatus } from '../../common/enums/status.enum';
 import { handleError } from '../../common/error-handling/handle-error';
+import { TokenPayload } from '../../common/types/token.type';
 
 export async function refreshController(req: Request, res: Response) {
     const refreshToken = req.body.refreshToken

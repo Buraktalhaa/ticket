@@ -14,17 +14,11 @@ export async function addToCart(req: Request, res: Response) {
             return
         }
 
-        const existing = await prisma.cart.findUnique({
-            where: {
-                userId,
-            }
-        });
+        // check cart
+        const existing = await prisma.cart.findUnique({ where: { userId }});
 
         if (existing) {
-            res.status(409).json({
-                status: ResponseStatus.ERROR,
-                message: 'Ticket is already in cart. Use update instead.'
-            });
+            handleError(res, 'Ticket is already in cart. Use update instead.', 409)
             return
         }
 
@@ -36,15 +30,10 @@ export async function addToCart(req: Request, res: Response) {
             }
         });
 
-        const findTitle = await prisma.ticket.findUnique({
-            where: {
-                id: ticketId
-            }
-        })
+        // find title in ticket
+        const findTitle = await prisma.ticket.findUnique({ where: { id: ticketId }})
 
         const title = findTitle?.title
-        console.log({ newCartItem, title });
-
 
         res.status(200).json({
             status: ResponseStatus.SUCCESS,
@@ -52,6 +41,7 @@ export async function addToCart(req: Request, res: Response) {
             data: { newCartItem, title },
         });
         return
+
     } catch (error) {
         handleError(res, 'An unexpected error occurred while adding to cart', 500);
         return

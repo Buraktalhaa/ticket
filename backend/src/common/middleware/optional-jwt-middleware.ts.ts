@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { TokenPayload } from "../types/token.type";
 
 export function authenticateOptionalJWT(req: Request, res: Response, next: NextFunction) {
     const header = req.headers['authorization'];
@@ -11,7 +12,7 @@ export function authenticateOptionalJWT(req: Request, res: Response, next: NextF
     }
 
     try {
-        const { exp, iat, ...rest }= jwt.verify(token, process.env.ACCESS_SECRET!) as any;
+        const { exp, iat, ...rest }= jwt.verify(token, process.env.ACCESS_SECRET!) as TokenPayload;
         req.user = rest;
         next();
     } catch (err) {

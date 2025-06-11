@@ -16,27 +16,15 @@ export async function signInController(req: Request, res: Response) {
         const email = req.body.email;
         const password = req.body.password;
 
-        const auth = await prisma.auth.findUnique(
-            {
-                where: {
-                    email
-                },
-
-            }
-        )
+        const auth = await prisma.auth.findUnique({ where: { email }})
 
         if (!auth) {
             handleError(res, 'Authentication record not found', 401)
             return
         }
 
-        const user = await prisma.user.findUnique(
-            {
-                where: {
-                    email
-                }
-            }
-        )
+        const user = await prisma.user.findUnique({ where: { email }})
+
         if (!user) {
             handleError(res, 'User not found', 401)
             return;
@@ -55,10 +43,7 @@ export async function signInController(req: Request, res: Response) {
 
         const userRole = await prisma.userRole.findUnique({
             where: { userId: user.id },
-            include: {
-                role: true
-            }
-        });
+            include: { role: true }});
 
         const role = userRole?.role.name;
 

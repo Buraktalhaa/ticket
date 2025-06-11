@@ -1,4 +1,4 @@
-import { NextFunction, Request, RequestHandler, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import jwt from 'jsonwebtoken';
 import { handleError } from "../error-handling/handle-error";
 
@@ -12,7 +12,7 @@ export async function authenticateToken(req: Request, res: Response, next: NextF
     }
 
     try {
-        const { exp, iat, ...rest } = jwt.verify(token, process.env.ACCESS_SECRET!) as TokenPayload
+        const { exp, iat, ...rest } = jwt.verify(token, process.env.ACCESS_SECRET!) as any
 
         req.user = rest
         next();

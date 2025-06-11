@@ -1,16 +1,14 @@
 import { Request, Response } from "express";
 import { createToken } from "../utils/create-token";
 import prisma from "../../common/utils/prisma";
+import { handleError } from "../../common/error-handling/handle-error";
 
 export async function googleCallback(req: Request, res: Response) {
     const { id, email } = req.user as { id: string; email: string };
 
     try {
         if (!req.user || !id || !email) {
-            res.status(400).json({
-                status: "error",
-                message: "Invalid user information from Google"
-            });
+            handleError(res, 'Invalid user information from Google', 400)
             return
         }
 
@@ -45,12 +43,7 @@ export async function googleCallback(req: Request, res: Response) {
         return
 
     } catch (err) {
-        console.error("Google Callback Error:", err);
-        res.status(500).json({
-            status: "error",
-            message: "Token creation failed",
-            error: err
-        });
+        handleError(res, "Token creation failed", 500)
         return
     }
 }

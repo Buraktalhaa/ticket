@@ -9,12 +9,8 @@ export async function getCart(req: Request, res: Response) {
 
     try {
         const cartItem = await prisma.cart.findUnique({
-            where: {
-                userId
-            },
-            include: {
-                ticket: true
-            }
+            where: { userId },
+            include: { ticket: true }
         });        
     
         res.status(200).json({
@@ -22,9 +18,9 @@ export async function getCart(req: Request, res: Response) {
             data: cartItem
         });
         return;
+
     } catch (error) {
         handleError(res,'Error retrieving cart',500)
         return
     }
-
 }

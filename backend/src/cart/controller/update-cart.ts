@@ -30,6 +30,7 @@ export async function updateCart(req: Request, res: Response) {
             data: updatedCart
         });
         return
+        
     } catch (error) {
         handleError(res, 'Error updating cart', 500);
         return

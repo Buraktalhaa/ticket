@@ -8,11 +8,7 @@ export async function forgotPasswordController(req: Request, res: Response) {
     try {
         const { email } = req.body;
 
-        const user = await prisma.user.findUnique({
-            where: {
-                email
-            }
-        })
+        const user = await prisma.user.findUnique({ where: { email }})
 
         if (!user) {
             handleError(res, 'Auth not found', 404)
