@@ -8,7 +8,7 @@ export async function deleteCart(req: Request, res: Response) {
   const { userId } = req.user as DecodedUser;
 
   try {
-    const deleteResult =  await prisma.cart.delete({where: { userId }});
+    const deleteResult = await prisma.cart.delete({ where: { userId } });
 
     if (deleteResult.count === 0) {
       handleError(res, 'Cart is already empty or not found', 404);

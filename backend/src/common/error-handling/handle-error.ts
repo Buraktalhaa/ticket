@@ -6,5 +6,4 @@ export function handleError(res: Response, message: string, statusCode: number) 
         status: ResponseStatus.FAIL,
         message: message,
     });
-    return
 }

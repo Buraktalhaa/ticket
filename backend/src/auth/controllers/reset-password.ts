@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import prisma from "../../common/utils/prisma";
 import bcrypt from 'bcryptjs'
 import { TokenPayload } from "../../common/types/token.type";
+import { ResponseStatus } from "../../common/enums/status.enum";
 
 export async function resetPasswordController(req: Request, res: Response) {
     try {
@@ -16,15 +17,9 @@ export async function resetPasswordController(req: Request, res: Response) {
             return
         }
 
-        let payload;
-        try {
-            payload = jwt.verify(token, process.env.ACCESS_SECRET!) as TokenPayload;
-        } catch (err) {
-            handleError(res, "Invalid or expired token", 401);
-            return;
-        }
+        const payload = jwt.verify(token, process.env.ACCESS_SECRET!) as TokenPayload;
 
-        const { email, userId } = payload as TokenPayload
+        const { email, userId } = payload
 
         // find token in db
         const findResetToken = await prisma.passwordResetToken.findUnique({
@@ -71,6 +66,7 @@ export async function resetPasswordController(req: Request, res: Response) {
         })
 
         res.status(200).json({
+            status: ResponseStatus.SUCCESS,
             message: "Password changed",
         });
         return;

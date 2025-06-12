@@ -9,15 +9,10 @@ export async function editProfile(req: Request, res: Response) {
   try {
     const { userId } = req.user as DecodedUser;
 
-    const findOldPhoto = await prisma.user.findUnique({
-      where: {
-        id: userId
-      }
-    })
+    const findOldPhoto = await prisma.user.findUnique({ where: { id: userId } })
 
     const oldPhoto = findOldPhoto?.photoName;
     const newPhoto = req.file?.filename;
-
 
     if (newPhoto) {
       if (oldPhoto) {

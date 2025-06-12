@@ -24,6 +24,7 @@ export async function signUpController(req: Request, res: Response) {
 
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
+        // Find out if the user exists
         const existingUser = await prisma.user.findUnique({ where: { email }});
 
         if (existingUser) {
@@ -44,7 +45,6 @@ export async function signUpController(req: Request, res: Response) {
                 const accessToken = createToken(existingUser.id, email, 'user', process.env.ACCESS_SECRET!, 4800 * 60 * 24)
                 const refreshToken = createToken(existingUser.id, email, 'user', process.env.REFRESH_SECRET!, 48 * 60 * 60)
 
-                // 2 
                 // new Auth
                 const auth = await prisma.auth.create({
                     data: {
@@ -127,6 +127,7 @@ export async function signUpController(req: Request, res: Response) {
             data: { email: newAuth.email }
         });
         return
+        
     } catch (error) {
         handleError(res, 'An unexpected error occurred during sign-up', 500);
         return

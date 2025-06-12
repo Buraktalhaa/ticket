@@ -9,7 +9,7 @@ import { handleError } from "../../common/error-handling/handle-error";
 export async function signInController(req: Request, res: Response) {
     try {
         if (checkSignIn(req) === false) {
-            handleError(res, 'Email and password are required', 400)
+            handleError(res, 'Please enter your email and password.', 400);
             return;
         }
 
@@ -19,25 +19,25 @@ export async function signInController(req: Request, res: Response) {
         const auth = await prisma.auth.findUnique({ where: { email }})
 
         if (!auth) {
-            handleError(res, 'Authentication record not found', 401)
+            handleError(res, 'No account found with this email address.', 401);
             return
         }
 
         const user = await prisma.user.findUnique({ where: { email }})
 
         if (!user) {
-            handleError(res, 'User not found', 401)
+            handleError(res, 'User information not found. Please try again.', 401);
             return;
         }
 
         const isPasswordValid = await bcrypt.compare(password, auth.password);
         if (!isPasswordValid) {
-            handleError(res, 'Incorrect password', 401)
+            handleError(res, 'The password you entered is incorrect. Please try again.', 401);
             return
         }
 
         if (!process.env.ACCESS_SECRET && !process.env.REFRESH_SECRET) {
-            handleError(res, "JWT_SECRET is not defined in environment variables", 500)
+            handleError(res, 'Server configuration error: security keys are missing.', 500);
             return
         }
 
@@ -48,7 +48,7 @@ export async function signInController(req: Request, res: Response) {
         const role = userRole?.role.name;
 
         if (!role) {
-            handleError(res, 'User role not found', 500)
+            handleError(res, 'Unable to determine user role. Please contact support.', 500);
             return
         }
 
@@ -66,7 +66,7 @@ export async function signInController(req: Request, res: Response) {
 
         res.status(200).json({
             status: ResponseStatus.SUCCESS,
-            message: "Sign in succesfull",
+            message: 'Sign in successful. Welcome back!',
             accessToken,
             refreshToken,
             data: { email }
@@ -74,7 +74,7 @@ export async function signInController(req: Request, res: Response) {
         return
     }
     catch (error) {
-        handleError(res, "An unexpected error occurred during sign-in", 500);
+        handleError(res, 'An unexpected error occurred during sign-in. Please try again later.', 500);
         return
     }
 }

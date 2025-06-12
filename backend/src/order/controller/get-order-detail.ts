@@ -12,11 +12,7 @@ export async function getOrderDetails(req: Request, res: Response) {
             return;
         }
 
-        const order = await prisma.order.findUnique({
-            where: {
-                id
-            }
-        })
+        const order = await prisma.order.findUnique({ where: { id } })
 
         res.status(200).json({
             status: ResponseStatus.SUCCESS,

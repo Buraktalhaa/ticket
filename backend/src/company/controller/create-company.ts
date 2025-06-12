@@ -44,9 +44,7 @@ export async function createCompany(req: Request, res: Response) {
                 data: { name, phone, email }
             });
 
-            const sellerRole = await tx.role.findUnique({
-                where: { name: RoleType.seller }
-            });
+            const sellerRole = await tx.role.findUnique({ where: { name: RoleType.seller } });
 
             if (!sellerRole) throw new Error('Seller role missing');
 
@@ -124,13 +122,8 @@ export async function createCompany(req: Request, res: Response) {
         });
         return
 
-    } catch (err: unknown) {
-        if (err instanceof Error) {
-            handleError(res, err.message || 'Internal server error', 500);
-            return
-        } else {
-            handleError(res, 'Internal server error', 500);
-            return
-        }
+    } catch (error) {
+        handleError(res, 'Internal server error', 500);
+        return
     }
 }

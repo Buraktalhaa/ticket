@@ -17,7 +17,6 @@ export async function createOrder(req: Request, res: Response) {
             return;
         }
 
-
         // Add order to job queue
         const job = await orderQueue.add('create-order', {
             userId,
@@ -32,7 +31,7 @@ export async function createOrder(req: Request, res: Response) {
             }
         });
 
-        await wait(3000)
+        await wait(2000)
 
         let paymentLink: string | null = null;
         const redisKey = `payment-link:${userId}:${job.id}`;
@@ -56,6 +55,7 @@ export async function createOrder(req: Request, res: Response) {
             handleError(res, "Payment link can't created", 404)
             return
         }
+
     } catch (error) {
         handleError(res, 'An error occurred while creating the order', 500);
         return

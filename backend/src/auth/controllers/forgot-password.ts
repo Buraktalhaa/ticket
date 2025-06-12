@@ -3,6 +3,7 @@ import { handleError } from "../../common/error-handling/handle-error";
 import { Email } from "../../common/utils/email";
 import prisma from "../../common/utils/prisma";
 import { createToken } from "../utils/create-token";
+import { ResponseStatus } from "../../common/enums/status.enum";
 
 export async function forgotPasswordController(req: Request, res: Response) {
     try {
@@ -15,11 +16,7 @@ export async function forgotPasswordController(req: Request, res: Response) {
             return
         }
 
-        const oldToken = await prisma.passwordResetToken.findUnique({
-            where: {
-                userId: user.id
-            }
-        })
+        const oldToken = await prisma.passwordResetToken.findUnique({ where: { userId: user.id }})
 
         const token = createToken(user.id, email, 'user', process.env.ACCESS_SECRET!, 4800 * 60 * 24)
 
@@ -55,13 +52,13 @@ export async function forgotPasswordController(req: Request, res: Response) {
         await mail.send('Subject', 'forgot Password?');
 
         res.status(200).json({
+            status: ResponseStatus.SUCCESS,
             message: "Password reset email sent successfully.",
         });        
         return;
     }
     catch (error) {
         handleError(res, "Failed to send email", 500)
-        console.error(error);
         return;
     }
 }

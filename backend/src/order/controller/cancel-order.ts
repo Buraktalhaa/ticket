@@ -80,12 +80,10 @@ export async function cancelOrder(req: Request, res: Response) {
             });
         }
 
-
         await prisma.order.update({
             where: { id: orderId },
             data: { status: 'cancelled' },
         });
-
 
         await prisma.ticket.update({
             where: { id: ticket.id },
@@ -105,5 +103,4 @@ export async function cancelOrder(req: Request, res: Response) {
         handleError(res, 'An error occurred while cancelling the order.', 500);
         return
     }
-
 }

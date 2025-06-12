@@ -19,13 +19,7 @@ export async function changeOrderStatus(req: Request, res: Response) {
             return
         }
 
-    
-        const findOrder = await prisma.order.findUnique({
-            where: {
-                id
-            },
-    
-        })
+        const findOrder = await prisma.order.findUnique({ where: { id } })
     
         if (!findOrder) {
             handleError(res, 'Order not found in db', 404)
@@ -73,5 +67,4 @@ export async function changeOrderStatus(req: Request, res: Response) {
         handleError(res, 'Failed to change order status', 500);
         return
     }
-
 }

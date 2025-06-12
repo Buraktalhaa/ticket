@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { createToken } from "../utils/create-token";
 import prisma from "../../common/utils/prisma";
 import { handleError } from "../../common/error-handling/handle-error";
+import { ResponseStatus } from "../../common/enums/status.enum";
 
 export async function googleCallback(req: Request, res: Response) {
     const { id, email } = req.user as { id: string; email: string };
@@ -34,7 +35,7 @@ export async function googleCallback(req: Request, res: Response) {
         });
 
         res.status(200).json({
-            status: "success",
+            status: ResponseStatus.SUCCESS,
             message: "Google login successful",
             accessToken,
             refreshToken,

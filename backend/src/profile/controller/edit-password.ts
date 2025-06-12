@@ -19,11 +19,7 @@ export async function editPassword(req: Request, res: Response) {
         const oldPassword = req.body.password
 
         // find user
-        const user = await prisma.auth.findUnique({
-            where: {
-                email
-            }
-        });
+        const user = await prisma.auth.findUnique({ where: { email } });
 
         if (!user) {
             handleError(res, 'User not found', 400)
@@ -52,11 +48,10 @@ export async function editPassword(req: Request, res: Response) {
         res.status(200).json({
             status: 'success',
             message: 'Password changed successfully',
-            data: {
-                email
-            }
+            data: { email } 
         });
         return
+        
     } catch (error) {
         handleError(res, 'An error occurred while changing the password. Please try again later.', 500)
         return
