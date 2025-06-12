@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 
@@ -11,8 +11,8 @@ export class ApiService {
     private cookieService: CookieService
   ) {}
 
-  get(url: string) {
-    return this.httpClient.get(url, {
+  get<T>(url: string) {
+    return this.httpClient.get<T>(url, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.cookieService.get('accessToken'),
@@ -21,7 +21,7 @@ export class ApiService {
     });
   }
 
-  post<T>(url: string, data: T) {
+  post<T>(url: string, data: T){
     return this.httpClient.post(url, data, {
       headers: {
         'Content-Type': 'application/json',

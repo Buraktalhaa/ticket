@@ -28,7 +28,11 @@
         ></app-auth-input>
       </div>
 
-      <div class="flex justify-between items-center mb-4">
+      <app-sign-button
+      text="Sign In"
+      ></app-sign-button>
+
+      <div class="flex justify-between items-center mb-2">
         <a
           class="text-sm text-blue-600 hover:text-blue-800 font-semibold"
           routerLink="/forgot-password"
@@ -36,10 +40,6 @@
           Forgot Password?
         </a>
       </div>
-
-      <app-sign-button
-      text="Sign In"
-      ></app-sign-button>
     </form>
 
     <app-text-link
