@@ -13,18 +13,18 @@ export class SellerService {
   ) { }
 
   getMyTickets() {
-    return this.api.get(`${environment.apiUrl}/ticket/seller/seller-tickets`)
+    return this.api.get(`${environment.apiUrl}/seller-dashboard/tickets`)
   }
 
   isSeller() {
-    return this.api.get(`${environment.apiUrl}/ticket/is-seller`);
+    return this.api.get(`${environment.apiUrl}/seller-dashboard/is-seller`);
   }
   
   createTicket(ticket: CreateTicketDTO) {
-    return this.api.post(`${environment.apiUrl}/ticket/create-ticket`, ticket);
+    return this.api.post(`${environment.apiUrl}/seller-dashboard/create-ticket`, ticket);
   }
 
   editTicket(ticket: Ticket | null) {
-    return this.api.post(`${environment.apiUrl}/ticket/edit-ticket`, ticket)
+    return this.api.post(`${environment.apiUrl}/seller-dashboard/edit-ticket`, ticket)
   }
 }

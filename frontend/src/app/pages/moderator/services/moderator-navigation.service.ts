@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Ticket } from '../../ticket/types/ticket.types';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class ModeratorNavigationService {
     this.router.navigateByUrl('moderator-dashboard/status-panel');
   }
 
-  goToStatusEditPage(ticket: any) {
+  goToStatusEditPage(ticket: Ticket) {
     this.router.navigate(['moderator-dashboard/status-panel/edit'], { state: { ticket } });
   }
 }

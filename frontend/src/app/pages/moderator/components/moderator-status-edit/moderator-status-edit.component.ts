@@ -35,7 +35,7 @@ export class ModeratorStatusEditComponent {
 
     if (!ticket) {
       this.notificationService.error("No ticket found in state");
-      this.router.navigate(['/admin-dashboard/status-panel']);
+      this.router.navigate(['/moderator-dashboard/status-panel']);
       return;
     }
 

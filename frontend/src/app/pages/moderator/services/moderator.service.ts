@@ -17,10 +17,10 @@ export class ModeratorService {
   ) { }
 
   getModeratorStatusPanel(): Observable<HttpResponse<any>> {
-    return this.api.get(`${environment.apiUrl}/ticket/moderator/status-panel`);
+    return this.api.get(`${environment.apiUrl}/moderator-dashboard/status-panel`);
   }
 
   editStatus(ticket: { id: string, status: string }) {
-    return this.api.post(`${environment.apiUrl}/ticket/moderator/status-panel/update-status`, ticket);
+    return this.api.post(`${environment.apiUrl}/moderator-dashboard/status-panel/update-status`, ticket);
   }
 }
