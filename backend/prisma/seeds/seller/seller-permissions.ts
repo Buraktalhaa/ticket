@@ -10,7 +10,7 @@ export const createSellerPermissions = async () => {
 
     const sellerPermission4 = await prisma.permission.create({ data: { url: '/is-seller' } });
 
-    const sellerPermission5 = await prisma.permission.create({ data: { url: '/seller/seller-tickets' } });
+    const sellerPermission5 = await prisma.permission.create({ data: { url: '/tickets' } });
 
     return {
         sellerPermission1,

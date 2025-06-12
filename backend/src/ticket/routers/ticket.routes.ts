@@ -1,15 +1,5 @@
 import { Router } from "express";
-import { authenticateToken } from "../../common/middleware/token-middleware";
-import { permissionControl } from "../../common/middleware/permission-middleware";
-import { createTicket } from "../controller/create-ticket";
-import { deleteTicket } from "../controller/delete-ticket";
-import { editTicket } from "../controller/edit-ticket";
 import { getTickets } from "../controller/get-tickets"
-import { updateTicketStatus } from "../controller/change-ticket-status";
-import { companyMiddleware } from "../middleware/companyMiddleware";
-import { isSeller } from "../controller/is-seller";
-import { sellerTickets } from "../controller/seller-tickets";
-import { statusPanel } from "../controller/status-panel";
 import { getTicketsByCategory } from "../controller/get-tickets-by-category";
 import { getTicketById } from "../controller/get-ticket-by-id";
 import { authenticateOptionalJWT } from "../../common/middleware/optional-jwt-middleware.ts";
@@ -19,15 +9,5 @@ const router = Router()
 router.get('/get-tickets', authenticateOptionalJWT, getTickets)
 router.get('/get-tickets/by-id/:id', authenticateOptionalJWT, getTicketById)
 router.get('/get-tickets/by-category/:category', authenticateOptionalJWT, getTicketsByCategory)
-
-router.post('/edit-ticket', authenticateToken, permissionControl, companyMiddleware, editTicket) 
-router.post('/create-ticket', authenticateToken, permissionControl, createTicket)
-router.post('/delete-ticket', authenticateToken, permissionControl, companyMiddleware, deleteTicket)
-
-router.get('/is-seller', authenticateToken, permissionControl, isSeller)
-router.get('/seller/seller-tickets', authenticateToken, permissionControl, sellerTickets)
-
-router.get('/moderator/status-panel', authenticateToken, permissionControl, statusPanel)
-router.post('/moderator/status-panel/update-status', authenticateToken, permissionControl, updateTicketStatus)
 
 export default router;

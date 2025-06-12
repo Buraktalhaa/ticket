@@ -3,7 +3,7 @@ import prisma from "../../common/utils/prisma";
 import { ResponseStatus } from "../../common/enums/status.enum";
 import { handleError } from "../../common/error-handling/handle-error";
 
-export const statusPanel = async (req: Request, res: Response) => {
+export const moderatorStatusPanel = async (req: Request, res: Response) => {
     try {
         const tickets = await prisma.ticket.findMany({
             include: {

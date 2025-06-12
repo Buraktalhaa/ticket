@@ -10,9 +10,9 @@ export const createModeratorPermissions = async () => {
 
   const moderatorPermission4 = await prisma.permission.create({data: { url: '/update-status' }});
 
-  const moderatorPermission5 = await prisma.permission.create({data: { url: '/moderator/status-panel' }});
+  const moderatorPermission5 = await prisma.permission.create({data: { url: '/status-panel' }});
 
-  const moderatorPermission6 = await prisma.permission.create({data: { url: '/moderator/status-panel/update-status' }});
+  const moderatorPermission6 = await prisma.permission.create({data: { url: '/status-panel/update-status' }});
 
   return {
     moderatorPermission1,

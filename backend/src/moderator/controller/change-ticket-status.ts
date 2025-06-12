@@ -12,11 +12,7 @@ export const updateTicketStatus = async (req: Request, res: Response) => {
             return;
         }
 
-        const ticket = await prisma.ticket.findUnique({
-            where: {
-                id
-            }
-        });
+        const ticket = await prisma.ticket.findUnique({ where: { id } });
 
         if (!ticket) {
             handleError(res, 'ticket not found', 404)
