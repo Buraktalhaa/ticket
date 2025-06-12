@@ -3,19 +3,28 @@ import prisma from "../../../src/common/utils/prisma";
 import bcrypt from 'bcryptjs'
 import { generatePNR } from "../../../src/common/utils/generatePnr";
 import { createCategories } from "../common/create-categories";
-import { createRoles } from "../common/create-role";
-import { createCompany } from "./create-company.seed";
 import { createSellerPermissions } from "./seller-permissions";
+import { RoleType } from "@prisma/client";
 
 export const sellerSeed = async () => {
-
     // Company
-    const company = await createCompany()
+    const companyBtm = await prisma.company.create({
+        data: {
+            name: 'BTM',
+            phone: '123456',
+            email: 'btm@gmail.com'
+        }
+    })
+
     // SellerRole
-    const sellerRole = await createRoles()
+    const sellerRole = await prisma.role.create({
+        data: {
+            name: RoleType.seller
+        }
+    });
+
     // Seller permissions
     const sellerPermissions = await createSellerPermissions()
-
 
     // Default seller
     const sellerEmail1 = 'b'
@@ -31,7 +40,7 @@ export const sellerSeed = async () => {
             active: true,
             photoName: "",
             email: sellerEmail1,
-            companyId: company.companyBtm.id
+            companyId: companyBtm.id
         }
     })
 
@@ -56,7 +65,7 @@ export const sellerSeed = async () => {
     await prisma.userRole.create({
         data: {
             userId: seller1.id,
-            roleId: sellerRole.sellerRole.id
+            roleId: sellerRole.id
         }
     })
 
@@ -73,7 +82,7 @@ export const sellerSeed = async () => {
             active: true,
             photoName: "",
             email: email2,
-            companyId: company.companyBtm.id
+            companyId: companyBtm.id
         }
     })
 
@@ -98,42 +107,42 @@ export const sellerSeed = async () => {
     await prisma.userRole.create({
         data: {
             userId: seller2.id,
-            roleId: sellerRole.sellerRole.id  
+            roleId: sellerRole.id
         }
     })
 
     // Seller
     await prisma.permit.create({
         data: {
-            roleId: sellerRole.sellerRole.id,
+            roleId: sellerRole.id,
             permissionId: sellerPermissions.sellerPermission1.id
         }
     })
 
     await prisma.permit.create({
         data: {
-            roleId: sellerRole.sellerRole.id,
+            roleId: sellerRole.id,
             permissionId: sellerPermissions.sellerPermission2.id
         }
     })
 
     await prisma.permit.create({
         data: {
-            roleId: sellerRole.sellerRole.id,
+            roleId: sellerRole.id,
             permissionId: sellerPermissions.sellerPermission3.id
         }
     })
 
     await prisma.permit.create({
         data: {
-            roleId: sellerRole.sellerRole.id,
+            roleId: sellerRole.id,
             permissionId: sellerPermissions.sellerPermission4.id
         }
     })
 
     await prisma.permit.create({
         data: {
-            roleId: sellerRole.sellerRole.id,
+            roleId: sellerRole.id,
             permissionId: sellerPermissions.sellerPermission5.id
         }
     })
@@ -155,7 +164,7 @@ export const sellerSeed = async () => {
             location: 'Vodafone Park, Besiktas, Istanbul, Turkey',
             pointExpiresAt: expiresAt,
             pointRate: 0.1,
-            companyId: company.companyBtm.id,
+            companyId: companyBtm.id,
             dateTime: new Date(2025, 4, 28, 20, 30),
             stock: 1,
             sold: false,
@@ -177,7 +186,7 @@ export const sellerSeed = async () => {
             location: 'Kültürpark Open Air Theater, Izmir, Turkey',
             pointExpiresAt: expiresAt,
             pointRate: 0.05,
-            companyId: company.companyBtm.id,
+            companyId: companyBtm.id,
             dateTime: new Date('2025-05-28T20:30:00Z'),
             stock: 2,
             sold: false,
@@ -200,7 +209,7 @@ export const sellerSeed = async () => {
             location: 'State Theater, Tunali Hilmi Street, Ankara, Turkey',
             pointExpiresAt: expiresAt,
             pointRate: 0.08,
-            companyId: company.companyBtm.id,
+            companyId: companyBtm.id,
             dateTime: new Date(2025, 4, 28, 20, 30),
             stock: 1,
             sold: false,
@@ -222,7 +231,7 @@ export const sellerSeed = async () => {
             location: 'Kadikoy Public Theater, Istanbul, Turkey',
             pointExpiresAt: expiresAt,
             pointRate: 0.07,
-            companyId: company.companyBtm.id,
+            companyId: companyBtm.id,
             dateTime: new Date(2025, 4, 28, 20, 30),
             stock: 250,
             sold: false,
@@ -245,7 +254,7 @@ export const sellerSeed = async () => {
             location: 'Beachside Cinema Festival Area, Lara, Antalya, Turkey',
             pointExpiresAt: expiresAt,
             pointRate: 0.1,
-            companyId: company.companyBtm.id,
+            companyId: companyBtm.id,
             dateTime: new Date(2025, 4, 28, 20, 30),
             stock: 1000,
             sold: false,
@@ -270,7 +279,7 @@ export const sellerSeed = async () => {
             location: 'Esenboga Airport, Domestic Terminal, Ankara, Turkey',
             pointExpiresAt: expiresAt,
             pointRate: 0.09,
-            companyId: company.companyBtm.id,
+            companyId: companyBtm.id,
             dateTime: new Date(2025, 4, 28, 20, 30),
             stock: 700,
             sold: false,
@@ -292,7 +301,7 @@ export const sellerSeed = async () => {
             location: 'Milas-Bodrum Airport, Mugla, Turkey',
             pointExpiresAt: expiresAt,
             pointRate: 0.09,
-            companyId: company.companyBtm.id,
+            companyId: companyBtm.id,
             dateTime: new Date(2025, 4, 28, 20, 30),
             stock: 700,
             sold: false,
@@ -302,13 +311,3 @@ export const sellerSeed = async () => {
         },
     });
 }
-
-sellerSeed()
-    .then(async () => {
-        await prisma.$disconnect();
-    })
-    .catch(async (e) => {
-        console.error(e);
-        await prisma.$disconnect();
-        process.exit(1);
-    });

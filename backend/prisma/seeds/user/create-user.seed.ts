@@ -3,10 +3,14 @@ import { createToken } from "../../../src/auth/utils/create-token";
 import prisma from "../../../src/common/utils/prisma";
 import bcrypt from 'bcryptjs'
 import { createUserPermissions } from "./user-permission";
-import { createRoles } from "../common/create-role";
 
 export const userSeed = async () => {
-  const roles = await createRoles()
+  // user
+  const userRole = await prisma.role.create({
+    data: {
+      name: RoleType.user
+    }
+  });
 
   const userEmail1 = 'user'
   const userPassword1 = 'user'
@@ -43,123 +47,109 @@ export const userSeed = async () => {
     }
   })
 
-
   await prisma.userRole.create({
     data: {
       userId: user1.id,
-      roleId: roles.userRole.id
+      roleId: userRole.id
     }
   })
-
-
 
   // User
   await prisma.permit.create({
     data: {
-      roleId: roles.userRole.id,
+      roleId: userRole.id,
       permissionId: userPermissions.userPermission1.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: roles.userRole.id,
+      roleId: userRole.id,
       permissionId: userPermissions.userPermission2.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: roles.userRole.id,
+      roleId: userRole.id,
       permissionId: userPermissions.userPermission3.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: roles.userRole.id,
+      roleId: userRole.id,
       permissionId: userPermissions.userPermission4.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: roles.userRole.id,
+      roleId: userRole.id,
       permissionId: userPermissions.userPermission5.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: roles.userRole.id,
+      roleId: userRole.id,
       permissionId: userPermissions.userPermission6.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: roles.userRole.id,
+      roleId: userRole.id,
       permissionId: userPermissions.userPermission7.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: roles.userRole.id,
+      roleId: userRole.id,
       permissionId: userPermissions.userPermission8.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: roles.userRole.id,
+      roleId: userRole.id,
       permissionId: userPermissions.userPermission9.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: roles.userRole.id,
+      roleId: userRole.id,
       permissionId: userPermissions.userPermission10.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: roles.userRole.id,
+      roleId: userRole.id,
       permissionId: userPermissions.userPermission11.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: roles.userRole.id,
+      roleId: userRole.id,
       permissionId: userPermissions.userPermission12.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: roles.userRole.id,
+      roleId: userRole.id,
       permissionId: userPermissions.userPermission13.id
     }
   })
 
   await prisma.permit.create({
     data: {
-      roleId: roles.userRole.id,
+      roleId: userRole.id,
       permissionId: userPermissions.userPermission14.id
     }
   })
-
 }
-
-userSeed()
-  .then(async () => {
-    await prisma.$disconnect();
-  })
-  .catch(async (e) => {
-    console.error(e);
-    await prisma.$disconnect();
-    process.exit(1);
-  });

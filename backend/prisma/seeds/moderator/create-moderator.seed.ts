@@ -1,11 +1,15 @@
 import prisma from "../../../src/common/utils/prisma";
 import bcrypt from 'bcryptjs'
-import { createRoles } from "../common/create-role";
 import { createToken } from "../../../src/auth/utils/create-token";
 import { createModeratorPermissions } from "./moderator-permissions";
+import { RoleType } from "@prisma/client";
 
 export const moderatorSeed = async () => {
-    const roles = await createRoles()
+    const moderatorRole = await prisma.role.create({
+        data: {
+            name: RoleType.moderator
+        }
+    });
 
     const moderatorPermissions = await createModeratorPermissions()
 
@@ -47,61 +51,50 @@ export const moderatorSeed = async () => {
     await prisma.userRole.create({
         data: {
             userId: moderator.id,
-            roleId: roles.moderatorRole.id
+            roleId: moderatorRole.id
         }
     })
 
     // Moderator
     await prisma.permit.create({
         data: {
-            roleId: roles.moderatorRole.id,
+            roleId: moderatorRole.id,
             permissionId: moderatorPermissions.moderatorPermission1.id
         }
     })
 
     await prisma.permit.create({
         data: {
-            roleId: roles.moderatorRole.id,
+            roleId: moderatorRole.id,
             permissionId: moderatorPermissions.moderatorPermission2.id
         }
     })
 
     await prisma.permit.create({
         data: {
-            roleId: roles.moderatorRole.id,
+            roleId: moderatorRole.id,
             permissionId: moderatorPermissions.moderatorPermission3.id
         }
     })
 
     await prisma.permit.create({
         data: {
-            roleId: roles.moderatorRole.id,
+            roleId: moderatorRole.id,
             permissionId: moderatorPermissions.moderatorPermission4.id
         }
     })
 
     await prisma.permit.create({
         data: {
-            roleId: roles.moderatorRole.id,
+            roleId: moderatorRole.id,
             permissionId: moderatorPermissions.moderatorPermission5.id
         }
     })
 
     await prisma.permit.create({
         data: {
-            roleId: roles.moderatorRole.id,
+            roleId: moderatorRole.id,
             permissionId: moderatorPermissions.moderatorPermission6.id
         }
     })
-
 }
-
-moderatorSeed()
-    .then(async () => {
-        await prisma.$disconnect();
-    })
-    .catch(async (e) => {
-        console.error(e);
-        await prisma.$disconnect();
-        process.exit(1);
-    });

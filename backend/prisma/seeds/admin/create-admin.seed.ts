@@ -1,10 +1,15 @@
 import prisma from "../../../src/common/utils/prisma";
 import bcrypt from 'bcryptjs'
-import { createRoles } from "../common/create-role";
 import { createToken } from "../../../src/auth/utils/create-token";
+import { RoleType } from "@prisma/client";
 
 export const adminSeed = async () => {
-    const roles = await createRoles()
+    // admin
+    const adminRole = await prisma.role.create({
+        data: {
+            name: RoleType.admin
+        }
+    });
 
     // const adminPermissions = await createAdminPermissions()
 
@@ -44,17 +49,7 @@ export const adminSeed = async () => {
     await prisma.userRole.create({
         data: {
             userId: admin.id,
-            roleId: roles.adminRole.id
+            roleId: adminRole.id
         }
     })
 }
-
-adminSeed()
-    .then(async () => {
-        await prisma.$disconnect();
-    })
-    .catch(async (e) => {
-        console.error(e);
-        await prisma.$disconnect();
-        process.exit(1);
-    });

@@ -24,6 +24,8 @@ import './auth/controllers/google-strategy';
 import cartRoutes from './cart/routers/cart.routes';
 import './order/queue/order-cleanup-worker'
 import favoriteRoutes from './favorite/routers/favorite.routes';
+import moderatorRoutes from './moderator/routers/moderator.routes';
+import sellerRoutes from './seller/routers/seller.routes';
 
 const port = '3000'
 const app = express();
@@ -139,6 +141,10 @@ app.use('/company', companyRouter)
 app.use('/cart', cartRoutes);
 
 app.use('/favorite', favoriteRoutes)
+
+app.use('/moderator-dashboard', moderatorRoutes)
+
+app.use('/seller-dashboard', sellerRoutes)
 
 
 
