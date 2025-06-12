@@ -13,14 +13,13 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const apiService = inject(ApiService);
   const cookieService = inject(CookieService);
 
-  if (req.url.includes('/auth/refresh')) {
-    return next(req);
-  }
+  const isRefreshRequest = req.url.includes('/auth/refresh');
+  const isSignInRequest = req.url.includes('/auth/sign-in');
 
   return next(req).pipe(
     catchError((error: HttpErrorResponse) => {
       const status = error?.status;
-      if (status === 401) {
+      if (status === 401 && !isSignInRequest && !isRefreshRequest) {
         const refreshToken = cookieService.get('refreshToken');
         if (!refreshToken) {
           clearSession()

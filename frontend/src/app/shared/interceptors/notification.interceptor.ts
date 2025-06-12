@@ -26,16 +26,17 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
     }),
     catchError((error: HttpErrorResponse) => {
       const message = error?.error?.message;
-
+      const isAuthRequest = req.url.includes('/auth/sign-in') || req.url.includes('/auth/refresh');
+    
       if (typeof message === 'string') {
         notificationService.error(message);
       }
     
-      if (error.status === 401 || error.status === 403) {
+      if ((error.status === 401 || error.status === 403) && !isAuthRequest) {
         router.navigate(['/unauthorized']);
-      }  
-
+      }
+    
       return throwError(() => error);
-    })
+    })    
   );
 };
