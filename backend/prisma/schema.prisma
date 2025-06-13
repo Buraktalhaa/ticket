@@ -33,7 +33,7 @@ model User {
   lastName           String?
   birthday           DateTime?
   active             Boolean             @default(true)
-  photoName          String?
+  profilPhotoUrl     String?
   email              String              @unique
   companyId          String?
   company            Company?            @relation(fields: [companyId], references: [id])

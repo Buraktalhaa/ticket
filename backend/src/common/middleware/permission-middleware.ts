@@ -9,7 +9,6 @@ export async function permissionControl(req: Request, res: Response, next: NextF
     // endpoint path    
     const url = req.path
 
-
     const userRole = await prisma.userRole.findUnique({
         where: {
             userId

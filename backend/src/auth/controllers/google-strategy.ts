@@ -31,7 +31,7 @@ passport.use("google",
                         email,
                         active: true,
                         birthday: null,
-                        photoName: profile.photos?.[0].value || ''
+                        profilPhotoUrl: profile.photos?.[0].value || ''
                     }
                 });
 

@@ -11,7 +11,7 @@ export async function editProfile(req: Request, res: Response) {
 
     const findOldPhoto = await prisma.user.findUnique({ where: { id: userId } })
 
-    const oldPhoto = findOldPhoto?.photoName;
+    const oldPhoto = findOldPhoto?.profilPhotoUrl;
     const newPhoto = req.file?.filename;
 
     if (newPhoto) {
@@ -35,7 +35,7 @@ export async function editProfile(req: Request, res: Response) {
       },
       data: {
         ...req.body,
-        photoName: newPhoto || oldPhoto
+        profilPhotoUrl: newPhoto || oldPhoto
 
       }
     })

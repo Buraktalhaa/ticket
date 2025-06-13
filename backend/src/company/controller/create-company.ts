@@ -58,7 +58,7 @@ export async function createCompany(req: Request, res: Response) {
                     lastName: name,
                     birthday,
                     active: true,
-                    photoName: '',
+                    profilPhotoUrl: '',
                     email: auth1.email,
                     companyId: company.id
                 }
@@ -74,7 +74,7 @@ export async function createCompany(req: Request, res: Response) {
                     lastName: name,
                     birthday,
                     active: true,
-                    photoName: '',
+                    profilPhotoUrl: '',
                     email: auth2.email,
                     companyId: company.id
                 }
