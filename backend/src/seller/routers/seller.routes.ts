@@ -3,7 +3,7 @@ import { authenticateToken } from "../../common/middleware/token-middleware";
 import { permissionControl } from "../../common/middleware/permission-middleware";
 import { isSeller } from "../controller/is-seller";
 import { sellerTickets } from "../controller/seller-tickets";
-import { companyMiddleware } from "../../ticket/middleware/companyMiddleware";
+import { companyMiddleware } from "../../common/middleware/companyMiddleware";
 import { createTicket } from "../controller/create-ticket";
 import { editTicket } from "../controller/edit-ticket";
 import { deleteTicket } from "../controller/delete-ticket";
