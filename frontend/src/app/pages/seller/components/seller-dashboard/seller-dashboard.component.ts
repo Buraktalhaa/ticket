@@ -24,28 +24,17 @@ export class SellerDashboardComponent {
   createTicket() {
     this.sellerService.isSeller().subscribe({
       next: () => {
-        this.notificationService.success("Authorized as seller.");
         this.router.navigateByUrl('seller-dashboard/create-ticket');
       },
       error: (err) => {
         console.error('Authorization error (isSeller):', err);
         const msg = err?.error?.message || "You are not authorized as a seller.";
-        this.notificationService.warning(msg);
       }
     });
   }
 
 
   myTickets() {
-    this.sellerService.getMyTickets().subscribe({
-      next: () => {
-        this.router.navigateByUrl('seller-dashboard/my-tickets');
-        this.notificationService.success('Tickets loaded successfully');
-      },
-      error: (err) => {
-        console.error('Error fetching tickets:', err);
-        this.notificationService.error('Failed to load tickets');
-      }
-    });
+    this.router.navigateByUrl('seller-dashboard/my-tickets');
   }
 }

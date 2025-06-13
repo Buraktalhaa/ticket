@@ -76,7 +76,7 @@ export class NotificationService {
       type: 'error',
       message,
       title: title || 'Error',
-      duration: 7000, 
+      duration: 6000, 
       showProgress: true,
       autoClose: true,
       ...options
@@ -94,8 +94,8 @@ export class NotificationService {
     this.showNotification({
       type: 'warning',
       message,
-      title: title || 'Uyarı',
-      duration: 5000,
+      title: title || 'Warning',
+      duration: 4000,
       showProgress: true,
       autoClose: true,
       ...options

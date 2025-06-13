@@ -15,6 +15,7 @@ export function authenticateOptionalJWT(req: Request, res: Response, next: NextF
         const { exp, iat, ...rest }= jwt.verify(token, process.env.ACCESS_SECRET!) as TokenPayload;
         req.user = rest;
         next();
+        return
     } catch (err) {
         next();
         return 

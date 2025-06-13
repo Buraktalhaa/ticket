@@ -39,7 +39,6 @@ export class SellerTicketsComponent {
       this.tickets = data;
       this.filteredTickets = [...data];
     });
-    this.sellerService.getMyTickets();
   }
 
   goToEditPage(ticket: Ticket) {

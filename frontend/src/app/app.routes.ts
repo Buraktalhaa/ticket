@@ -19,7 +19,7 @@ import { authGuard } from './shared/guard/auth.guard';
 import { ModeratorDashboardComponent } from './pages/moderator/components/moderator-dashboard/moderator-dashboard.component';
 import { ModeratorStatusPanelComponent } from './pages/moderator/components/moderator-status-panel/moderator-status-panel.component';
 import { ModeratorStatusEditComponent } from './pages/moderator/components/moderator-status-edit/moderator-status-edit.component';
-import { FavoritesComponent } from './pages/favorite/components/favorites/favorites.component';
+import { FavoritesComponent } from './pages/favorites/components/favorites/favorites.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: '/main', pathMatch: 'full' },

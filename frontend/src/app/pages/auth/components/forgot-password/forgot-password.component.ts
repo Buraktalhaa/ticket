@@ -3,9 +3,7 @@ import { AuthInputComponent } from '../../shared/components/auth-input/auth-inpu
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SignButtonComponent } from '../../shared/components/sign-button/sign-button.component';
-import { PasswordService } from '../../services/password.service';
 import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
-import { NotificationService } from '../../../../shared/services/notification.service';
 import { Router } from '@angular/router';
 import { ResetMailService } from '../../services/reset-mail.service';
 
@@ -27,7 +25,6 @@ export class ForgotPasswordComponent {
   constructor(
     private resetMail:ResetMailService,
     private router: Router,
-    private notificationService: NotificationService
   ) { }
 
   send(){
@@ -36,13 +33,7 @@ export class ForgotPasswordComponent {
     }
     this.resetMail.sendResetMail(mailData).subscribe({
       next: () => {
-        this.notificationService.success('Password reset mail sent successfully.');
         this.router.navigateByUrl('/mail-sent');
-      },
-      error: (err) => {
-        console.error('Error sending reset mail:', err);
-        const msg = err.error?.message || 'Failed to send reset mail.';
-        this.notificationService.error(msg);
       }
     });
   }

@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { catchError, tap, throwError } from 'rxjs';
 import { NotificationService } from '../services/notification.service';
 import { Router } from '@angular/router';
+import { ApiResponse } from '../types/api-response.types';
 
 export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
   const notificationService = inject(NotificationService);
@@ -10,15 +11,11 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
 
   return next(req).pipe(
     tap((event) => {
+      // basarili bir mesaj gelmis
       if (event instanceof HttpResponse) {
-        const body: any = event.body;
+        const body = event.body as ApiResponse;
 
-        if (body?.error) {
-          notificationService.error(body.error.message);
-          return;
-        }
-
-        const message = body.data?.message || body.message;
+        const message = body.message;
         if (message) {
           notificationService.success(message);
         }

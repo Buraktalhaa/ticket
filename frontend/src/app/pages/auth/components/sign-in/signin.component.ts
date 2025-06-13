@@ -69,16 +69,6 @@ export class SigninComponent {
 
         this.router.navigateByUrl(this.returnUrl);
       },
-
-      error: (err: HttpErrorResponse) => {
-        if (err.status === 401) {
-          
-        } else if (err.status === 400) {
-          this.notificationService.error('Please enter your email and password.');
-        } else {
-          this.notificationService.error('Something went wrong. Please try again later.');
-        }
-      }
     });
   }
 }

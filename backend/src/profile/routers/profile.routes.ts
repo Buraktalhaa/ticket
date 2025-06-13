@@ -9,10 +9,7 @@ import { editProfile } from "../controller/edit-profile";
 const router = Router()
 
 router.get('/my-profile', authenticateToken, permissionControl , getProfile)
-
 router.put('/my-profile/edit', authenticateToken ,permissionControl, fileUploadMiddleware('photoName'), editProfile)
-
 router.post('/my-profile/edit-password', authenticateToken, permissionControl, editPassword)
-
 
 export default router;
