@@ -28,7 +28,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
         return apiService.post(`${environment.apiUrl}/auth/refresh`, { refreshToken }).pipe(
           switchMap((res: any) => {
-            const accessToken:string = res.body?.accessToken;
+            const accessToken: string = res.body?.accessToken;
             if (accessToken) {
               cookieService.set('accessToken', accessToken);
               notificationService.success('Session renewed successfully.');
@@ -38,7 +38,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
                 headers: req.headers.set('Authorization', `Bearer ${accessToken}`),
               });
               return next(clonedReq);
-            } else {
+            }
+            else {
               clearSession()
               return throwError(() => error);
             }

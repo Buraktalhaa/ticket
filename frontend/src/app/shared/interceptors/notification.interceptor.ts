@@ -15,25 +15,28 @@ export const notificationInterceptor: HttpInterceptorFn = (req, next) => {
       if (event instanceof HttpResponse) {
         const body = event.body as ApiResponse;
 
-        const message = body.message;
-        if (message) {
-          notificationService.success(message);
+        if (body.message) {
+          notificationService.success(body.message);
         }
       }
     }),
     catchError((error: HttpErrorResponse) => {
       const message = error?.error?.message;
       const isAuthRequest = req.url.includes('/auth/sign-in') || req.url.includes('/auth/refresh');
-    
+
       if (typeof message === 'string') {
         notificationService.error(message);
       }
-    
+
+      if (error.status === 0) {
+        notificationService.error('Check your internet connection');
+      }
+
       if ((error.status === 401 || error.status === 403) && !isAuthRequest) {
         router.navigate(['/unauthorized']);
       }
-    
+
       return throwError(() => error);
-    })    
+    })
   );
 };

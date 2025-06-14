@@ -14,7 +14,7 @@ export class TicketPurchaseHelperService {
 
   ) { }
 
-  purchaseTicket(ticket: Ticket, ticketCount:number){
+  purchaseTicket(ticket: Ticket, ticketCount: number) {
     const newItem = {
       ticketId: ticket.id,
       count: ticketCount
@@ -33,12 +33,23 @@ export class TicketPurchaseHelperService {
           const confirmed = confirm(`You already have "${existing.ticket.title}" in your cart. Do you want to replace it?`);
 
           if (confirmed) {
-            this.cartService.clearCart().subscribe(() => {
-              this.cartService.addToCart(newItem).subscribe(() => {
-                this.notificationService.info(`Previous item removed. "${ticket.title}" added to your cart.`);
-              });
+            this.cartService.clearCart().subscribe({
+              next: () => {
+                this.cartService.addToCart(newItem).subscribe({
+                  next: () => {
+                    this.notificationService.info(`Previous item removed. "${ticket.title}" added to your cart.`);
+                  },
+                  error: () => {
+                    this.notificationService.error('Failed to add the new ticket to cart after clearing the previous one.');
+                  }
+                });
+              },
+              error: () => {
+                this.notificationService.error('Failed to clear the cart. Please try again.');
+              }
             });
-          } else {
+          }
+          else {
             this.notificationService.info("Cart remains unchanged.");
           }
         } else {
