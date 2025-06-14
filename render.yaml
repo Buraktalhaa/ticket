@@ -16,18 +16,16 @@ services:
     env: docker
     plan: free
     dockerfilePath: frontend/Dockerfile
+    buildCommand: npm install
+    startCommand: ng serve --host 0.0.0.0 --port 4200 --poll=2000 --disable-host-check
     envVars:
       - key: NODE_ENV
         value: development
-    buildCommand: npm install
-    startCommand: ng serve --host 0.0.0.0 --port 4200 --poll=2000 --disable-host-check
     autoDeploy: true
 
   - type: pserv
     name: ticket-db
-    env: docker
     plan: free
-    dockerfilePath: ''  # image kullanıyoruz
     image: postgres:latest
     envVars:
       - key: POSTGRES_DB
@@ -39,7 +37,5 @@ services:
 
   - type: pserv
     name: ticket-redis
-    env: docker
     plan: free
-    dockerfilePath: ''  # image kullanıyoruz
     image: redis:latest
