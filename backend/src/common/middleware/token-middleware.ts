@@ -4,14 +4,15 @@ import { handleError } from "../error-handling/handle-error";
 import { TokenPayload } from '../types/token.type';
 
 export async function authenticateToken(req: Request, res: Response, next: NextFunction): Promise<void> {
-    const header = req.headers['authorization'];
-    const token = header && header.split(' ')[1];
-    if (!token) {
-        handleError(res, 'Access token is missing', 401)
-        return
-    }    
-
     try {
+        const header = req.headers['authorization'];
+        const token = header && header.split(' ')[1];
+        
+        if (!token) {
+            handleError(res, 'Access token is missing', 401)
+            return
+        }
+
         const { exp, iat, ...rest } = jwt.verify(token, process.env.ACCESS_SECRET!) as TokenPayload;
         req.user = rest
         next();

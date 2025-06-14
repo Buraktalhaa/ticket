@@ -10,7 +10,7 @@ export class LabelsComponent {
   @Input() label!: string;
   @Input() placeholder: string = '';
   @Input() type: string = 'text';
-  @Input() model: string = '';
+  @Input() model: string | number | null= '';
   @Output() modelChange = new EventEmitter<any>();
 
   isFocused: boolean = false;

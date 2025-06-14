@@ -40,12 +40,12 @@ export class SignupComponent {
   ) { }
 
   signUp() {
-    // const error = validateSignUp(this.email, this.firstName, this.password, this.confirmPassword)
+    const error = validateSignUp(this.email, this.firstName, this.password, this.confirmPassword)
 
-    // if (error) {
-    //   this.notificationService.showNotification("warning", error);
-    //   return;
-    // }
+    if (error) {
+      this.notificationService.warning(error);
+      return;
+    }
 
     const signUpData = {
       email: this.email,

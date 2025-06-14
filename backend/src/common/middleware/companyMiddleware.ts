@@ -9,7 +9,8 @@ export async function companyMiddleware(req: Request, res: Response, next: NextF
         const ticketId = req.body.id;
 
         if (!ticketId) {
-            return handleError(res, 'Ticket ID must be provided in the request body.', 400);
+            handleError(res, 'Ticket ID must be provided in the request body.', 400);
+            return
         }
 
         const seller = await prisma.user.findUnique({

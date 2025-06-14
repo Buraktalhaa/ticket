@@ -3,5 +3,5 @@ export type UpdateProfileData = {
     lastName: string;
     birthday: string;
     active: boolean;
-    photoName?: string; 
+    profilPhotoUrl?: string; 
 }

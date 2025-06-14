@@ -32,7 +32,7 @@ export class NavbarComponent {
     this.isLoggedIn = this.cookieService.check('accessToken');
   
     this.profileService.profileData$.subscribe((user) => {
-      this.userPhotoUrl = user?.photoName ?? null;
+      this.userPhotoUrl = user?.profilPhotoUrl ?? null;
     });
   }
 

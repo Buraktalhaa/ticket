@@ -3,7 +3,7 @@ export type Profile = {
     firstName: string;
     lastName: string;
     email: string;
-    photoName: string | null;
+    profilPhotoUrl: string | null;
     birthday: string;
     active: boolean;
     companyId: string | null;

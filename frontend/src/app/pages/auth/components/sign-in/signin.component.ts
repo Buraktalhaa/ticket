@@ -8,7 +8,7 @@ import { SignButtonComponent } from '../../shared/components/sign-button/sign-bu
 import { AuthService } from '../../services/auth.service';
 import { FooterInfoTextComponent } from '../../../../shared/components/footer-info-text/footer-info-text.component';
 import { NotificationService } from '../../../../shared/services/notification.service';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { HttpResponse } from '@angular/common/http';
 import { validateSignIn } from '../../../../shared/helpers/auth-validation.helper';
 import { TokenService } from '../../services/token.service';
 
@@ -48,12 +48,12 @@ export class SigninComponent {
   }
 
   signIn() {
-    // const error = validateSignIn(this.email, this.password)
+   const error = validateSignIn(this.email, this.password)
 
-    // if (error) {
-    //   this.notificationService.showNotification("warning", error);
-    //   return;
-    // }
+   if (error) {
+     this.notificationService.warning(error);
+     return;
+   }
 
     const signInData = {
       email: this.email,
