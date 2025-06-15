@@ -27,18 +27,18 @@ export const sellerSeed = async () => {
     const sellerPermissions = await createSellerPermissions()
 
     // Default seller
-    const sellerEmail1 = 'b'
-    const sellerPassword1 = 'b'
+    const sellerEmail1 = 'seller@btm.com'
+    const sellerPassword1 = 'Seller123!'
     const hashedPassword = await bcrypt.hash(sellerPassword1, 10);
 
     // Create seller for BTM company
     const seller1 = await prisma.user.create({
         data: {
-            firstName: "Burak",
-            lastName: "Talha",
-            birthday: new Date('2001-02-21'),
+            firstName: "Seller",
+            lastName: "Demo1",
+            birthday: new Date('2000-01-01'),
             active: true,
-            photoName: "",
+            profilPhotoUrl: "",
             email: sellerEmail1,
             companyId: companyBtm.id
         }
@@ -69,19 +69,18 @@ export const sellerSeed = async () => {
         }
     })
 
-
-    const email2 = 'c'
-    const sellerPassword2 = 'c'
+    const sellerEmail2 = 'seller2@btm.com'
+    const sellerPassword2 = 'Seller123!'
     const hashedPassword2 = await bcrypt.hash(sellerPassword2, 10);
 
     const seller2 = await prisma.user.create({
         data: {
-            firstName: "Burak",
-            lastName: "Talha",
-            birthday: new Date('2001-02-21'),
+            firstName: "Seller2",
+            lastName: "Demo2",
+            birthday: new Date('2000-01-01'),
             active: true,
-            photoName: "",
-            email: email2,
+            profilPhotoUrl: "",
+            email: sellerEmail2,
             companyId: companyBtm.id
         }
     })
@@ -93,8 +92,8 @@ export const sellerSeed = async () => {
         }
     })
 
-    const accessTokenSeller2 = createToken(seller2.id, email2, 'user', process.env.ACCESS_SECRET!, 4800 * 60 * 24)
-    const refreshTokenSeller2 = createToken(seller2.id, email2, 'user', process.env.REFRESH_SECRET!, 48 * 60 * 60)
+    const accessTokenSeller2 = createToken(seller2.id, sellerEmail2, 'user', process.env.ACCESS_SECRET!, 4800 * 60 * 24)
+    const refreshTokenSeller2 = createToken(seller2.id, sellerEmail2, 'user', process.env.REFRESH_SECRET!, 48 * 60 * 60)
 
     await prisma.token.create({
         data: {

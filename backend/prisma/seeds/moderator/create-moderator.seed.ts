@@ -14,8 +14,8 @@ export const moderatorSeed = async () => {
     const moderatorPermissions = await createModeratorPermissions()
 
     // Default Moderator
-    const passwordModerator = 'm'
-    const emailModerator = 'm'
+    const passwordModerator = 'mod@btm.com'
+    const emailModerator = 'Mod123!'
     const hashedPasswordModerator = await bcrypt.hash(passwordModerator, 10);
 
     const moderator = await prisma.user.create({

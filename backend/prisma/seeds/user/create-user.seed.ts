@@ -12,8 +12,8 @@ export const userSeed = async () => {
     }
   });
 
-  const userEmail1 = 'user'
-  const userPassword1 = 'user'
+  const userEmail1 = 'user@btm.com'
+  const userPassword1 = 'User123!'
 
   const userPermissions = await createUserPermissions()
 
@@ -21,9 +21,9 @@ export const userSeed = async () => {
 
   const user1 = await prisma.user.create({
     data: {
-      firstName: "Burak",
-      lastName: "Talha",
-      birthday: new Date('2001-02-21'),
+      firstName: "User",
+      lastName: "User",
+      birthday: new Date('2000-01-01'),
       active: true,
       email: userEmail1,
     }

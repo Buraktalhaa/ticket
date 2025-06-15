@@ -14,14 +14,14 @@ export const adminSeed = async () => {
     // const adminPermissions = await createAdminPermissions()
 
     // Default Admin
-    const passwordAdmin = 'admin'
-    const emailAdmin = 'admin'
+    const passwordAdmin = 'admin@btm.com'
+    const emailAdmin = 'Admin123!'
     const hashedPasswordAdmin = await bcrypt.hash(passwordAdmin, 10);
 
     const admin = await prisma.user.create({
         data: {
-            firstName: "moderator",
-            lastName: "moderator",
+            firstName: "Admin",
+            lastName: "Admin",
             birthday: new Date('2001-02-21'),
             active: true,
             email: emailAdmin
