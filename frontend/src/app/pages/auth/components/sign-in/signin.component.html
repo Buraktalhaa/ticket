@@ -1,53 +1,81 @@
-<div class="h-screen flex items-center justify-center bg-gray-100">
-  <div class="w-full max-w-xs">
-    <p class="text-center py-6 font-extrabold text-3xl tracking-wide text-blue-600 drop-shadow-md">
-      Sign In
-    </p>
+<div class="h-screen flex bg-gray-100">
+  <!-- Sol Panel: Demo Hesaplar -->
+  <div class="w-1/6 bg-white p-6 shadow-md flex flex-col">
+    <h2 class="text-xl font-bold text-gray-700 mb-4">🧪 Demo Accounts</h2>
+    <ul class="space-y-3 text-sm">
+      <li>
+        <span class="font-semibold text-purple-600">User:</span><br />
+        <code class="bg-gray-100 px-2 py-1 rounded block">user&#64;btm.com</code>
+        <code class="bg-gray-100 px-2 py-1 rounded block">User123!</code>
+      </li>
+      <li>
+        <span class="font-semibold text-green-600">Seller:</span><br />
+        <code class="bg-gray-100 px-2 py-1 rounded block">seller&#64;btm.com</code>
+        <code class="bg-gray-100 px-2 py-1 rounded block">Seller123!</code>
+      </li>
+      <li>
+        <span class="font-semibold text-blue-600">Admin:</span><br />
+        <code class="bg-gray-100 px-2 py-1 rounded block">admin&#64;btm.com</code>
+        <code class="bg-gray-100 px-2 py-1 rounded block">Admin123!</code>
+      </li>
+      <li>
+        <span class="font-semibold text-yellow-600">Moderator:</span><br />
+        <code class="bg-gray-100 px-2 py-1 rounded block">mod&#64;btm.com</code>
+        <code class="bg-gray-100 px-2 py-1 rounded block">Mod123!</code>
+      </li>
+    </ul>
+  </div>
 
-    <form
-      class="bg-white flex flex-col shadow-md rounded px-8 pt-6 pb-8 mb-4"
-      (ngSubmit)="signIn()"
-    >
-      <div class="mb-2">
-        <app-auth-input
-          [(model)]="email"
-          src="icons/email.svg"
-          label="Email"
-          placeholder="Email"
-          type="email"
-        ></app-auth-input>
-      </div>
+  <!-- Sağ Panel: Giriş Formu -->
+  <div class="flex-1 flex items-center justify-center">
+    <div class="w-full max-w-xs">
+      <p class="text-center py-6 font-extrabold text-3xl tracking-wide text-blue-600 drop-shadow-md">
+        Sign In
+      </p>
 
-      <div class="mb-2">
-        <app-auth-input
-          [(model)]="password"
-          src="icons/password.svg"
-          label="Password"
-          placeholder="Password"
-          type="password"
-        ></app-auth-input>
-      </div>
+      <form
+        class="bg-white flex flex-col shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        (ngSubmit)="signIn()"
+      >
+        <div class="mb-2">
+          <app-auth-input
+            [(model)]="email"
+            src="icons/email.svg"
+            label="Email"
+            placeholder="Email"
+            type="email"
+          ></app-auth-input>
+        </div>
 
-      <app-sign-button
-      text="Sign In"
-      ></app-sign-button>
+        <div class="mb-2">
+          <app-auth-input
+            [(model)]="password"
+            src="icons/password.svg"
+            label="Password"
+            placeholder="Password"
+            type="password"
+          ></app-auth-input>
+        </div>
 
-      <div class="flex justify-between items-center mb-2">
-        <a
-          class="text-sm text-blue-600 hover:text-blue-800 font-semibold"
-          routerLink="/forgot-password"
-        >
-          Forgot Password?
-        </a>
-      </div>
-    </form>
+        <app-sign-button text="Sign In"></app-sign-button>
 
-    <app-text-link
-      text="Don't have an account?"
-      [link]="'/sign-up'"
-      buttonName="Sign up"
-    ></app-text-link>
+        <div class="flex justify-between items-center mb-2">
+          <a
+            class="text-sm text-blue-600 hover:text-blue-800 font-semibold"
+            routerLink="/forgot-password"
+          >
+            Forgot Password?
+          </a>
+        </div>
+      </form>
 
-    <app-footer-info-text> </app-footer-info-text>
+      <app-text-link
+        text="Don't have an account?"
+        [link]="'/sign-up'"
+        buttonName="Sign up"
+      ></app-text-link>
+
+      <app-footer-info-text></app-footer-info-text>
+    </div>
   </div>
 </div>
