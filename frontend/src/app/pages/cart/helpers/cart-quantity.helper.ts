@@ -2,8 +2,12 @@ import { CartItem } from '../types/cart-item.types';
 
 export function canIncreaseQuantity(item: CartItem | null): string | null {
     if (!item) return "Item is missing";
-    if (item.ticket.stock === undefined) return "Stock information is unavailable";
-    if (item.count >= item.ticket.stock) return "Not enough stock available";
+    if (item.ticket.stock === undefined) {
+        return "Stock information is unavailable";
+    }
+    if (item.count >= item.ticket.stock) {
+        return `Not enough stock available. Only ${item.ticket.stock} left in stock.`;
+    }
     return null;
 }
 

@@ -9,8 +9,13 @@ export async function addToCart(req: Request, res: Response) {
         const { userId } = req.user as DecodedUser;
         const { ticketId, count } = req.body;
 
-        if (!ticketId || typeof count !== 'number' || count <= 0) {
-            handleError(res, 'Invalid ticketId or count', 400);
+        if (typeof count !== 'number' || count <= 0) {
+            handleError(res, 'Invalid count', 400);
+            return
+        }
+
+        if(!ticketId ){
+            handleError(res, 'Invalid ticketId', 400);
             return
         }
 

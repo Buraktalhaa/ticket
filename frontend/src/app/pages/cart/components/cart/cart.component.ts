@@ -83,7 +83,14 @@ export class CartComponent {
   }
 
   buyTicket() {
-    if (!this.item) return;
+    if (!this.item){
+      return
+    }
+
+    if (this.item.count <= 0) {
+      this.notificationService.warning("You can't purchase zero or negative quantity.");
+      return;
+    }    
 
     const data: CreateOrderDTO = { 
       ticketId: this.item.ticket.id, 
@@ -92,7 +99,9 @@ export class CartComponent {
     };  
     this.orderService.createOrder(data).subscribe({
       next: (response) => handlePaymentRedirect(response, this.notificationService),
-      error: (error:HttpErrorResponse) => handleOrderError(error, this.notificationService)
+      // error: () => {
+      //   this.notificationService.error('')
+      // }
     });
   }
 }
