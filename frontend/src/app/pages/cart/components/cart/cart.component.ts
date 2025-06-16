@@ -7,8 +7,7 @@ import { NotificationService } from '../../../../shared/services/notification.se
 import { OrderService } from '../../../order/services/order.service';
 import { NavbarComponent } from '../../../../shared/components/navbar/navbar.component';
 import { canDecreaseQuantity, canIncreaseQuantity } from '../../helpers/cart-quantity.helper';
-import { handleOrderError, handlePaymentRedirect } from '../../helpers/payment.helper';
-import { HttpErrorResponse } from '@angular/common/http';
+import { handlePaymentRedirect } from '../../helpers/payment.helper';
 import { calculateDiscountedPrice } from '../../../../shared/helpers/discount.helper';
 import { CreateOrderDTO } from '../../../order/types/order.types';
 

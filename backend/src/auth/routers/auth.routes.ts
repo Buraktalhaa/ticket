@@ -9,7 +9,6 @@ import '../controllers/google-strategy';
 import { refreshController } from '../controllers/refresh-token';
 
 
-
 const router = Router();
 
 router.post('/sign-in', signInController);

@@ -17,7 +17,7 @@ export interface NotificationData {
   duration?: number;
   autoClose?: boolean;
   showProgress?: boolean;
-  persistent?: boolean; // Kullanıcı manuel kapatana kadar açık kalır
+  persistent?: boolean;
   action?: NotificationAction;
   icon?: string; // Custom icon class or SVG
   position?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center';
