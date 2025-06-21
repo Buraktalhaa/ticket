@@ -2,6 +2,7 @@ import prisma from "../../../src/common/utils/prisma";
 import bcrypt from 'bcryptjs'
 import { createToken } from "../../../src/auth/utils/create-token";
 import { RoleType } from "@prisma/client";
+import { createAdminPermissions } from "./admin-permission";
 
 export const adminSeed = async () => {
     // admin
@@ -11,7 +12,7 @@ export const adminSeed = async () => {
         }
     });
 
-    // const adminPermissions = await createAdminPermissions()
+    const adminPermissions = await createAdminPermissions()
 
     // Default Admin
     const passwordAdmin = 'admin@btm.com'
