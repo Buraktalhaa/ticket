@@ -47,7 +47,6 @@ export class TicketCardComponent {
   }
 
   onFavoriteChanged(newValue: boolean) {
-    // parent a yolla
     this.favoriteChanged.emit(newValue);
   }
 }
