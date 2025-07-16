@@ -20,12 +20,8 @@ export async function cancelOrder(req: Request, res: Response) {
         }
 
         const order = await prisma.order.findUnique({
-            where: {
-                id: orderId,
-            },
-            include: {
-                ticket: true,
-            },
+            where: { id: orderId },
+            include: { ticket: true},
         });
 
         if (!order) {

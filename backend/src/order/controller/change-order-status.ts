@@ -36,6 +36,8 @@ export async function changeOrderStatus(req: Request, res: Response) {
             }
         });
     
+        // COMMENT LINE FOR TESTING
+        // TODO:
         if(status == 'approve'){
             // await prisma.point.upsert({
             //     where: {
