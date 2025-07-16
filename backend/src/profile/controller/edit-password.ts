@@ -3,20 +3,20 @@ import bcrypt from 'bcryptjs'
 import prisma from "../../common/utils/prisma";
 import { handleError } from "../../common/error-handling/handle-error";
 import { DecodedUser } from "../../common/types/request.type";
+import { ResponseStatus } from "../../common/enums/status.enum";
 
 // email ve yeni password u frontdan al
 
 export async function editPassword(req: Request, res: Response) {
     try {
-        const decoded = req.user as DecodedUser;;
+        const decoded = req.user as DecodedUser;
+        const email = decoded.email;
+        const oldPassword = req.body.password
 
         if (!decoded || !decoded.email) {
             handleError(res, 'User email not found in token', 400)
             return 
         }
-        
-        const email = decoded.email;
-        const oldPassword = req.body.password
 
         // find user
         const user = await prisma.auth.findUnique({ where: { email } });
@@ -37,16 +37,12 @@ export async function editPassword(req: Request, res: Response) {
         const hashedNewPassword = await bcrypt.hash(req.body.newPassword, 10);
 
         await prisma.auth.update({
-            where: {
-                email
-            },
-            data: {
-                password: hashedNewPassword
-            }
+            where: { email },
+            data: { password: hashedNewPassword }
         })
 
         res.status(200).json({
-            status: 'success',
+            status: ResponseStatus.SUCCESS,
             message: 'Password changed successfully',
             data: { email } 
         });

@@ -7,7 +7,7 @@ import { handleError } from '../../common/error-handling/handle-error';
 import { TokenPayload } from '../../common/types/token.type';
 
 export async function refreshController(req: Request, res: Response) {
-    const refreshToken = req.body.refreshToken
+    const { refreshToken } = req.body.refreshToken
     console.log("Refresh token in refresh", refreshToken)
 
     if (!refreshToken) {

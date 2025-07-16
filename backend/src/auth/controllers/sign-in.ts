@@ -8,13 +8,13 @@ import { handleError } from "../../common/error-handling/handle-error";
 
 export async function signInController(req: Request, res: Response) {
     try {
+        const email = req.body.email;
+        const password = req.body.password;
+        
         if (checkSignIn(req) === false) {
             handleError(res, 'Please enter your email and password.', 400);
             return;
         }
-
-        const email = req.body.email;
-        const password = req.body.password;
 
         const auth = await prisma.auth.findUnique({ where: { email }})
 

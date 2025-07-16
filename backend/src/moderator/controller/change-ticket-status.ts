@@ -20,12 +20,8 @@ export const updateTicketStatus = async (req: Request, res: Response) => {
         }
 
         await prisma.ticket.update({
-            where: {
-                id
-            },
-            data: {
-                status
-            }
+            where: { id },
+            data: { status }
         });
 
         res.status(200).json({

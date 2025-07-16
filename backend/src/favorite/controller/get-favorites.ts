@@ -9,12 +9,8 @@ export async function getFavorites(req: Request, res: Response) {
 
     try {
         const favorites = await prisma.favorite.findMany({
-            where: {
-                userId
-            },
-            select:{
-                ticket:true
-            }
+            where: { userId },
+            select:{ ticket:true }
         });
 
         const ticketsWithFavorite = favorites.map((ticket) => ({

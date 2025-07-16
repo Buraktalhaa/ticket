@@ -36,6 +36,7 @@ export async function signUpController(req: Request, res: Response) {
                 handleError(res, 'There is a user with this email address', 409)
                 return;
             }
+            
             if (googleAuth) {
                 if (!process.env.ACCESS_SECRET || !process.env.REFRESH_SECRET) {
                     handleError(res, "JWT_SECRET is not defined in environment variables", 500);

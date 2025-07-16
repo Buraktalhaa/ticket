@@ -47,12 +47,8 @@ export async function resetPasswordController(req: Request, res: Response) {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
         await prisma.auth.update({
-            where: {
-                email
-            },
-            data: {
-                password: hashedPassword,
-            }
+            where: { email },
+            data: { password: hashedPassword }
         })
 
         // update reset Token in db
