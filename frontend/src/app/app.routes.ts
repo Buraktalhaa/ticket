@@ -24,15 +24,15 @@ import { FavoritesComponent } from './pages/favorites/components/favorites/favor
 export const routes: Routes = [
     { path: '', redirectTo: '/main', pathMatch: 'full' },
     { path: 'main', component: MainComponent },
-    { path: 'main/:category', component: MainComponent},
+    { path: 'main/:category', component: MainComponent },
     { path: 'main/:category/:id', component: TicketDetailComponent },
 
-    { path: 'my-profile', component: MyProfileComponent, canActivate:[roleGuard],data:{roles:['user']}},
-    { path: 'my-profile/cart', component: CartComponent, canActivate:[roleGuard, authGuard],data:{roles:['user']}},
+    { path: 'my-profile', component: MyProfileComponent, canActivate: [roleGuard], data: { roles: ['user'] } },
+    { path: 'my-profile/cart', component: CartComponent, canActivate: [roleGuard, authGuard], data: { roles: ['user'] } },
 
-    { path: 'favorites', component: FavoritesComponent, canActivate:[roleGuard],data:{roles:['user']}},
+    { path: 'favorites', component: FavoritesComponent, canActivate: [roleGuard], data: { roles: ['user'] } },
 
-    { path: 'order/my-orders', component: MyOrdersComponent, canActivate:[roleGuard],data:{roles:['user']}},
+    { path: 'order/my-orders', component: MyOrdersComponent, canActivate: [roleGuard], data: { roles: ['user'] } },
 
     { path: 'sign-up', component: SignupComponent },
     { path: 'sign-in', component: SigninComponent },
@@ -41,14 +41,14 @@ export const routes: Routes = [
     { path: 'reset-password/:token', component: ResetPasswordComponent },
     { path: 'unauthorized', component: UnauthorizedComponent },
 
-    { path: 'seller-dashboard', component: SellerDashboardComponent, canActivate:[roleGuard],data:{roles:['seller']} },
-    { path: 'seller-dashboard/create-ticket', component: CreateTicketComponent, canActivate:[roleGuard],data:{roles:['seller']} },
-    { path: 'seller-dashboard/my-tickets', component:  SellerTicketsComponent, canActivate:[roleGuard],data:{roles:['seller']}},
-    { path: 'seller-dashboard/my-tickets/edit', component: TicketEditComponent, canActivate:[roleGuard],data:{roles:['seller']}},
-    
-    { path: 'moderator-dashboard', component: ModeratorDashboardComponent, canActivate:[roleGuard],data:{roles:['moderator']}},
-    { path: 'moderator-dashboard/status-panel', component: ModeratorStatusPanelComponent, canActivate:[roleGuard],data:{roles:['moderator']}},
-    { path: 'moderator-dashboard/status-panel/edit', component: ModeratorStatusEditComponent, canActivate:[roleGuard],data:{roles:['moderator']}},
+    { path: 'seller-dashboard', component: SellerDashboardComponent, canActivate: [roleGuard], data: { roles: ['seller'] } },
+    { path: 'seller-dashboard/create-ticket', component: CreateTicketComponent, canActivate: [roleGuard], data: { roles: ['seller'] } },
+    { path: 'seller-dashboard/my-tickets', component: SellerTicketsComponent, canActivate: [roleGuard], data: { roles: ['seller'] } },
+    { path: 'seller-dashboard/my-tickets/edit', component: TicketEditComponent, canActivate: [roleGuard], data: { roles: ['seller'] } },
 
-    { path: '**', redirectTo: '/main'}
+    { path: 'moderator-dashboard', component: ModeratorDashboardComponent, canActivate: [roleGuard], data: { roles: ['moderator'] } },
+    { path: 'moderator-dashboard/status-panel', component: ModeratorStatusPanelComponent, canActivate: [roleGuard], data: { roles: ['moderator'] } },
+    { path: 'moderator-dashboard/status-panel/edit', component: ModeratorStatusEditComponent, canActivate: [roleGuard], data: { roles: ['moderator'] } },
+
+    { path: '**', redirectTo: '/main' }
 ]

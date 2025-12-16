@@ -14,7 +14,7 @@ export async function createTicket(req: Request, res: Response) {
             handleError(res, 'Missing information', 400);
             return
         }
-    
+        
         const category = await prisma.category.findUnique({
             where: {
                 name: categoryName

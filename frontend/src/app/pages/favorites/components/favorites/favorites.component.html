@@ -6,7 +6,8 @@
     </h2>
     @if (tickets.length > 0) {
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-      @for (ticket of filteredTickets; track ticket.id || $index; let i = $index) {
+      @for (ticket of filteredTickets; track ticket.id || $index; let i =
+      $index) {
       <app-favorite-cart
         [ticket]="ticket"
         [isFavorite]="ticket.isFavorite"
